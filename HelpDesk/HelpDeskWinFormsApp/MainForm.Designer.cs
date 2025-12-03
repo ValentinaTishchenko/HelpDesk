@@ -58,8 +58,8 @@
             this.loginToolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.splitContainer = new System.Windows.Forms.SplitContainer();
             this.editUserButton = new System.Windows.Forms.Button();
-            this.addTrubleTicketbutton = new System.Windows.Forms.Button();
-            this.openTrubleTicketButton = new System.Windows.Forms.Button();
+            this.addTroubleTicketbutton = new System.Windows.Forms.Button();
+            this.openTroubleTicketButton = new System.Windows.Forms.Button();
             this.exitButton = new System.Windows.Forms.Button();
             this.treeView = new System.Windows.Forms.TreeView();
             this.troubleTicketsDataGridView = new System.Windows.Forms.DataGridView();
@@ -171,8 +171,8 @@
             // splitContainer.Panel1
             // 
             this.splitContainer.Panel1.Controls.Add(this.editUserButton);
-            this.splitContainer.Panel1.Controls.Add(this.addTrubleTicketbutton);
-            this.splitContainer.Panel1.Controls.Add(this.openTrubleTicketButton);
+            this.splitContainer.Panel1.Controls.Add(this.addTroubleTicketbutton);
+            this.splitContainer.Panel1.Controls.Add(this.openTroubleTicketButton);
             this.splitContainer.Panel1.Controls.Add(this.exitButton);
             this.splitContainer.Panel1.Controls.Add(this.treeView);
             this.splitContainer.Panel1.Resize += new System.EventHandler(this.SplitContainer_Panel1_Resize);
@@ -195,25 +195,25 @@
             this.editUserButton.UseVisualStyleBackColor = true;
             this.editUserButton.Click += new System.EventHandler(this.EditUserButton_Click);
             // 
-            // addTrubleTicketbutton
+            // addTroubleTicketbutton
             // 
-            this.addTrubleTicketbutton.Location = new System.Drawing.Point(3, 551);
-            this.addTrubleTicketbutton.Name = "addTrubleTicketbutton";
-            this.addTrubleTicketbutton.Size = new System.Drawing.Size(158, 23);
-            this.addTrubleTicketbutton.TabIndex = 3;
-            this.addTrubleTicketbutton.Text = "&Создать заявку";
-            this.addTrubleTicketbutton.UseVisualStyleBackColor = true;
-            this.addTrubleTicketbutton.Click += new System.EventHandler(this.AddTroubleTicketButton_Click);
+            this.addTroubleTicketbutton.Location = new System.Drawing.Point(3, 551);
+            this.addTroubleTicketbutton.Name = "addTroubleTicketbutton";
+            this.addTroubleTicketbutton.Size = new System.Drawing.Size(158, 23);
+            this.addTroubleTicketbutton.TabIndex = 3;
+            this.addTroubleTicketbutton.Text = "&Создать заявку";
+            this.addTroubleTicketbutton.UseVisualStyleBackColor = true;
+            this.addTroubleTicketbutton.Click += new System.EventHandler(this.AddTroubleTicketButton_Click);
             // 
-            // openTrubleTicketButton
+            // openTroubleTicketButton
             // 
-            this.openTrubleTicketButton.Location = new System.Drawing.Point(3, 522);
-            this.openTrubleTicketButton.Name = "openTrubleTicketButton";
-            this.openTrubleTicketButton.Size = new System.Drawing.Size(158, 23);
-            this.openTrubleTicketButton.TabIndex = 2;
-            this.openTrubleTicketButton.Text = "&Открыть ТТ";
-            this.openTrubleTicketButton.UseVisualStyleBackColor = true;
-            this.openTrubleTicketButton.Click += new System.EventHandler(this.OpenTrubleTicketButton_Click);
+            this.openTroubleTicketButton.Location = new System.Drawing.Point(3, 522);
+            this.openTroubleTicketButton.Name = "openTroubleTicketButton";
+            this.openTroubleTicketButton.Size = new System.Drawing.Size(158, 23);
+            this.openTroubleTicketButton.TabIndex = 2;
+            this.openTroubleTicketButton.Text = "&Открыть ТТ";
+            this.openTroubleTicketButton.UseVisualStyleBackColor = true;
+            this.openTroubleTicketButton.Click += new System.EventHandler(this.OpenTroubleTicketButton_Click);
             // 
             // exitButton
             // 
@@ -229,23 +229,23 @@
             // 
             this.treeView.Location = new System.Drawing.Point(0, 0);
             this.treeView.Name = "treeView";
-            treeNode1.Name = "allTrubleTicket";
+            treeNode1.Name = "allTroubleTicket";
             treeNode1.Text = "Все ТТ";
-            treeNode2.Name = "openTrubleTicket";
+            treeNode2.Name = "openTroubleTicket";
             treeNode2.Text = "Открытые ТТ";
-            treeNode3.Name = "closedTrubleTicket";
+            treeNode3.Name = "closedTroubleTicket";
             treeNode3.Text = "Закрытые ТТ";
-            treeNode4.Name = "overdueTrubleTicketNode";
+            treeNode4.Name = "overdueTroubleTicketNode";
             treeNode4.Text = "Просроченные ТТ";
-            treeNode5.Name = "registeredTrubleTicketNode";
+            treeNode5.Name = "registeredTroubleTicketNode";
             treeNode5.Text = "Зарегистрирован";
-            treeNode6.Name = "workTrubleTicketNode";
+            treeNode6.Name = "workTroubleTicketNode";
             treeNode6.Text = "В работе";
-            treeNode7.Name = "completedTrubleTicketNode";
+            treeNode7.Name = "completedTroubleTicketNode";
             treeNode7.Text = "Выполнен";
-            treeNode8.Name = "rejectedTrubleTicketNode";
+            treeNode8.Name = "rejectedTroubleTicketNode";
             treeNode8.Text = "Отклонен";
-            treeNode9.Name = "statusTrubleTicketNode";
+            treeNode9.Name = "statusTroubleTicketNode";
             treeNode9.Text = "Статус ТТ";
             treeNode10.Name = "trubleTicketlist";
             treeNode10.Text = "Лента ТТ";
@@ -322,9 +322,9 @@
         private System.Windows.Forms.SplitContainer splitContainer;
         private System.Windows.Forms.TreeView treeView;
         private System.Windows.Forms.DataGridView troubleTicketsDataGridView;
-        private System.Windows.Forms.Button openTrubleTicketButton;
+        private System.Windows.Forms.Button openTroubleTicketButton;
         private System.Windows.Forms.Button exitButton;
-        private System.Windows.Forms.Button addTrubleTicketbutton;
+        private System.Windows.Forms.Button addTroubleTicketbutton;
         private System.Windows.Forms.Button editUserButton;
         private System.Windows.Forms.ToolStripMenuItem refreshToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exportToolStripMenuItem;

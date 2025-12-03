@@ -78,7 +78,7 @@
             this.createTroubleTicketButton.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.createTroubleTicketButton.Enabled = false;
             this.createTroubleTicketButton.Location = new System.Drawing.Point(12, 322);
-            this.createTroubleTicketButton.Name = "createTrubleTicketButton";
+            this.createTroubleTicketButton.Name = "createTroubleTicketButton";
             this.createTroubleTicketButton.Size = new System.Drawing.Size(378, 34);
             this.createTroubleTicketButton.TabIndex = 4;
             this.createTroubleTicketButton.Text = "&Создать заявку";
@@ -94,7 +94,7 @@
             this.cancelButton.Text = "&Отмена";
             this.cancelButton.UseVisualStyleBackColor = true;
             // 
-            // AddTrubleTicketForm
+            // AddTroubleTicketForm
             // 
             this.AcceptButton = this.createTroubleTicketButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -109,7 +109,7 @@
             this.Controls.Add(this.loginLabel);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "AddTrubleTicketForm";
+            this.Name = "AddTroubleTicketForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "HelpDesk Создание заявки";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.AddTroubleTicketForm_FormClosing);

@@ -58,10 +58,10 @@ namespace HelpDeskWinFormsApp
                 return;
             }
 
-            var allTrubleTickets = provider.GetAllTroubleTickets();
+            var allTroubleTickets = provider.GetAllTroubleTickets();
             var trubleTickets = new List<TroubleTicket>();
 
-            foreach ( var tt in allTrubleTickets)
+            foreach ( var tt in allTroubleTickets)
             {
                 if (tt.Created >= startDateTimePicker.Value && tt.Created <= endDateTimePicker.Value)
                 {
@@ -72,33 +72,33 @@ namespace HelpDeskWinFormsApp
             var users = provider.GetAllUsers();
             var exportFile = exportFileDialog.FileName;
 
-            if (typeComboBox.Text == "Truble Ticket")
+            if (typeComboBox.Text == "Trouble Ticket")
             {
                 if (statusFilterCheckBox.Checked)
                 {
-                    var tempTrubleTickets = new List<TroubleTicket>();
+                    var tempTroubleTickets = new List<TroubleTicket>();
 
                     foreach( var tt in trubleTickets)
                     {
                         if (tt.Status == statusFilterComboBox.Text)
                         {
-                            tempTrubleTickets.Add(tt);
+                            tempTroubleTickets.Add(tt);
                         }
                     }
 
                     trubleTickets.Clear();
-                    trubleTickets.AddRange(tempTrubleTickets);
+                    trubleTickets.AddRange(tempTroubleTickets);
                 }
 
                 if (trubleTickets.Count != 0)
                 {
                     if (fileTypeComboBox.Text == "Excel (.xlsx)")
                     {
-                        ExcelTrubleTicketExport(trubleTickets, users, exportFile);
+                        ExcelTroubleTicketExport(trubleTickets, users, exportFile);
                     }
                     else if (fileTypeComboBox.Text == "Comma-Separated Values (.csv)")
                     {
-                        CsvTrubleTicketExport(trubleTickets, users, exportFile);
+                        CsvTroubleTicketExport(trubleTickets, users, exportFile);
                     }
                 }
                 else
@@ -148,7 +148,7 @@ namespace HelpDeskWinFormsApp
             }
         }
 
-        private void CsvTrubleTicketExport(List<TroubleTicket> result, List<User> users, string exportFile)
+        private void CsvTroubleTicketExport(List<TroubleTicket> result, List<User> users, string exportFile)
         {
             var rowsCount = result.Count;
 
@@ -305,7 +305,7 @@ namespace HelpDeskWinFormsApp
             workBook.SaveAs(exportFile);
         }
 
-        private void ExcelTrubleTicketExport(List<TroubleTicket> result, List<User> users, string exportFile)
+        private void ExcelTroubleTicketExport(List<TroubleTicket> result, List<User> users, string exportFile)
         {
             var rowsCount = result.Count;
 
@@ -353,7 +353,7 @@ namespace HelpDeskWinFormsApp
 
         private void TypeComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (typeComboBox.Text == "Truble Ticket")
+            if (typeComboBox.Text == "Trouble Ticket")
             {
                 startDateTimePicker.Enabled = true;
                 endDateTimePicker.Enabled = true;

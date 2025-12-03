@@ -135,7 +135,7 @@
             this.typeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.typeComboBox.FormattingEnabled = true;
             this.typeComboBox.Items.AddRange(new object[] {
-            "Truble Ticket",
+            "Trouble Ticket",
             "Пользователи"});
             this.typeComboBox.Location = new System.Drawing.Point(176, 16);
             this.typeComboBox.Name = "typeComboBox";

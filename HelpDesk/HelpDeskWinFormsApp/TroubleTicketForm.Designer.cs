@@ -135,11 +135,11 @@
             "Выполнена",
             "Отклонена"});
             this.statusTroubleTicketComboBox.Location = new System.Drawing.Point(12, 538);
-            this.statusTroubleTicketComboBox.Name = "statusTrubleTicketComboBox";
+            this.statusTroubleTicketComboBox.Name = "statusTroubleTicketComboBox";
             this.statusTroubleTicketComboBox.Size = new System.Drawing.Size(380, 23);
             this.statusTroubleTicketComboBox.TabIndex = 9;
             // 
-            // TrubleTicketForm
+            // TroubleTicketForm
             // 
             this.AcceptButton = this.saveButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -159,9 +159,9 @@
             this.Controls.Add(this.userCreateLabel);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "TrubleTicketForm";
+            this.Name = "TroubleTicketForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "TrubleTicketForm";
+            this.Text = "TroubleTicketForm";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.TroubleTicketForm_FormClosing);
             this.Shown += new System.EventHandler(this.TroubleTicketForm_Shown);
             this.ResumeLayout(false);

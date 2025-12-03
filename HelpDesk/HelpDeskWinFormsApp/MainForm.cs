@@ -29,7 +29,7 @@ namespace HelpDeskWinFormsApp
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            string login = AuthorizationUser();
+            var login = AuthorizationUser();
 
             if (login != string.Empty)
             {
@@ -44,10 +44,15 @@ namespace HelpDeskWinFormsApp
 
                 troubleTicketsDataGridView.Size = splitContainer.Panel2.Size;
 
-                userNameToolStripStatusLabel.Text = $"Имя: {user.Name}";
-                loginToolStripStatusLabel.Text = $"Логин: {user.Login}";
-                userNameToolStripMenuItem.Text = $"&{user.Name}";
+                UpdateUserInfoUI();
             }
+        }
+
+        private void UpdateUserInfoUI()
+        {
+            userNameToolStripStatusLabel.Text = $"Имя: {user.Name}";
+            loginToolStripStatusLabel.Text = $"Логин: {user.Login}";
+            userNameToolStripMenuItem.Text = $"&{user.Name}";
         }
 
         private void ShowExportSubMenu()
@@ -82,9 +87,7 @@ namespace HelpDeskWinFormsApp
 
                 SetHeaderWindowText();
 
-                userNameToolStripStatusLabel.Text = $"Имя: {user.Name}";
-                loginToolStripStatusLabel.Text = $"Логин: {user.Login}";
-                userNameToolStripMenuItem.Text = $"&{user.Name}";
+                UpdateUserInfoUI();
                 treeView.SelectedNode = treeView.Nodes[0];
 
                 ShowUserTreeNode();
@@ -97,9 +100,9 @@ namespace HelpDeskWinFormsApp
         {
             treeView.Width = splitContainer.Panel1.Width;
             treeView.Height = splitContainer.Panel1.Height - 152;
-            editUserButton.Location = new Point(openTrubleTicketButton.Location.X, splitContainer.Panel1.Height - 117);
-            openTrubleTicketButton.Location = new Point(openTrubleTicketButton.Location.X, splitContainer.Panel1.Height - 88);
-            addTrubleTicketbutton.Location = new Point(openTrubleTicketButton.Location.X, splitContainer.Panel1.Height - 59);
+            editUserButton.Location = new Point(openTroubleTicketButton.Location.X, splitContainer.Panel1.Height - 117);
+            openTroubleTicketButton.Location = new Point(openTroubleTicketButton.Location.X, splitContainer.Panel1.Height - 88);
+            addTroubleTicketbutton.Location = new Point(openTroubleTicketButton.Location.X, splitContainer.Panel1.Height - 59);
             exitButton.Location = new Point(exitButton.Location.X, splitContainer.Panel1.Height - 30);
         }
 
@@ -108,7 +111,7 @@ namespace HelpDeskWinFormsApp
             troubleTicketsDataGridView.Size = splitContainer.Panel2.Size;
         }
 
-        private void OpenTrubleTicketButton_Click(object sender, EventArgs e)
+        private void OpenTroubleTicketButton_Click(object sender, EventArgs e)
         {
             if (troubleTicketsDataGridView.SelectedRows.Count != 0)
             {
@@ -136,7 +139,7 @@ namespace HelpDeskWinFormsApp
 
             if (dialogResult.ShowDialog() == DialogResult.OK)
             {
-                treeView.SelectedNode = treeView.Nodes["trubleTicketlist"].Nodes["openTrubleTicket"];
+                treeView.SelectedNode = treeView.Nodes["trubleTicketlist"].Nodes["openTroubleTicket"];
                 RefreshTroubleTicketsDataGrid();
             }
         }
@@ -150,9 +153,9 @@ namespace HelpDeskWinFormsApp
         {
             if (treeView.SelectedNode.Level != 0)
             {
-                if (treeView.SelectedNode.Parent.Name == "trubleTicketlist" || treeView.SelectedNode.Parent.Name == "statusTrubleTicketNode")
+                if (treeView.SelectedNode.Parent.Name == "trubleTicketlist" || treeView.SelectedNode.Parent.Name == "statusTroubleTicketNode")
                 {
-                    openTrubleTicketButton.PerformClick();
+                    openTroubleTicketButton.PerformClick();
                 }
 
                 if (treeView.SelectedNode.Parent.Name == "usersNode")
@@ -193,24 +196,24 @@ namespace HelpDeskWinFormsApp
         {
             if (treeView.SelectedNode.Level != 0)
             {
-                if (treeView.SelectedNode.Parent.Name == "trubleTicketlist" || treeView.SelectedNode.Parent.Name == "statusTrubleTicketNode")
+                if (treeView.SelectedNode.Parent.Name == "trubleTicketlist" || treeView.SelectedNode.Parent.Name == "statusTroubleTicketNode")
                 {
                     RefreshTroubleTicketsDataGrid();
                     editUserButton.Enabled = false;
-                    openTrubleTicketButton.Enabled = true;
+                    openTroubleTicketButton.Enabled = true;
                 }
 
                 if (treeView.SelectedNode.Parent.Name == "usersNode")
                 {
                     RefreshUsersDataGrid();
                     editUserButton.Enabled = true;
-                    openTrubleTicketButton.Enabled = false;
+                    openTroubleTicketButton.Enabled = false;
                 }
             }
             else
             {
                 editUserButton.Enabled = false;
-                openTrubleTicketButton.Enabled = false;
+                openTroubleTicketButton.Enabled = false;
             }
         }
 
@@ -336,7 +339,7 @@ namespace HelpDeskWinFormsApp
         {
             var selectedNode = treeView.SelectedNode.Name;
 
-            if (selectedNode == "statusTrubleTicketNode")
+            if (selectedNode == "statusTroubleTicketNode")
             {
                 return;
             }
@@ -356,28 +359,28 @@ namespace HelpDeskWinFormsApp
 
             switch (selectedNode)
             {
-                case "allTrubleTicket":
+                case "allTroubleTicket":
                     FillTroubleTicketsDataGridView(troubleTickets);
                     break;
-                case "openTrubleTicket":
+                case "openTroubleTicket":
                     FillTroubleTicketsDataGridView(troubleTickets.Where(s => s.IsSolved == false).ToList());
                     break;
-                case "closedTrubleTicket":
+                case "closedTroubleTicket":
                     FillTroubleTicketsDataGridView(troubleTickets.Where(s => s.IsSolved == true).ToList());
                     break;
-                case "overdueTrubleTicketNode":
+                case "overdueTroubleTicketNode":
                     FillTroubleTicketsDataGridView(troubleTickets.Where(s => (DateTime.Now - s.Deadline).TotalSeconds > 0).ToList());
                     break;
-                case "registeredTrubleTicketNode":
+                case "registeredTroubleTicketNode":
                     FillTroubleTicketsDataGridView(troubleTickets.Where(s => s.Status == "Зарегистрирована").ToList());
                     break;
-                case "workTrubleTicketNode":
+                case "workTroubleTicketNode":
                     FillTroubleTicketsDataGridView(troubleTickets.Where(s => s.Status == "В работе").ToList());
                     break;
-                case "completedTrubleTicketNode":
+                case "completedTroubleTicketNode":
                     FillTroubleTicketsDataGridView(troubleTickets.Where(s => s.Status == "Выполнена").ToList());
                     break;
-                case "rejectedTrubleTicketNode":
+                case "rejectedTroubleTicketNode":
                     FillTroubleTicketsDataGridView(troubleTickets.Where(s => s.Status == "Отклонена").ToList());
                     break;
                 default:

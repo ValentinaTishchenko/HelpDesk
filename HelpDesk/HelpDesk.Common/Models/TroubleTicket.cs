@@ -19,19 +19,5 @@ namespace HelpDesk.Common.Models
 
         public TroubleTicket() { }
 
-        [JsonConstructor]
-        private TroubleTicket(int id, string status, int createUser, string text, string? resolve, bool isSolved, DateTime created, DateTime? resolveTime, int? resolveUser, DateTime deadline)
-        {
-            Id = id;
-            Status = status;
-            CreateUser = createUser;
-            Text = text;
-            Resolve = resolve;
-            IsSolved = isSolved;
-            Created = created;
-            ResolveTime = resolveTime;
-            ResolveUser = resolveUser;
-            Deadline = deadline;
-        }
     }
 }
