@@ -8,7 +8,7 @@ namespace HelpDesk.Common
     public class JsonStorage : IProvider
     {
         private string usersFileName = "users.json";
-        private string trubleTicketsFileName = "trubleTicket.json";
+        private string troubleTicketsFileName = "troubleTicket.json";
 
         public bool IsCorrectLoginPassword(string login, string password)
         {
@@ -100,89 +100,89 @@ namespace HelpDesk.Common
             return JsonProvider.Deserialize<User>(usersFileName);
         }
 
-        public void AddTrubleTicket(TrubleTicket trubleTicket)
+        public void AddTroubleTicket(TroubleTicket troubleTicket)
         {
-            var trubleTickets = JsonProvider.Deserialize<TrubleTicket>(trubleTicketsFileName);
+            var troubleTickets = JsonProvider.Deserialize<TroubleTicket>(troubleTicketsFileName);
 
-            if (trubleTickets == null)
+            if (troubleTickets == null)
             {
-                trubleTickets = new List<TrubleTicket> { trubleTicket };
+                troubleTickets = new List<TroubleTicket> { troubleTicket };
             }
             else
             {
-                trubleTicket.Id = trubleTickets.Max(x => x.Id) + 1;
+                troubleTicket.Id = troubleTickets.Max(x => x.Id) + 1;
 
-                trubleTickets.Add(trubleTicket);
+                troubleTickets.Add(troubleTicket);
             }
 
-            JsonProvider.Serialize(trubleTickets, trubleTicketsFileName);
+            JsonProvider.Serialize(troubleTickets, troubleTicketsFileName);
         }
 
-        public List<TrubleTicket> GetAllTrubleTickets()
+        public List<TroubleTicket> GetAllTroubleTickets()
         {
-            var trubleTickets = JsonProvider.Deserialize<TrubleTicket>(trubleTicketsFileName);
+            var troubleTickets = JsonProvider.Deserialize<TroubleTicket>(troubleTicketsFileName);
 
-            if (trubleTickets == null)
+            if (troubleTickets == null)
             {
-                return new List<TrubleTicket>();
+                return new List<TroubleTicket>();
             }
             else
             {
-                return JsonProvider.Deserialize<TrubleTicket>(trubleTicketsFileName);
+                return JsonProvider.Deserialize<TroubleTicket>(troubleTicketsFileName);
             }
         }
 
-        public TrubleTicket GetTrubleTicket(int id)
+        public TroubleTicket GetTroubleTicket(int id)
         {
-            var trubleTickets = JsonProvider.Deserialize<TrubleTicket>(trubleTicketsFileName);
+            var troubleTickets = JsonProvider.Deserialize<TroubleTicket>(troubleTicketsFileName);
 
-            if (trubleTickets == null)
+            if (troubleTickets == null)
             {
-                return new TrubleTicket();
+                return new TroubleTicket();
             }
             else
             {
-                var trubleTicket = trubleTickets.FirstOrDefault(t => t.Id == id);
+                var troubleTicket = troubleTickets.FirstOrDefault(t => t.Id == id);
 
-                return trubleTicket;
+                return troubleTicket;
             }
         }
 
-        public void ResolveTrubleTicket(int id, string status, string resolve, int resolveUserId)
+        public void ResolveTroubleTicket(int id, string status, string resolve, int resolveUserId)
         {
-            var trubleTickets = GetAllTrubleTickets();
-            var trubleTicket = GetTrubleTicket(id);
+            var troubleTickets = GetAllTroubleTickets();
+            var troubleTicket = GetTroubleTicket(id);
 
-            trubleTickets.RemoveAll(x => x.Id == id);
+            troubleTickets.RemoveAll(x => x.Id == id);
 
-            trubleTicket.IsSolved = true;
-            trubleTicket.Status = status;
-            trubleTicket.Resolve = resolve;
-            trubleTicket.ResolveTime = DateTime.Now;
-            trubleTicket.ResolveUser = resolveUserId;
+            troubleTicket.IsSolved = true;
+            troubleTicket.Status = status;
+            troubleTicket.Resolve = resolve;
+            troubleTicket.ResolveTime = DateTime.Now;
+            troubleTicket.ResolveUser = resolveUserId;
 
-            trubleTickets.Add(trubleTicket);
+            troubleTickets.Add(troubleTicket);
 
-            var sortedTrubleTickets = trubleTickets.OrderBy(x => x.Id).ToList();
+            var sortedTroubleTickets = troubleTickets.OrderBy(x => x.Id).ToList();
 
-            JsonProvider.Serialize(sortedTrubleTickets, trubleTicketsFileName);
+            JsonProvider.Serialize(sortedTroubleTickets, troubleTicketsFileName);
         }
 
-        public void ChangeStatusTrubleTicket(int id, string status, int resolveUserId)
+        public void ChangeStatusTroubleTicket(int id, string status, int resolveUserId)
         {
-            var trubleTickets = GetAllTrubleTickets();
-            var trubleTicket = GetTrubleTicket(id);
+            var troubleTickets = GetAllTroubleTickets();
+            var troubleTicket = GetTroubleTicket(id);
 
-            trubleTickets.RemoveAll(x => x.Id == id);
+            troubleTickets.RemoveAll(x => x.Id == id);
 
-            trubleTicket.Status = status;
-            trubleTicket.ResolveUser = resolveUserId;
+            troubleTicket.Status = status;
+            troubleTicket.ResolveUser = resolveUserId;
 
-            trubleTickets.Add(trubleTicket);
+            troubleTickets.Add(troubleTicket);
 
-            var sortedTrubleTickets = trubleTickets.OrderBy(x => x.Id).ToList();
+            var sortedTroubleTickets = troubleTickets.OrderBy(x => x.Id).ToList();
 
-            JsonProvider.Serialize(sortedTrubleTickets, trubleTicketsFileName);
+            JsonProvider.Serialize(sortedTroubleTickets, troubleTicketsFileName);
 
         }
 

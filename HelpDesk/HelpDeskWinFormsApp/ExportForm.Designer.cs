@@ -28,30 +28,30 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.label1 = new System.Windows.Forms.Label();
+            this.fileTypeLabel = new System.Windows.Forms.Label();
             this.fileTypeComboBox = new System.Windows.Forms.ComboBox();
             this.exportFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.exportButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
+            this.timeIntervalLabel = new System.Windows.Forms.Label();
             this.startDateTimePicker = new System.Windows.Forms.DateTimePicker();
             this.endDateTimePicker = new System.Windows.Forms.DateTimePicker();
-            this.label3 = new System.Windows.Forms.Label();
+            this.exportLabel = new System.Windows.Forms.Label();
             this.typeComboBox = new System.Windows.Forms.ComboBox();
             this.statusFilterCheckBox = new System.Windows.Forms.CheckBox();
             this.statusFilterComboBox = new System.Windows.Forms.ComboBox();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.SuspendLayout();
             // 
-            // label1
+            // fileTypeLabel
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label1.Location = new System.Drawing.Point(12, 39);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(113, 30);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Тип файла";
+            this.fileTypeLabel.AutoSize = true;
+            this.fileTypeLabel.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.fileTypeLabel.Location = new System.Drawing.Point(12, 39);
+            this.fileTypeLabel.Name = "fileTypeLabel";
+            this.fileTypeLabel.Size = new System.Drawing.Size(113, 30);
+            this.fileTypeLabel.TabIndex = 0;
+            this.fileTypeLabel.Text = "Тип файла";
             // 
             // fileTypeComboBox
             // 
@@ -92,15 +92,15 @@
             this.cancelButton.UseVisualStyleBackColor = true;
             this.cancelButton.Click += new System.EventHandler(this.CancelButton_Click);
             // 
-            // label2
+            // timeIntervalLabel
             // 
-            this.label2.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label2.Location = new System.Drawing.Point(12, 72);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(299, 30);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "Временной интервал";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.timeIntervalLabel.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.timeIntervalLabel.Location = new System.Drawing.Point(12, 72);
+            this.timeIntervalLabel.Name = "timeIntervalLabel";
+            this.timeIntervalLabel.Size = new System.Drawing.Size(299, 30);
+            this.timeIntervalLabel.TabIndex = 4;
+            this.timeIntervalLabel.Text = "Временной интервал";
+            this.timeIntervalLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // startDateTimePicker
             // 
@@ -120,15 +120,15 @@
             this.endDateTimePicker.Size = new System.Drawing.Size(121, 23);
             this.endDateTimePicker.TabIndex = 6;
             // 
-            // label3
+            // exportLabel
             // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label3.Location = new System.Drawing.Point(12, 9);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(169, 30);
-            this.label3.TabIndex = 7;
-            this.label3.Text = "Экспортировать";
+            this.exportLabel.AutoSize = true;
+            this.exportLabel.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.exportLabel.Location = new System.Drawing.Point(12, 9);
+            this.exportLabel.Name = "exportLabel";
+            this.exportLabel.Size = new System.Drawing.Size(169, 30);
+            this.exportLabel.TabIndex = 7;
+            this.exportLabel.Text = "Экспортировать";
             // 
             // typeComboBox
             // 
@@ -185,14 +185,14 @@
             this.Controls.Add(this.statusFilterComboBox);
             this.Controls.Add(this.statusFilterCheckBox);
             this.Controls.Add(this.typeComboBox);
-            this.Controls.Add(this.label3);
+            this.Controls.Add(this.exportLabel);
             this.Controls.Add(this.endDateTimePicker);
             this.Controls.Add(this.startDateTimePicker);
-            this.Controls.Add(this.label2);
+            this.Controls.Add(this.timeIntervalLabel);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.exportButton);
             this.Controls.Add(this.fileTypeComboBox);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.fileTypeLabel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "ExportForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -206,15 +206,15 @@
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label fileTypeLabel;
         private System.Windows.Forms.ComboBox fileTypeComboBox;
         private System.Windows.Forms.SaveFileDialog exportFileDialog;
         private System.Windows.Forms.Button exportButton;
         private System.Windows.Forms.Button cancelButton;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label timeIntervalLabel;
         private System.Windows.Forms.DateTimePicker startDateTimePicker;
         private System.Windows.Forms.DateTimePicker endDateTimePicker;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label exportLabel;
         private System.Windows.Forms.ComboBox typeComboBox;
         private System.Windows.Forms.CheckBox statusFilterCheckBox;
         private System.Windows.Forms.ComboBox statusFilterComboBox;

@@ -58,8 +58,8 @@ namespace HelpDeskWinFormsApp
                 return;
             }
 
-            var allTrubleTickets = provider.GetAllTrubleTickets();
-            var trubleTickets = new List<TrubleTicket>();
+            var allTrubleTickets = provider.GetAllTroubleTickets();
+            var trubleTickets = new List<TroubleTicket>();
 
             foreach ( var tt in allTrubleTickets)
             {
@@ -76,7 +76,7 @@ namespace HelpDeskWinFormsApp
             {
                 if (statusFilterCheckBox.Checked)
                 {
-                    var tempTrubleTickets = new List<TrubleTicket>();
+                    var tempTrubleTickets = new List<TroubleTicket>();
 
                     foreach( var tt in trubleTickets)
                     {
@@ -148,7 +148,7 @@ namespace HelpDeskWinFormsApp
             }
         }
 
-        private void CsvTrubleTicketExport(List<TrubleTicket> result, List<User> users, string exportFile)
+        private void CsvTrubleTicketExport(List<TroubleTicket> result, List<User> users, string exportFile)
         {
             var rowsCount = result.Count;
 
@@ -305,7 +305,7 @@ namespace HelpDeskWinFormsApp
             workBook.SaveAs(exportFile);
         }
 
-        private void ExcelTrubleTicketExport(List<TrubleTicket> result, List<User> users, string exportFile)
+        private void ExcelTrubleTicketExport(List<TroubleTicket> result, List<User> users, string exportFile)
         {
             var rowsCount = result.Count;
 

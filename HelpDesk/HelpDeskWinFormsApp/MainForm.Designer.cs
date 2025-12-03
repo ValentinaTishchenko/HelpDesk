@@ -62,7 +62,7 @@
             this.openTrubleTicketButton = new System.Windows.Forms.Button();
             this.exitButton = new System.Windows.Forms.Button();
             this.treeView = new System.Windows.Forms.TreeView();
-            this.listTTDataGridView = new System.Windows.Forms.DataGridView();
+            this.troubleTicketsDataGridView = new System.Windows.Forms.DataGridView();
             this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -70,7 +70,7 @@
             this.splitContainer.Panel1.SuspendLayout();
             this.splitContainer.Panel2.SuspendLayout();
             this.splitContainer.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.listTTDataGridView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.troubleTicketsDataGridView)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip
@@ -179,7 +179,7 @@
             // 
             // splitContainer.Panel2
             // 
-            this.splitContainer.Panel2.Controls.Add(this.listTTDataGridView);
+            this.splitContainer.Panel2.Controls.Add(this.troubleTicketsDataGridView);
             this.splitContainer.Panel2.Resize += new System.EventHandler(this.SplitContainer_Panel2_Resize);
             this.splitContainer.Size = new System.Drawing.Size(982, 610);
             this.splitContainer.SplitterDistance = 168;
@@ -203,7 +203,7 @@
             this.addTrubleTicketbutton.TabIndex = 3;
             this.addTrubleTicketbutton.Text = "&Создать заявку";
             this.addTrubleTicketbutton.UseVisualStyleBackColor = true;
-            this.addTrubleTicketbutton.Click += new System.EventHandler(this.AddTrubleTicketbutton_Click);
+            this.addTrubleTicketbutton.Click += new System.EventHandler(this.AddTroubleTicketButton_Click);
             // 
             // openTrubleTicketButton
             // 
@@ -255,24 +255,24 @@
             this.treeView.TabIndex = 0;
             this.treeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.TreeView_AfterSelect);
             // 
-            // listTTDataGridView
+            // troubleTicketsDataGridView
             // 
-            this.listTTDataGridView.AllowUserToAddRows = false;
-            this.listTTDataGridView.AllowUserToDeleteRows = false;
-            this.listTTDataGridView.AllowUserToResizeRows = false;
-            this.listTTDataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
-            this.listTTDataGridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.RaisedHorizontal;
-            this.listTTDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.listTTDataGridView.Location = new System.Drawing.Point(0, 0);
-            this.listTTDataGridView.MultiSelect = false;
-            this.listTTDataGridView.Name = "listTTDataGridView";
-            this.listTTDataGridView.ReadOnly = true;
-            this.listTTDataGridView.RowHeadersVisible = false;
-            this.listTTDataGridView.RowTemplate.Height = 25;
-            this.listTTDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.listTTDataGridView.Size = new System.Drawing.Size(811, 588);
-            this.listTTDataGridView.TabIndex = 0;
-            this.listTTDataGridView.DoubleClick += new System.EventHandler(this.ListTTDataGridView_DoubleClick);
+            this.troubleTicketsDataGridView.AllowUserToAddRows = false;
+            this.troubleTicketsDataGridView.AllowUserToDeleteRows = false;
+            this.troubleTicketsDataGridView.AllowUserToResizeRows = false;
+            this.troubleTicketsDataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
+            this.troubleTicketsDataGridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.RaisedHorizontal;
+            this.troubleTicketsDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.troubleTicketsDataGridView.Location = new System.Drawing.Point(0, 0);
+            this.troubleTicketsDataGridView.MultiSelect = false;
+            this.troubleTicketsDataGridView.Name = "listTTDataGridView";
+            this.troubleTicketsDataGridView.ReadOnly = true;
+            this.troubleTicketsDataGridView.RowHeadersVisible = false;
+            this.troubleTicketsDataGridView.RowTemplate.Height = 25;
+            this.troubleTicketsDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.troubleTicketsDataGridView.Size = new System.Drawing.Size(811, 588);
+            this.troubleTicketsDataGridView.TabIndex = 0;
+            this.troubleTicketsDataGridView.DoubleClick += new System.EventHandler(this.ListTTDataGridView_DoubleClick);
             // 
             // exportToolStripMenuItem
             // 
@@ -303,7 +303,7 @@
             this.splitContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).EndInit();
             this.splitContainer.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.listTTDataGridView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.troubleTicketsDataGridView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -321,7 +321,7 @@
         private System.Windows.Forms.ToolStripMenuItem logoutToolStripMenuItem;
         private System.Windows.Forms.SplitContainer splitContainer;
         private System.Windows.Forms.TreeView treeView;
-        private System.Windows.Forms.DataGridView listTTDataGridView;
+        private System.Windows.Forms.DataGridView troubleTicketsDataGridView;
         private System.Windows.Forms.Button openTrubleTicketButton;
         private System.Windows.Forms.Button exitButton;
         private System.Windows.Forms.Button addTrubleTicketbutton;

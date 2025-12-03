@@ -5,12 +5,12 @@ using System.Windows.Forms;
 
 namespace HelpDeskWinFormsApp
 {
-    public partial class AddTrubleTicketForm : Form
+    public partial class AddTroubleTicketForm : Form
     {
         User user;
         private readonly IProvider provider;
 
-        public AddTrubleTicketForm(User user, IProvider provider)
+        public AddTroubleTicketForm(User user, IProvider provider)
         {
             InitializeComponent();
 
@@ -18,37 +18,37 @@ namespace HelpDeskWinFormsApp
             this.user = user;
         }
 
-        private void AddTrubleTicketForm_Shown(object sender, EventArgs e)
+        private void AddTroubleTicketForm_Shown(object sender, EventArgs e)
         {
             userNameTextBox.Text = $"{user.Name} \\ {user.Login}";
         }
 
-        private void AddTrubleTicketForm_FormClosing(object sender, FormClosingEventArgs e)
+        private void AddTroubleTicketForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (DialogResult == DialogResult.OK)
             {
-                var trubelTicket = new TrubleTicket
+                var troubelTicket = new TroubleTicket
                 {
                     CreateUser = user.Id,
-                    Text = trubleRichTextBox.Text,
+                    Text = troubleRichTextBox.Text,
                     Status = "Зарегистрирована",
                     Created = DateTime.Now,
                     Deadline = DateTime.Now.AddDays(4)
                 };
 
-                provider.AddTrubleTicket(trubelTicket);
+                provider.AddTroubleTicket(troubelTicket);
             }
         }
 
-        private void TrubleRichTextBox_TextChanged(object sender, EventArgs e)
+        private void TroubleRichTextBox_TextChanged(object sender, EventArgs e)
         {
-            if (trubleRichTextBox.Text.Length < 5)
+            if (troubleRichTextBox.Text.Length < 5)
             {
-                createTrubleTicketButton.Enabled = false;
+                createTroubleTicketButton.Enabled = false;
             }
             else
             {
-                createTrubleTicketButton.Enabled = true;
+                createTroubleTicketButton.Enabled = true;
             }
         }
     }

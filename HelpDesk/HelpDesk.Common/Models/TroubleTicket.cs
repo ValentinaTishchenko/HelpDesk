@@ -3,7 +3,7 @@ using System;
 
 namespace HelpDesk.Common.Models
 {
-    public class TrubleTicket
+    public class TroubleTicket
     {
         public int Id { get; set; }
         public string Status { get; set; }
@@ -17,10 +17,10 @@ namespace HelpDesk.Common.Models
         public DateTime Deadline { get; set; }
 
 
-        public TrubleTicket() { }
+        public TroubleTicket() { }
 
         [JsonConstructor]
-        private TrubleTicket(int id, string status, int createUser, string text, string? resolve, bool isSolved, DateTime created, DateTime? resolveTime, int? resolveUser, DateTime deadline)
+        private TroubleTicket(int id, string status, int createUser, string text, string? resolve, bool isSolved, DateTime created, DateTime? resolveTime, int? resolveUser, DateTime deadline)
         {
             Id = id;
             Status = status;

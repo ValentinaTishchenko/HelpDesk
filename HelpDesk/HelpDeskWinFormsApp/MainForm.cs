@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Net.NetworkInformation;
 using System.Windows.Forms;
 using HelpDesk.Common;
 using HelpDesk.Common.Application;
@@ -43,7 +42,7 @@ namespace HelpDeskWinFormsApp
                 treeView.Width = splitContainer.Panel1.Width;
                 treeView.Height = splitContainer.Panel1.Height - 152;
 
-                listTTDataGridView.Size = splitContainer.Panel2.Size;
+                troubleTicketsDataGridView.Size = splitContainer.Panel2.Size;
 
                 userNameToolStripStatusLabel.Text = $"Имя: {user.Name}";
                 loginToolStripStatusLabel.Text = $"Логин: {user.Login}";
@@ -70,8 +69,8 @@ namespace HelpDeskWinFormsApp
 
         private void LogoutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            listTTDataGridView.Rows.Clear();
-            listTTDataGridView.Columns.Clear();
+            troubleTicketsDataGridView.Rows.Clear();
+            troubleTicketsDataGridView.Columns.Clear();
 
             Hide();
 
@@ -106,39 +105,39 @@ namespace HelpDeskWinFormsApp
 
         private void SplitContainer_Panel2_Resize(object sender, EventArgs e)
         {
-            listTTDataGridView.Size = splitContainer.Panel2.Size;
+            troubleTicketsDataGridView.Size = splitContainer.Panel2.Size;
         }
 
         private void OpenTrubleTicketButton_Click(object sender, EventArgs e)
         {
-            if (listTTDataGridView.SelectedRows.Count != 0)
+            if (troubleTicketsDataGridView.SelectedRows.Count != 0)
             {
-                var ticketId = Convert.ToInt32(listTTDataGridView.SelectedCells[0].Value);
+                var ticketId = Convert.ToInt32(troubleTicketsDataGridView.SelectedCells[0].Value);
 
-                var resolvedUser = Convert.ToInt32(provider.GetTrubleTicket(ticketId).ResolveUser != null ? user.Id : -1);
+                var resolvedUser = Convert.ToInt32(provider.GetTroubleTicket(ticketId).ResolveUser != null ? user.Id : -1);
 
                 if (user.IsEmployee && resolvedUser == -1)
                 {
                     resolvedUser = user.Id;
                 }
 
-                var dialogResult = new TrubleTicketForm(ticketId, user.IsEmployee, resolvedUser, provider).ShowDialog();
+                var dialogResult = new TroubleTicketForm(ticketId, user.IsEmployee, resolvedUser, provider).ShowDialog();
 
                 if (dialogResult == DialogResult.OK)
                 {
-                    RefreshTrubleTicketsDataGrid();
+                    RefreshTroubleTicketsDataGrid();
                 }
             }
         }
 
-        private void AddTrubleTicketbutton_Click(object sender, EventArgs e)
+        private void AddTroubleTicketButton_Click(object sender, EventArgs e)
         {
-            var dialogResult = new AddTrubleTicketForm(user, provider);
+            var dialogResult = new AddTroubleTicketForm(user, provider);
 
             if (dialogResult.ShowDialog() == DialogResult.OK)
             {
                 treeView.SelectedNode = treeView.Nodes["trubleTicketlist"].Nodes["openTrubleTicket"];
-                RefreshTrubleTicketsDataGrid();
+                RefreshTroubleTicketsDataGrid();
             }
         }
 
@@ -177,9 +176,9 @@ namespace HelpDeskWinFormsApp
 
         private void EditUserButton_Click(object sender, EventArgs e)
         {
-            if (listTTDataGridView.SelectedRows.Count != 0)
+            if (troubleTicketsDataGridView.SelectedRows.Count != 0)
             {
-                var userId = Convert.ToInt32(listTTDataGridView.SelectedCells[0].Value);
+                var userId = Convert.ToInt32(troubleTicketsDataGridView.SelectedCells[0].Value);
 
                 var dialogResult = new EditUserForm(userId, provider).ShowDialog();
 
@@ -196,7 +195,7 @@ namespace HelpDeskWinFormsApp
             {
                 if (treeView.SelectedNode.Parent.Name == "trubleTicketlist" || treeView.SelectedNode.Parent.Name == "statusTrubleTicketNode")
                 {
-                    RefreshTrubleTicketsDataGrid();
+                    RefreshTroubleTicketsDataGrid();
                     editUserButton.Enabled = false;
                     openTrubleTicketButton.Enabled = true;
                 }
@@ -272,15 +271,15 @@ namespace HelpDeskWinFormsApp
         {
             var isNeedRegistration = false;
             var login = string.Empty;
-            var authorizationFrom = new AuthorizationFrom(provider);
+            var authorizationForm = new AuthorizationForm(provider);
 
-            if (authorizationFrom.ShowDialog() == DialogResult.OK)
+            if (authorizationForm.ShowDialog() == DialogResult.OK)
             {
-                login = authorizationFrom.LoginTextBox.Text;
+                login = authorizationForm.loginTextBox.Text;
             }
             else
             {
-                isNeedRegistration = authorizationFrom.RegistrationChoice;
+                isNeedRegistration = authorizationForm.RegistrationChoice;
 
                 if (!isNeedRegistration)
                 {
@@ -315,25 +314,25 @@ namespace HelpDeskWinFormsApp
         {
             var selectedNode = treeView.SelectedNode.Name;
 
-            listTTDataGridView.Columns.Clear();
+            troubleTicketsDataGridView.Columns.Clear();
 
             switch (selectedNode)
             {
                 case "allUsersNode":
-                    FillUsersDataGreedView(provider.GetAllUsers());
+                    FillUsersDataGridView(provider.GetAllUsers());
                     break;
                 case "clientsNode":
-                    FillUsersDataGreedView(provider.GetAllUsers().Where(u => !u.IsEmployee).ToList());
+                    FillUsersDataGridView(provider.GetAllUsers().Where(u => !u.IsEmployee).ToList());
                     break;
                 case "EmployeeNode":
-                    FillUsersDataGreedView(provider.GetAllUsers().Where(u => u.IsEmployee).ToList());
+                    FillUsersDataGridView(provider.GetAllUsers().Where(u => u.IsEmployee).ToList());
                     break;
                 default:
                     break;
             }
         }
 
-        private void RefreshTrubleTicketsDataGrid()
+        private void RefreshTroubleTicketsDataGrid()
         {
             var selectedNode = treeView.SelectedNode.Name;
 
@@ -342,163 +341,163 @@ namespace HelpDeskWinFormsApp
                 return;
             }
 
-            List<TrubleTicket> trubleTickets = new();
+            List<TroubleTicket> troubleTickets = new();
 
-            listTTDataGridView.Columns.Clear();
+            troubleTicketsDataGridView.Columns.Clear();
 
             if (user.IsEmployee)
             {
-                trubleTickets = provider.GetAllTrubleTickets();
+                troubleTickets = provider.GetAllTroubleTickets();
             }
             else
             {
-                trubleTickets = provider.GetAllTrubleTickets().Where(t => t.CreateUser == user.Id).ToList();
+                troubleTickets = provider.GetAllTroubleTickets().Where(t => t.CreateUser == user.Id).ToList();
             }
 
             switch (selectedNode)
             {
                 case "allTrubleTicket":
-                    FillTrubleTicketsDataGreedView(trubleTickets);
+                    FillTroubleTicketsDataGridView(troubleTickets);
                     break;
                 case "openTrubleTicket":
-                    FillTrubleTicketsDataGreedView(trubleTickets.Where(s => s.IsSolved == false).ToList());
+                    FillTroubleTicketsDataGridView(troubleTickets.Where(s => s.IsSolved == false).ToList());
                     break;
                 case "closedTrubleTicket":
-                    FillTrubleTicketsDataGreedView(trubleTickets.Where(s => s.IsSolved == true).ToList());
+                    FillTroubleTicketsDataGridView(troubleTickets.Where(s => s.IsSolved == true).ToList());
                     break;
                 case "overdueTrubleTicketNode":
-                    FillTrubleTicketsDataGreedView(trubleTickets.Where(s => (DateTime.Now - s.Deadline).TotalSeconds > 0).ToList());
+                    FillTroubleTicketsDataGridView(troubleTickets.Where(s => (DateTime.Now - s.Deadline).TotalSeconds > 0).ToList());
                     break;
                 case "registeredTrubleTicketNode":
-                    FillTrubleTicketsDataGreedView(trubleTickets.Where(s => s.Status == "Зарегистрирована").ToList());
+                    FillTroubleTicketsDataGridView(troubleTickets.Where(s => s.Status == "Зарегистрирована").ToList());
                     break;
                 case "workTrubleTicketNode":
-                    FillTrubleTicketsDataGreedView(trubleTickets.Where(s => s.Status == "В работе").ToList());
+                    FillTroubleTicketsDataGridView(troubleTickets.Where(s => s.Status == "В работе").ToList());
                     break;
                 case "completedTrubleTicketNode":
-                    FillTrubleTicketsDataGreedView(trubleTickets.Where(s => s.Status == "Выполнена").ToList());
+                    FillTroubleTicketsDataGridView(troubleTickets.Where(s => s.Status == "Выполнена").ToList());
                     break;
                 case "rejectedTrubleTicketNode":
-                    FillTrubleTicketsDataGreedView(trubleTickets.Where(s => s.Status == "Отклонена").ToList());
+                    FillTroubleTicketsDataGridView(troubleTickets.Where(s => s.Status == "Отклонена").ToList());
                     break;
                 default:
                     break;
             }
         }
 
-        private void FillUsersDataGreedView(List<User> users)
+        private void FillUsersDataGridView(List<User> users)
         {
-            listTTDataGridView.Columns.Add("id", "ID");
-            listTTDataGridView.Columns.Add("name", "Имя");
-            listTTDataGridView.Columns.Add("login", "Логин");
-            listTTDataGridView.Columns.Add("email", "E-Mail");
-            listTTDataGridView.Columns.Add("discriminator", "Тип");
-            listTTDataGridView.Columns.Add("function", "Функция");
-            listTTDataGridView.Columns.Add("department", "Отдел");
+            troubleTicketsDataGridView.Columns.Add("id", "ID");
+            troubleTicketsDataGridView.Columns.Add("name", "Имя");
+            troubleTicketsDataGridView.Columns.Add("login", "Логин");
+            troubleTicketsDataGridView.Columns.Add("email", "E-Mail");
+            troubleTicketsDataGridView.Columns.Add("discriminator", "Тип");
+            troubleTicketsDataGridView.Columns.Add("function", "Функция");
+            troubleTicketsDataGridView.Columns.Add("department", "Отдел");
 
-            listTTDataGridView.Rows.Clear();
+            troubleTicketsDataGridView.Rows.Clear();
 
             var countRows = users.Count;
 
             for (int i = 0; i < countRows; i++)
             {
-                listTTDataGridView.Rows.Add();
-                listTTDataGridView.Rows[i].Cells[0].Value = users[i].Id;
-                listTTDataGridView.Rows[i].Cells[1].Value = users[i].Name;
-                listTTDataGridView.Rows[i].Cells[2].Value = users[i].Login;
-                listTTDataGridView.Rows[i].Cells[3].Value = users[i].Email;
+                troubleTicketsDataGridView.Rows.Add();
+                troubleTicketsDataGridView.Rows[i].Cells[0].Value = users[i].Id;
+                troubleTicketsDataGridView.Rows[i].Cells[1].Value = users[i].Name;
+                troubleTicketsDataGridView.Rows[i].Cells[2].Value = users[i].Login;
+                troubleTicketsDataGridView.Rows[i].Cells[3].Value = users[i].Email;
 
                 var userType = users[i].IsEmployee;
 
-                listTTDataGridView.Rows[i].Cells[4].Value = userType ? "Сотрудник" : "Клиент";
+                troubleTicketsDataGridView.Rows[i].Cells[4].Value = userType ? "Сотрудник" : "Клиент";
 
                 if (userType)
                 {
-                    listTTDataGridView.Rows[i].Cells[5].Value = user.Function;
-                    listTTDataGridView.Rows[i].Cells[6].Value = user.Department;
+                    troubleTicketsDataGridView.Rows[i].Cells[5].Value = user.Function;
+                    troubleTicketsDataGridView.Rows[i].Cells[6].Value = user.Department;
                 }
                 else
                 {
-                    listTTDataGridView.Rows[i].Cells[5].Style.BackColor = Color.Gray;
-                    listTTDataGridView.Rows[i].Cells[6].Style.BackColor = Color.Gray;
+                    troubleTicketsDataGridView.Rows[i].Cells[5].Style.BackColor = Color.Gray;
+                    troubleTicketsDataGridView.Rows[i].Cells[6].Style.BackColor = Color.Gray;
                 }
             }
 
-            listTTDataGridView.ClearSelection();
+            troubleTicketsDataGridView.ClearSelection();
         }
 
-        private void FillTrubleTicketsDataGreedView(List<TrubleTicket> allTrubleTickets)
+        private void FillTroubleTicketsDataGridView(List<TroubleTicket> allTroubleTickets)
         {
-            AddColumnsTrubleTicketsDataGreedView();
+            AddColumnsTroubleTicketsDataGridView();
 
-            listTTDataGridView.Rows.Clear();
+            troubleTicketsDataGridView.Rows.Clear();
 
-            var countRow = allTrubleTickets.Count;
+            var countRow = allTroubleTickets.Count;
             var allUsers = provider.GetAllUsers();
 
             for (int i = 0; i < countRow; i++)
             {
-                var user = allUsers.Where(u => u.Id == allTrubleTickets[i].CreateUser).FirstOrDefault();
-                var resolveUser = allUsers.Where(u => u.Id == allTrubleTickets[i].ResolveUser).FirstOrDefault();
+                var user = allUsers.Where(u => u.Id == allTroubleTickets[i].CreateUser).FirstOrDefault();
+                var resolveUser = allUsers.Where(u => u.Id == allTroubleTickets[i].ResolveUser).FirstOrDefault();
 
-                listTTDataGridView.Rows.Add();
+                troubleTicketsDataGridView.Rows.Add();
 
-                listTTDataGridView.Rows[i].Cells[0].Value = allTrubleTickets[i].Id;
+                troubleTicketsDataGridView.Rows[i].Cells[0].Value = allTroubleTickets[i].Id;
 
-                if (allTrubleTickets[i].IsSolved)
+                if (allTroubleTickets[i].IsSolved)
                 {
-                    listTTDataGridView.Rows[i].Cells[1].Value = "Да";
-                    listTTDataGridView.Rows[i].DefaultCellStyle.BackColor = allTrubleTickets[i].Status == "Выполнена" ? Color.LightGreen : Color.LightGray;
+                    troubleTicketsDataGridView.Rows[i].Cells[1].Value = "Да";
+                    troubleTicketsDataGridView.Rows[i].DefaultCellStyle.BackColor = allTroubleTickets[i].Status == "Выполнена" ? Color.LightGreen : Color.LightGray;
                 }
                 else
                 {
-                    listTTDataGridView.Rows[i].Cells[1].Value = "Нет";
+                    troubleTicketsDataGridView.Rows[i].Cells[1].Value = "Нет";
 
-                    if ((DateTime.Now - allTrubleTickets[i].Deadline).TotalSeconds > 0)
+                    if ((DateTime.Now - allTroubleTickets[i].Deadline).TotalSeconds > 0)
                     {
-                        listTTDataGridView.Rows[i].DefaultCellStyle.BackColor = Color.LightSalmon;
+                        troubleTicketsDataGridView.Rows[i].DefaultCellStyle.BackColor = Color.LightSalmon;
                     }
 
-                    if (allTrubleTickets[i].Status == "В работе")
+                    if (allTroubleTickets[i].Status == "В работе")
                     {
-                        listTTDataGridView.Rows[i].DefaultCellStyle.BackColor = Color.LightYellow;
+                        troubleTicketsDataGridView.Rows[i].DefaultCellStyle.BackColor = Color.LightYellow;
                     }
                 }
 
-                listTTDataGridView.Rows[i].Cells[2].Value = allTrubleTickets[i].Status;
+                troubleTicketsDataGridView.Rows[i].Cells[2].Value = allTroubleTickets[i].Status;
 
-                if (allTrubleTickets[i].Text.Length > 50)
+                if (allTroubleTickets[i].Text.Length > 50)
                 {
-                    listTTDataGridView.Rows[i].Cells[3].Value = $"{allTrubleTickets[i].Text.Substring(0, 47)}...";
+                    troubleTicketsDataGridView.Rows[i].Cells[3].Value = $"{allTroubleTickets[i].Text.Substring(0, 47)}...";
                 }
                 else
                 {
-                    listTTDataGridView.Rows[i].Cells[3].Value = allTrubleTickets[i].Text;
+                    troubleTicketsDataGridView.Rows[i].Cells[3].Value = allTroubleTickets[i].Text;
                 }
 
-                listTTDataGridView.Rows[i].Cells[4].Value = allTrubleTickets[i].Resolve;
-                listTTDataGridView.Rows[i].Cells[5].Value = resolveUser != null ? resolveUser.Name : string.Empty;
-                listTTDataGridView.Rows[i].Cells[6].Value = allTrubleTickets[i].Created;
-                listTTDataGridView.Rows[i].Cells[7].Value = allTrubleTickets[i].ResolveTime;
-                listTTDataGridView.Rows[i].Cells[8].Value = allTrubleTickets[i].Deadline;
-                listTTDataGridView.Rows[i].Cells[9].Value = $"{user.Name} \\ {user.Email}";
+                troubleTicketsDataGridView.Rows[i].Cells[4].Value = allTroubleTickets[i].Resolve;
+                troubleTicketsDataGridView.Rows[i].Cells[5].Value = resolveUser != null ? resolveUser.Name : string.Empty;
+                troubleTicketsDataGridView.Rows[i].Cells[6].Value = allTroubleTickets[i].Created;
+                troubleTicketsDataGridView.Rows[i].Cells[7].Value = allTroubleTickets[i].ResolveTime;
+                troubleTicketsDataGridView.Rows[i].Cells[8].Value = allTroubleTickets[i].Deadline;
+                troubleTicketsDataGridView.Rows[i].Cells[9].Value = $"{user.Name} \\ {user.Email}";
             }
 
-            listTTDataGridView.ClearSelection();
+            troubleTicketsDataGridView.ClearSelection();
         }
 
-        private void AddColumnsTrubleTicketsDataGreedView()
+        private void AddColumnsTroubleTicketsDataGridView()
         {
-            listTTDataGridView.Columns.Add("id", "ID");
-            listTTDataGridView.Columns.Add("isSolved", "Решён");
-            listTTDataGridView.Columns.Add("status", "Статус");
-            listTTDataGridView.Columns.Add("text", "Текст");
-            listTTDataGridView.Columns.Add("resolve", "Решение");
-            listTTDataGridView.Columns.Add("resolveUser", "Решил");
-            listTTDataGridView.Columns.Add("created", "Создано");
-            listTTDataGridView.Columns.Add("resolveDate", "Дата решения");
-            listTTDataGridView.Columns.Add("deadline", "Крайний срок");
-            listTTDataGridView.Columns.Add("userCreate", "Кем создано");
+            troubleTicketsDataGridView.Columns.Add("id", "ID");
+            troubleTicketsDataGridView.Columns.Add("isSolved", "Решён");
+            troubleTicketsDataGridView.Columns.Add("status", "Статус");
+            troubleTicketsDataGridView.Columns.Add("text", "Текст");
+            troubleTicketsDataGridView.Columns.Add("resolve", "Решение");
+            troubleTicketsDataGridView.Columns.Add("resolveUser", "Решил");
+            troubleTicketsDataGridView.Columns.Add("created", "Создано");
+            troubleTicketsDataGridView.Columns.Add("resolveDate", "Дата решения");
+            troubleTicketsDataGridView.Columns.Add("deadline", "Крайний срок");
+            troubleTicketsDataGridView.Columns.Add("userCreate", "Кем создано");
         }
     }
 }

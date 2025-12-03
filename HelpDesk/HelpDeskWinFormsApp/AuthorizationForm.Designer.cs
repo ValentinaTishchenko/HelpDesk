@@ -2,7 +2,7 @@
 
 namespace HelpDeskWinFormsApp
 {
-    partial class AuthorizationFrom
+    partial class AuthorizationForm
     {
         /// <summary>
         /// Required designer variable.
@@ -30,55 +30,55 @@ namespace HelpDeskWinFormsApp
         /// </summary>
         private void InitializeComponent()
         {
-            LoginTextBox = new TextBox();
-            PasswordTextBox = new TextBox();
-            label1 = new Label();
-            label2 = new Label();
+            loginTextBox = new TextBox();
+            passwordTextBox = new TextBox();
+            loginLabel = new Label();
+            passwordLabel = new Label();
             loginButton = new Button();
             cancelButton = new Button();
             registrationButton = new Button();
-            menuStrip1 = new MenuStrip();
-            файлToolStripMenuItem = new ToolStripMenuItem();
+            mainMenuStrip = new MenuStrip();
+            fileToolStripMenuItem = new ToolStripMenuItem();
             exitToolStripMenuItem = new ToolStripMenuItem();
-            menuStrip1.SuspendLayout();
+            mainMenuStrip.SuspendLayout();
             SuspendLayout();
             // 
-            // LoginTextBox
+            // loginTextBox
             // 
-            LoginTextBox.Enabled = false;
-            LoginTextBox.Location = new System.Drawing.Point(12, 75);
-            LoginTextBox.Name = "LoginTextBox";
-            LoginTextBox.Size = new System.Drawing.Size(279, 23);
-            LoginTextBox.TabIndex = 0;
+            loginTextBox.Enabled = false;
+            loginTextBox.Location = new System.Drawing.Point(12, 75);
+            loginTextBox.Name = "LoginTextBox";
+            loginTextBox.Size = new System.Drawing.Size(279, 23);
+            loginTextBox.TabIndex = 0;
             // 
-            // PasswordTextBox
+            // passwordTextBox
             // 
-            PasswordTextBox.Enabled = false;
-            PasswordTextBox.Location = new System.Drawing.Point(12, 139);
-            PasswordTextBox.Name = "PasswordTextBox";
-            PasswordTextBox.Size = new System.Drawing.Size(279, 23);
-            PasswordTextBox.TabIndex = 1;
-            PasswordTextBox.UseSystemPasswordChar = true;
+            passwordTextBox.Enabled = false;
+            passwordTextBox.Location = new System.Drawing.Point(12, 139);
+            passwordTextBox.Name = "PasswordTextBox";
+            passwordTextBox.Size = new System.Drawing.Size(279, 23);
+            passwordTextBox.TabIndex = 1;
+            passwordTextBox.UseSystemPasswordChar = true;
             // 
-            // label1
+            // loginLabel
             // 
-            label1.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            label1.Location = new System.Drawing.Point(12, 42);
-            label1.Name = "label1";
-            label1.Size = new System.Drawing.Size(279, 30);
-            label1.TabIndex = 2;
-            label1.Text = "&Логин";
-            label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            loginLabel.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            loginLabel.Location = new System.Drawing.Point(12, 42);
+            loginLabel.Name = "loginLabel";
+            loginLabel.Size = new System.Drawing.Size(279, 30);
+            loginLabel.TabIndex = 2;
+            loginLabel.Text = "&Логин";
+            loginLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label2
+            // passwordLabel
             // 
-            label2.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            label2.Location = new System.Drawing.Point(12, 101);
-            label2.Name = "label2";
-            label2.Size = new System.Drawing.Size(279, 35);
-            label2.TabIndex = 3;
-            label2.Text = "&Пароль";
-            label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            passwordLabel.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            passwordLabel.Location = new System.Drawing.Point(12, 101);
+            passwordLabel.Name = "passwordLabel";
+            passwordLabel.Size = new System.Drawing.Size(279, 35);
+            passwordLabel.TabIndex = 3;
+            passwordLabel.Text = "&Пароль";
+            passwordLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // loginButton
             // 
@@ -112,21 +112,21 @@ namespace HelpDeskWinFormsApp
             registrationButton.UseVisualStyleBackColor = true;
             registrationButton.Click += RegistrationButton_Click;
             // 
-            // menuStrip1
+            // mainMenuStrip
             // 
-            menuStrip1.Items.AddRange(new ToolStripItem[] { файлToolStripMenuItem });
-            menuStrip1.Location = new System.Drawing.Point(0, 0);
-            menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new System.Drawing.Size(303, 24);
-            menuStrip1.TabIndex = 9;
-            menuStrip1.Text = "menuStrip1";
+            mainMenuStrip.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem });
+            mainMenuStrip.Location = new System.Drawing.Point(0, 0);
+            mainMenuStrip.Name = "mainMenuStrip";
+            mainMenuStrip.Size = new System.Drawing.Size(303, 24);
+            mainMenuStrip.TabIndex = 9;
+            mainMenuStrip.Text = "mainMenuStrip";
             // 
-            // файлToolStripMenuItem
+            // fileToolStripMenuItem
             // 
-            файлToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { exitToolStripMenuItem });
-            файлToolStripMenuItem.Name = "файлToolStripMenuItem";
-            файлToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
-            файлToolStripMenuItem.Text = "&Файл";
+            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { exitToolStripMenuItem });
+            fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            fileToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
+            fileToolStripMenuItem.Text = "&Файл";
             // 
             // exitToolStripMenuItem
             // 
@@ -135,7 +135,7 @@ namespace HelpDeskWinFormsApp
             exitToolStripMenuItem.Text = "&Выход";
             exitToolStripMenuItem.Click += ExitToolStripMenuItem_Click;
             // 
-            // AuthorizationFrom
+            // AuthorizationForm
             // 
             AcceptButton = loginButton;
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -146,36 +146,36 @@ namespace HelpDeskWinFormsApp
             Controls.Add(registrationButton);
             Controls.Add(cancelButton);
             Controls.Add(loginButton);
-            Controls.Add(label2);
-            Controls.Add(label1);
-            Controls.Add(PasswordTextBox);
-            Controls.Add(LoginTextBox);
-            Controls.Add(menuStrip1);
+            Controls.Add(passwordLabel);
+            Controls.Add(loginLabel);
+            Controls.Add(passwordTextBox);
+            Controls.Add(loginTextBox);
+            Controls.Add(mainMenuStrip);
             FormBorderStyle = FormBorderStyle.FixedDialog;
-            MainMenuStrip = menuStrip1;
-            Name = "AuthorizationFrom";
+            MainMenuStrip = mainMenuStrip;
+            Name = "AuthorizationForm";
             ShowIcon = false;
             StartPosition = FormStartPosition.CenterScreen;
             Text = "HelpDesk Авторизация";
-            FormClosing += AuthorizationFrom_FormClosing;
-            Shown += AuthorizationFrom_Shown;
-            menuStrip1.ResumeLayout(false);
-            menuStrip1.PerformLayout();
+            FormClosing += AuthorizationForm_FormClosing;
+            Shown += AuthorizationForm_Shown;
+            mainMenuStrip.ResumeLayout(false);
+            mainMenuStrip.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
-        private Label label1;
-        private Label label2;
+        private Label loginLabel;
+        private Label passwordLabel;
         private Button loginButton;
         private Button cancelButton;
-        public TextBox LoginTextBox;
-        public TextBox PasswordTextBox;
+        public TextBox loginTextBox;
+        public TextBox passwordTextBox;
         private Button registrationButton;
         private ContextMenuStrip contextMenuStrip;
-        private MenuStrip menuStrip1;
-        private ToolStripMenuItem файлToolStripMenuItem;
+        private MenuStrip mainMenuStrip;
+        private ToolStripMenuItem fileToolStripMenuItem;
         private ToolStripMenuItem exitToolStripMenuItem;
     }
 }

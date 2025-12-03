@@ -5,31 +5,31 @@ using System.Windows.Forms;
 
 namespace HelpDeskWinFormsApp
 {
-    public partial class AuthorizationFrom : Form
+    public partial class AuthorizationForm : Form
     {
         public bool RegistrationChoice = false;
         private readonly IProvider provider;
 
-        public AuthorizationFrom(IProvider provider)
+        public AuthorizationForm(IProvider provider)
         {
             InitializeComponent();
             this.provider = provider;
         }
 
-        private void AuthorizationFrom_Shown(object sender, EventArgs e)
+        private void AuthorizationForm_Shown(object sender, EventArgs e)
         {
             AddFirstEmployee();
             UnlockTextBox();
         }
 
-        private void AuthorizationFrom_FormClosing(object sender, FormClosingEventArgs e)
+        private void AuthorizationForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (DialogResult == DialogResult.Cancel)
             {
                 return;
             }
 
-            if (!provider.IsCorrectLoginPassword(LoginTextBox.Text, PasswordTextBox.Text))
+            if (!provider.IsCorrectLoginPassword(loginTextBox.Text, passwordTextBox.Text))
             {
                 e.Cancel = true;
                 MessageBox.Show("Неверный логин или пароль", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -44,8 +44,8 @@ namespace HelpDeskWinFormsApp
 
         private void UnlockTextBox()
         {
-            LoginTextBox.Enabled = true;
-            PasswordTextBox.Enabled = true;
+            loginTextBox.Enabled = true;
+            passwordTextBox.Enabled = true;
             loginButton.Enabled = true;
             registrationButton.Enabled = true;
         }
