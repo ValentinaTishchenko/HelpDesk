@@ -93,6 +93,7 @@ namespace HelpDeskWinFormsApp
             loginButton.TabIndex = 4;
             loginButton.Text = "&Вход";
             loginButton.UseVisualStyleBackColor = true;
+            loginButton.Click += LoginButton_Click;
             // 
             // cancelButton
             // 

@@ -16,25 +16,13 @@ namespace HelpDeskWinFormsApp
             this.provider = provider;
         }
 
+       
         private void AuthorizationForm_Shown(object sender, EventArgs e)
         {
             AddFirstEmployee();
             UnlockTextBox();
         }
 
-        private void AuthorizationForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (DialogResult == DialogResult.Cancel)
-            {
-                return;
-            }
-
-            if (!provider.IsCorrectLoginPassword(loginTextBox.Text, passwordTextBox.Text))
-            {
-                e.Cancel = true;
-                MessageBox.Show("Неверный логин или пароль", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
 
         private void RegistrationButton_Click(object sender, EventArgs e)
         {
@@ -71,9 +59,28 @@ namespace HelpDeskWinFormsApp
             }
         }
 
+        private void AuthorizationForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (DialogResult == DialogResult.Cancel)
+            {
+                return;
+            }
+
+            if (!provider.IsCorrectLoginPassword(loginTextBox.Text, passwordTextBox.Text))
+            {
+                e.Cancel = true;
+                MessageBox.Show("Неверный логин или пароль", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
         private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Environment.Exit(0);
+        }
+        
+        private void LoginButton_Click(object sender, EventArgs e)
+        {
+            
         }
     }
 }

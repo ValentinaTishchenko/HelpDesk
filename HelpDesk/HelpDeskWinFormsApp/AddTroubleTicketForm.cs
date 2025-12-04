@@ -31,7 +31,7 @@ namespace HelpDeskWinFormsApp
                 {
                     CreateUser = user.Id,
                     Text = troubleRichTextBox.Text,
-                    Status = "Зарегистрирована",
+                    Status = AppConstants.StatusRegistered,
                     Created = DateTime.Now,
                     Deadline = DateTime.Now.AddDays(4)
                 };

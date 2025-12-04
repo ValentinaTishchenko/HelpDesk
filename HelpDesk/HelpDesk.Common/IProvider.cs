@@ -10,11 +10,11 @@ namespace HelpDesk.Common
         User GetUser(int id);
         void AddUser(User user);
         List<User> GetAllUsers();
-        void AddTroubleTicket(TroubleTicket trubleTicket);
+        void AddTroubleTicket(TroubleTicket troubleTicket);
         List<TroubleTicket> GetAllTroubleTickets();
         TroubleTicket GetTroubleTicket(int id);
         void ResolveTroubleTicket(int id, string status, string resolve, int resolveUserId);
-        void ChangeStatusTroubleTicket(int id, string staatus, int resolveUserId);
+        void ChangeStatusTroubleTicket(int id, string status, int resolveUserId);
         void ChangeUserToEmployee(User user, string function, string department);
         void ChangeEmployeeToUser(User user);
         void UpdateUser(User user);

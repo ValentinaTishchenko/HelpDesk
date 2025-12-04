@@ -1,7 +1,8 @@
-﻿using HelpDesk.Common;
-using HelpDesk.Common.Models;
-using System.Linq;
+﻿
 using System.Windows.Forms;
+using HelpDesk.Common;
+using HelpDesk.Common.Models;
+using HelpDesk.Common.System;
 
 namespace HelpDeskWinFormsApp
 {
@@ -15,6 +16,9 @@ namespace HelpDeskWinFormsApp
 
             this.provider = provider;
         }
+
+
+      
 
         private void RegistrationForm_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -32,6 +36,18 @@ namespace HelpDeskWinFormsApp
             };
 
             provider.AddUser(user);
+        }
+
+        private void RegistrationButton_Click(object sender, System.EventArgs e)
+        {
+           
+            
+                DialogResult = DialogResult.None;
+                return;
+            
+
+            DialogResult = DialogResult.OK;
+            Close();
         }
     }
 }

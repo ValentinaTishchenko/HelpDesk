@@ -20,9 +20,16 @@
         public const string StatusRegistered = "Зарегистрирована";
         public const string StatusInProgress = "В работе";
         public const string StatusCompleted = "Выполнена";
-        public const string StatusRejected = "Отклонена";
+        public const string StatusRejected = "Отклонена";       
 
+        public const string UserTypeEmployee = "Сотрудник";
+        public const string UserTypeClient = "Клиент";
         public const string DepartmentTechnicalSupport = "Техническая поддержка";
+        public const string DepartmentDevelopment = "Разработка";
+        public const string FunctionOperator = "Оператор";
+        public const string FunctionTechnicalSpecialist = "Технический специалист";
+        public const string FunctionTester = "Тестировщик";
+        public const string FunctionDeveloper = "Разработчик";
 
         public const int TreeViewBottomMargin = 152;
         public const int EditButtonOffset = 117;

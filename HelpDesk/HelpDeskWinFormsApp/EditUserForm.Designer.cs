@@ -28,235 +28,241 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.nameLabel = new System.Windows.Forms.Label();
-            this.nameTextBox = new System.Windows.Forms.TextBox();
-            this.loginLabel = new System.Windows.Forms.Label();
-            this.loginTextBox = new System.Windows.Forms.TextBox();
-            this.changePasswordLabel = new System.Windows.Forms.Label();
-            this.changePasswordTextBox = new System.Windows.Forms.TextBox();
-            this.confurmChangePasswordLabel = new System.Windows.Forms.Label();
-            this.confurmChangePasswordTextBox = new System.Windows.Forms.TextBox();
-            this.emailLabel = new System.Windows.Forms.Label();
-            this.emailTextBox = new System.Windows.Forms.TextBox();
-            this.userTypeLabel = new System.Windows.Forms.Label();
-            this.userTypeComboBox = new System.Windows.Forms.ComboBox();
-            this.functionLabel = new System.Windows.Forms.Label();
-            this.deparmentLabel = new System.Windows.Forms.Label();
-            this.saveButton = new System.Windows.Forms.Button();
-            this.cancelButton = new System.Windows.Forms.Button();
-            this.functionComboBox = new System.Windows.Forms.ComboBox();
-            this.deparmentComboBox = new System.Windows.Forms.ComboBox();
-            this.SuspendLayout();
+            nameLabel = new System.Windows.Forms.Label();
+            nameTextBox = new System.Windows.Forms.TextBox();
+            loginLabel = new System.Windows.Forms.Label();
+            loginTextBox = new System.Windows.Forms.TextBox();
+            changePasswordLabel = new System.Windows.Forms.Label();
+            changePasswordTextBox = new System.Windows.Forms.TextBox();
+            confurmChangePasswordLabel = new System.Windows.Forms.Label();
+            confurmChangePasswordTextBox = new System.Windows.Forms.TextBox();
+            emailLabel = new System.Windows.Forms.Label();
+            emailTextBox = new System.Windows.Forms.TextBox();
+            userTypeLabel = new System.Windows.Forms.Label();
+            userTypeComboBox = new System.Windows.Forms.ComboBox();
+            functionLabel = new System.Windows.Forms.Label();
+            deparmentLabel = new System.Windows.Forms.Label();
+            saveButton = new System.Windows.Forms.Button();
+            cancelButton = new System.Windows.Forms.Button();
+            functionComboBox = new System.Windows.Forms.ComboBox();
+            deparmentComboBox = new System.Windows.Forms.ComboBox();
+            SuspendLayout();
             // 
             // nameLabel
             // 
-            this.nameLabel.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.nameLabel.Location = new System.Drawing.Point(12, 9);
-            this.nameLabel.Name = "nameLabel";
-            this.nameLabel.Size = new System.Drawing.Size(279, 30);
-            this.nameLabel.TabIndex = 0;
-            this.nameLabel.Text = "Имя";
-            this.nameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            nameLabel.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            nameLabel.Location = new System.Drawing.Point(14, 12);
+            nameLabel.Name = "nameLabel";
+            nameLabel.Size = new System.Drawing.Size(319, 40);
+            nameLabel.TabIndex = 0;
+            nameLabel.Text = "Имя";
+            nameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // nameTextBox
             // 
-            this.nameTextBox.Location = new System.Drawing.Point(12, 42);
-            this.nameTextBox.Name = "nameTextBox";
-            this.nameTextBox.Size = new System.Drawing.Size(279, 23);
-            this.nameTextBox.TabIndex = 1;
+            nameTextBox.Location = new System.Drawing.Point(14, 56);
+            nameTextBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            nameTextBox.Name = "nameTextBox";
+            nameTextBox.Size = new System.Drawing.Size(318, 27);
+            nameTextBox.TabIndex = 1;
             // 
             // loginLabel
             // 
-            this.loginLabel.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.loginLabel.Location = new System.Drawing.Point(12, 68);
-            this.loginLabel.Name = "loginLabel";
-            this.loginLabel.Size = new System.Drawing.Size(279, 30);
-            this.loginLabel.TabIndex = 2;
-            this.loginLabel.Text = "Логин";
-            this.loginLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            loginLabel.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            loginLabel.Location = new System.Drawing.Point(14, 91);
+            loginLabel.Name = "loginLabel";
+            loginLabel.Size = new System.Drawing.Size(319, 40);
+            loginLabel.TabIndex = 2;
+            loginLabel.Text = "Логин";
+            loginLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // loginTextBox
             // 
-            this.loginTextBox.Location = new System.Drawing.Point(12, 101);
-            this.loginTextBox.Name = "loginTextBox";
-            this.loginTextBox.Size = new System.Drawing.Size(279, 23);
-            this.loginTextBox.TabIndex = 3;
+            loginTextBox.Location = new System.Drawing.Point(14, 135);
+            loginTextBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            loginTextBox.Name = "loginTextBox";
+            loginTextBox.Size = new System.Drawing.Size(318, 27);
+            loginTextBox.TabIndex = 3;
             // 
             // changePasswordLabel
             // 
-            this.changePasswordLabel.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.changePasswordLabel.Location = new System.Drawing.Point(12, 127);
-            this.changePasswordLabel.Name = "changePasswordLabel";
-            this.changePasswordLabel.Size = new System.Drawing.Size(279, 30);
-            this.changePasswordLabel.TabIndex = 4;
-            this.changePasswordLabel.Text = "Изменение пароля";
-            this.changePasswordLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            changePasswordLabel.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            changePasswordLabel.Location = new System.Drawing.Point(14, 169);
+            changePasswordLabel.Name = "changePasswordLabel";
+            changePasswordLabel.Size = new System.Drawing.Size(319, 40);
+            changePasswordLabel.TabIndex = 4;
+            changePasswordLabel.Text = "Изменение пароля";
+            changePasswordLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // changePasswordTextBox
             // 
-            this.changePasswordTextBox.Location = new System.Drawing.Point(12, 160);
-            this.changePasswordTextBox.Name = "changePasswordTextBox";
-            this.changePasswordTextBox.Size = new System.Drawing.Size(279, 23);
-            this.changePasswordTextBox.TabIndex = 5;
-            this.changePasswordTextBox.UseSystemPasswordChar = true;
+            changePasswordTextBox.Location = new System.Drawing.Point(14, 213);
+            changePasswordTextBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            changePasswordTextBox.Name = "changePasswordTextBox";
+            changePasswordTextBox.Size = new System.Drawing.Size(318, 27);
+            changePasswordTextBox.TabIndex = 5;
+            changePasswordTextBox.UseSystemPasswordChar = true;
             // 
             // confurmChangePasswordLabel
             // 
-            this.confurmChangePasswordLabel.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.confurmChangePasswordLabel.Location = new System.Drawing.Point(12, 186);
-            this.confurmChangePasswordLabel.Name = "confurmChangePasswordLabel";
-            this.confurmChangePasswordLabel.Size = new System.Drawing.Size(279, 30);
-            this.confurmChangePasswordLabel.TabIndex = 6;
-            this.confurmChangePasswordLabel.Text = "Повтор пароля";
-            this.confurmChangePasswordLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            confurmChangePasswordLabel.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            confurmChangePasswordLabel.Location = new System.Drawing.Point(14, 248);
+            confurmChangePasswordLabel.Name = "confurmChangePasswordLabel";
+            confurmChangePasswordLabel.Size = new System.Drawing.Size(319, 40);
+            confurmChangePasswordLabel.TabIndex = 6;
+            confurmChangePasswordLabel.Text = "Повтор пароля";
+            confurmChangePasswordLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // confurmChangePasswordTextBox
             // 
-            this.confurmChangePasswordTextBox.Location = new System.Drawing.Point(12, 219);
-            this.confurmChangePasswordTextBox.Name = "confurmChangePasswordTextBox";
-            this.confurmChangePasswordTextBox.Size = new System.Drawing.Size(279, 23);
-            this.confurmChangePasswordTextBox.TabIndex = 7;
-            this.confurmChangePasswordTextBox.UseSystemPasswordChar = true;
+            confurmChangePasswordTextBox.Location = new System.Drawing.Point(14, 292);
+            confurmChangePasswordTextBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            confurmChangePasswordTextBox.Name = "confurmChangePasswordTextBox";
+            confurmChangePasswordTextBox.Size = new System.Drawing.Size(318, 27);
+            confurmChangePasswordTextBox.TabIndex = 7;
+            confurmChangePasswordTextBox.UseSystemPasswordChar = true;
             // 
             // emailLabel
             // 
-            this.emailLabel.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.emailLabel.Location = new System.Drawing.Point(12, 245);
-            this.emailLabel.Name = "emailLabel";
-            this.emailLabel.Size = new System.Drawing.Size(279, 30);
-            this.emailLabel.TabIndex = 8;
-            this.emailLabel.Text = "E-Mail";
-            this.emailLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            emailLabel.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            emailLabel.Location = new System.Drawing.Point(14, 327);
+            emailLabel.Name = "emailLabel";
+            emailLabel.Size = new System.Drawing.Size(319, 40);
+            emailLabel.TabIndex = 8;
+            emailLabel.Text = "E-Mail";
+            emailLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // emailTextBox
             // 
-            this.emailTextBox.Location = new System.Drawing.Point(12, 278);
-            this.emailTextBox.Name = "emailTextBox";
-            this.emailTextBox.Size = new System.Drawing.Size(279, 23);
-            this.emailTextBox.TabIndex = 9;
+            emailTextBox.Location = new System.Drawing.Point(14, 371);
+            emailTextBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            emailTextBox.Name = "emailTextBox";
+            emailTextBox.Size = new System.Drawing.Size(318, 27);
+            emailTextBox.TabIndex = 9;
             // 
             // userTypeLabel
             // 
-            this.userTypeLabel.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.userTypeLabel.Location = new System.Drawing.Point(12, 304);
-            this.userTypeLabel.Name = "userTypeLabel";
-            this.userTypeLabel.Size = new System.Drawing.Size(279, 30);
-            this.userTypeLabel.TabIndex = 10;
-            this.userTypeLabel.Text = "Тип пользователя";
-            this.userTypeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            userTypeLabel.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            userTypeLabel.Location = new System.Drawing.Point(14, 405);
+            userTypeLabel.Name = "userTypeLabel";
+            userTypeLabel.Size = new System.Drawing.Size(319, 40);
+            userTypeLabel.TabIndex = 10;
+            userTypeLabel.Text = "Тип пользователя";
+            userTypeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // userTypeComboBox
             // 
-            this.userTypeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.userTypeComboBox.FormattingEnabled = true;
-            this.userTypeComboBox.Items.AddRange(new object[] {
-            "Клиент",
-            "Сотрудник"});
-            this.userTypeComboBox.Location = new System.Drawing.Point(12, 337);
-            this.userTypeComboBox.Name = "userTypeComboBox";
-            this.userTypeComboBox.Size = new System.Drawing.Size(279, 23);
-            this.userTypeComboBox.TabIndex = 11;
-            this.userTypeComboBox.SelectedValueChanged += new System.EventHandler(this.UserTypeComboBox_SelectedValueChanged);
+            userTypeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            userTypeComboBox.FormattingEnabled = true;
+            userTypeComboBox.Items.AddRange(new object[] { "Клиент", "Сотрудник" });
+            userTypeComboBox.Location = new System.Drawing.Point(14, 449);
+            userTypeComboBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            userTypeComboBox.Name = "userTypeComboBox";
+            userTypeComboBox.Size = new System.Drawing.Size(318, 28);
+            userTypeComboBox.TabIndex = 11;
+            userTypeComboBox.SelectedValueChanged += UserTypeComboBox_SelectedValueChanged;
             // 
             // functionLabel
             // 
-            this.functionLabel.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.functionLabel.Location = new System.Drawing.Point(12, 422);
-            this.functionLabel.Name = "functionLabel";
-            this.functionLabel.Size = new System.Drawing.Size(279, 30);
-            this.functionLabel.TabIndex = 14;
-            this.functionLabel.Text = "Функция";
-            this.functionLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            functionLabel.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            functionLabel.Location = new System.Drawing.Point(14, 563);
+            functionLabel.Name = "functionLabel";
+            functionLabel.Size = new System.Drawing.Size(319, 40);
+            functionLabel.TabIndex = 14;
+            functionLabel.Text = "Функция";
+            functionLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // deparmentLabel
             // 
-            this.deparmentLabel.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.deparmentLabel.Location = new System.Drawing.Point(12, 363);
-            this.deparmentLabel.Name = "deparmentLabel";
-            this.deparmentLabel.Size = new System.Drawing.Size(279, 30);
-            this.deparmentLabel.TabIndex = 12;
-            this.deparmentLabel.Text = "Отдел";
-            this.deparmentLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            deparmentLabel.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            deparmentLabel.Location = new System.Drawing.Point(14, 484);
+            deparmentLabel.Name = "deparmentLabel";
+            deparmentLabel.Size = new System.Drawing.Size(319, 40);
+            deparmentLabel.TabIndex = 12;
+            deparmentLabel.Text = "Отдел";
+            deparmentLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // saveButton
             // 
-            this.saveButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.saveButton.Location = new System.Drawing.Point(12, 497);
-            this.saveButton.Name = "saveButton";
-            this.saveButton.Size = new System.Drawing.Size(279, 33);
-            this.saveButton.TabIndex = 16;
-            this.saveButton.Text = "&Сохранить";
-            this.saveButton.UseVisualStyleBackColor = true;
+            saveButton.DialogResult = System.Windows.Forms.DialogResult.OK;
+            saveButton.Location = new System.Drawing.Point(14, 663);
+            saveButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            saveButton.Name = "saveButton";
+            saveButton.Size = new System.Drawing.Size(319, 44);
+            saveButton.TabIndex = 16;
+            saveButton.Text = "&Сохранить";
+            saveButton.UseVisualStyleBackColor = true;
+            saveButton.Click += SaveButton_Click;
             // 
             // cancelButton
             // 
-            this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancelButton.Location = new System.Drawing.Point(12, 536);
-            this.cancelButton.Name = "cancelButton";
-            this.cancelButton.Size = new System.Drawing.Size(279, 33);
-            this.cancelButton.TabIndex = 17;
-            this.cancelButton.Text = "&Отмена";
-            this.cancelButton.UseVisualStyleBackColor = true;
+            cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            cancelButton.Location = new System.Drawing.Point(14, 715);
+            cancelButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            cancelButton.Name = "cancelButton";
+            cancelButton.Size = new System.Drawing.Size(319, 44);
+            cancelButton.TabIndex = 17;
+            cancelButton.Text = "&Отмена";
+            cancelButton.UseVisualStyleBackColor = true;
             // 
             // functionComboBox
             // 
-            this.functionComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.functionComboBox.FormattingEnabled = true;
-            this.functionComboBox.Items.AddRange(new object[] {
-            "Тестировщик",
-            "Разработчик"});
-            this.functionComboBox.Location = new System.Drawing.Point(12, 455);
-            this.functionComboBox.Name = "functionComboBox";
-            this.functionComboBox.Size = new System.Drawing.Size(279, 23);
-            this.functionComboBox.TabIndex = 15;
+            functionComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            functionComboBox.FormattingEnabled = true;
+            functionComboBox.Items.AddRange(new object[] { "Тестировщик", "Разработчик" });
+            functionComboBox.Location = new System.Drawing.Point(14, 607);
+            functionComboBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            functionComboBox.Name = "functionComboBox";
+            functionComboBox.Size = new System.Drawing.Size(318, 28);
+            functionComboBox.TabIndex = 15;
             // 
             // deparmentComboBox
             // 
-            this.deparmentComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.deparmentComboBox.FormattingEnabled = true;
-            this.deparmentComboBox.Items.AddRange(new object[] {
-            "Техническая поддержка",
-            "Разработка"});
-            this.deparmentComboBox.Location = new System.Drawing.Point(12, 396);
-            this.deparmentComboBox.Name = "deparmentComboBox";
-            this.deparmentComboBox.Size = new System.Drawing.Size(279, 23);
-            this.deparmentComboBox.TabIndex = 13;
-            this.deparmentComboBox.SelectedValueChanged += new System.EventHandler(this.DeparmentComboBox_SelectedValueChanged);
+            deparmentComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            deparmentComboBox.FormattingEnabled = true;
+            deparmentComboBox.Items.AddRange(new object[] { "Техническая поддержка", "Разработка" });
+            deparmentComboBox.Location = new System.Drawing.Point(14, 528);
+            deparmentComboBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            deparmentComboBox.Name = "deparmentComboBox";
+            deparmentComboBox.Size = new System.Drawing.Size(318, 28);
+            deparmentComboBox.TabIndex = 13;
+            deparmentComboBox.SelectedValueChanged += DeparmentComboBox_SelectedValueChanged;
             // 
             // EditUserForm
             // 
-            this.AcceptButton = this.saveButton;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.cancelButton;
-            this.ClientSize = new System.Drawing.Size(301, 579);
-            this.ControlBox = false;
-            this.Controls.Add(this.deparmentComboBox);
-            this.Controls.Add(this.functionComboBox);
-            this.Controls.Add(this.cancelButton);
-            this.Controls.Add(this.saveButton);
-            this.Controls.Add(this.deparmentLabel);
-            this.Controls.Add(this.functionLabel);
-            this.Controls.Add(this.userTypeComboBox);
-            this.Controls.Add(this.userTypeLabel);
-            this.Controls.Add(this.emailTextBox);
-            this.Controls.Add(this.emailLabel);
-            this.Controls.Add(this.confurmChangePasswordTextBox);
-            this.Controls.Add(this.confurmChangePasswordLabel);
-            this.Controls.Add(this.changePasswordTextBox);
-            this.Controls.Add(this.changePasswordLabel);
-            this.Controls.Add(this.loginTextBox);
-            this.Controls.Add(this.loginLabel);
-            this.Controls.Add(this.nameTextBox);
-            this.Controls.Add(this.nameLabel);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.Name = "EditUserForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "HelpDesk Редактирование пользователя";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.EditUserForm_FormClosing);
-            this.Shown += new System.EventHandler(this.EditUserForm_Shown);
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            AcceptButton = saveButton;
+            AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            CancelButton = cancelButton;
+            ClientSize = new System.Drawing.Size(344, 772);
+            ControlBox = false;
+            Controls.Add(deparmentComboBox);
+            Controls.Add(functionComboBox);
+            Controls.Add(cancelButton);
+            Controls.Add(saveButton);
+            Controls.Add(deparmentLabel);
+            Controls.Add(functionLabel);
+            Controls.Add(userTypeComboBox);
+            Controls.Add(userTypeLabel);
+            Controls.Add(emailTextBox);
+            Controls.Add(emailLabel);
+            Controls.Add(confurmChangePasswordTextBox);
+            Controls.Add(confurmChangePasswordLabel);
+            Controls.Add(changePasswordTextBox);
+            Controls.Add(changePasswordLabel);
+            Controls.Add(loginTextBox);
+            Controls.Add(loginLabel);
+            Controls.Add(nameTextBox);
+            Controls.Add(nameLabel);
+            FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            Name = "EditUserForm";
+            StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            Text = "HelpDesk Редактирование пользователя";
+            FormClosing += EditUserForm_FormClosing;
+            Shown += EditUserForm_Shown;
+            ResumeLayout(false);
+            PerformLayout();
 
         }
 

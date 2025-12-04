@@ -7,8 +7,8 @@ namespace HelpDeskWinFormsApp
 {
     public partial class EditUserForm : Form
     {
-        int userId;
-        User user;
+        private int userId;
+        private User user;
         private readonly IProvider provider;
 
         public EditUserForm(int userId, IProvider provider)
@@ -27,7 +27,7 @@ namespace HelpDeskWinFormsApp
                 deparmentComboBox.Enabled = true;
                 functionComboBox.Enabled = true;
 
-                userTypeComboBox.Text = "Сотрудник";
+                userTypeComboBox.Text = AppConstants.UserTypeEmployee;
                 deparmentComboBox.Text = user.Department;
                 functionComboBox.Text = user.Function;
             }
@@ -36,7 +36,7 @@ namespace HelpDeskWinFormsApp
                 deparmentComboBox.Enabled = false;
                 functionComboBox.Enabled = false;
 
-                userTypeComboBox.Text = "Клиент";
+                userTypeComboBox.Text = AppConstants.UserTypeClient;
             }
 
             nameTextBox.Text = user.Name;
@@ -44,14 +44,15 @@ namespace HelpDeskWinFormsApp
             emailTextBox.Text = user.Email;
         }
 
+       
         private void UserTypeComboBox_SelectedValueChanged(object sender, System.EventArgs e)
         {
-            if (userTypeComboBox.Text == "Сотрудник")
+            if (userTypeComboBox.Text == AppConstants.UserTypeEmployee)
             {
                 deparmentComboBox.Enabled = true;
                 functionComboBox.Enabled = true;
             }
-            else if (userTypeComboBox.Text == "Клиент")
+            else if (userTypeComboBox.Text == AppConstants.UserTypeClient)
             {
                 deparmentComboBox.Enabled = false;
                 functionComboBox.Enabled = false;
@@ -76,11 +77,11 @@ namespace HelpDeskWinFormsApp
                 user.Department = deparmentComboBox.Text;
             }
 
-            if (userTypeComboBox.Text == "Сотрудник" && !user.IsEmployee)
+            if (userTypeComboBox.Text == AppConstants.UserTypeEmployee && !user.IsEmployee)
             {
                 provider.ChangeUserToEmployee(user, functionComboBox.Text, deparmentComboBox.Text);
             }
-            else if (userTypeComboBox.Text == "Клиент" && user.IsEmployee)
+            else if (userTypeComboBox.Text == AppConstants.UserTypeClient && user.IsEmployee)
             {
                 provider.ChangeEmployeeToUser(user);
             }
@@ -92,20 +93,27 @@ namespace HelpDeskWinFormsApp
 
         private void DeparmentComboBox_SelectedValueChanged(object sender, EventArgs e)
         {
-            if (deparmentComboBox.Text == "Техническая поддержка")
+            if (deparmentComboBox.Text == AppConstants.DepartmentTechnicalSupport)
             {
                 functionComboBox.Items.Clear();
-                functionComboBox.Items.Add("Оператор");
-                functionComboBox.Items.Add("Технический специалист");
-                functionComboBox.Text = "Оператор";
+                functionComboBox.Items.Add(AppConstants.FunctionOperator);
+                functionComboBox.Items.Add(AppConstants.FunctionTechnicalSpecialist);
+                functionComboBox.Text = AppConstants.FunctionOperator;
             }
-            else if (deparmentComboBox.Text == "Разработка")
+            else if (deparmentComboBox.Text == AppConstants.DepartmentDevelopment)
             {
                 functionComboBox.Items.Clear();
-                functionComboBox.Items.Add("Тестировщик");
-                functionComboBox.Items.Add("Разработчик");
-                functionComboBox.Text = "Тестировщик";
+                functionComboBox.Items.Add(AppConstants.FunctionTester);
+                functionComboBox.Items.Add(AppConstants.FunctionDeveloper);
+                functionComboBox.Text = AppConstants.FunctionTester;
             }
+        }
+
+        private void SaveButton_Click(object sender, EventArgs e)
+        {
+                       
+            DialogResult = DialogResult.OK;
+            Close();
         }
     }
 }
