@@ -29,7 +29,7 @@ namespace HelpDeskWinFormsApp
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            string login = AuthorizationUser();
+            var login = AuthorizationUser();
 
             if (!string.IsNullOrEmpty(login))
             {
@@ -88,7 +88,7 @@ namespace HelpDeskWinFormsApp
             ClearDataGridView();
             Hide();
 
-            string login = AuthorizationUser();
+            var login = AuthorizationUser();
 
             if (!string.IsNullOrEmpty(login))
             {
@@ -127,7 +127,7 @@ namespace HelpDeskWinFormsApp
 
         private void UpdateButtonPositions()
         {
-            int panelHeight = splitContainer.Panel1.Height;
+            var panelHeight = splitContainer.Panel1.Height;
 
             editUserButton.Location = new Point(
                 openTroubleTicketButton.Location.X,
@@ -174,9 +174,9 @@ namespace HelpDeskWinFormsApp
 
         private void OpenTroubleTicketForm(int ticketId)
         {
-            int resolveUserId = GetResolveUserIdForTicket(ticketId);
+            var resolveUserId = GetResolveUserIdForTicket(ticketId);
 
-            using (TroubleTicketForm ticketForm = new TroubleTicketForm(ticketId, user.IsEmployee, resolveUserId, provider))
+            using (var ticketForm = new TroubleTicketForm(ticketId, user.IsEmployee, resolveUserId, provider))
             {
                 if (ticketForm.ShowDialog() == DialogResult.OK)
                 {
@@ -187,7 +187,7 @@ namespace HelpDeskWinFormsApp
 
         private int GetResolveUserIdForTicket(int ticketId)
         {
-            TroubleTicket ticket = provider.GetTroubleTicket(ticketId);
+            var ticket = provider.GetTroubleTicket(ticketId);
 
             if (ticket.ResolveUser != null)
             {
@@ -199,7 +199,7 @@ namespace HelpDeskWinFormsApp
 
         private void AddTroubleTicketButton_Click(object sender, EventArgs e)
         {
-            using (AddTroubleTicketForm addForm = new AddTroubleTicketForm(user, provider))
+            using (var addForm = new AddTroubleTicketForm(user, provider))
             {
                 if (addForm.ShowDialog() == DialogResult.OK)
                 {
@@ -224,7 +224,7 @@ namespace HelpDeskWinFormsApp
         {
             if (treeView.SelectedNode?.Parent == null) return;
 
-            string parentName = treeView.SelectedNode.Parent.Name;
+            var parentName = treeView.SelectedNode.Parent.Name;
 
             UpdateButtonStates(parentName);
 
@@ -241,7 +241,7 @@ namespace HelpDeskWinFormsApp
 
         private void UpdateButtonStates(string parentName)
         {
-            bool isUsersNode = parentName == AppConstants.TreeNodeUsers;
+            var isUsersNode = parentName == AppConstants.TreeNodeUsers;
 
             editUserButton.Enabled = isUsersNode;
             openTroubleTicketButton.Enabled = !isUsersNode;
@@ -256,7 +256,7 @@ namespace HelpDeskWinFormsApp
         {
             if (treeView.SelectedNode?.Parent == null) return;
 
-            string parentName = treeView.SelectedNode.Parent.Name;
+            var parentName = treeView.SelectedNode.Parent.Name;
 
             if (parentName == AppConstants.TreeNodeTrubleTicketList ||
                 parentName == AppConstants.TreeNodeStatusTroubleTicket)
@@ -271,9 +271,9 @@ namespace HelpDeskWinFormsApp
 
         private void ExportToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            bool isSupport = user.IsEmployee && user.Department == AppConstants.DepartmentTechnicalSupport;
+            var isSupport = user.IsEmployee && user.Department == AppConstants.DepartmentTechnicalSupport;
 
-            using (ExportForm exportForm = new ExportForm(isSupport, provider))
+            using (var exportForm = new ExportForm(isSupport, provider))
             {
                 exportForm.ShowDialog();
             }
@@ -302,7 +302,7 @@ namespace HelpDeskWinFormsApp
 
         private void OpenEditUserForm(int userId)
         {
-            using (EditUserForm editForm = new EditUserForm(userId, provider))
+            using (var editForm = new EditUserForm(userId, provider))
             {
                 if (editForm.ShowDialog() == DialogResult.OK)
                 {
@@ -313,7 +313,7 @@ namespace HelpDeskWinFormsApp
 
         private void SetWindowHeaderText()
         {
-            string userType = user.IsEmployee ? $"{user.Function}: {user.Name}" : $"Клиент: {user.Name}";
+            var userType = user.IsEmployee ? $"{user.Function}: {user.Name}" : $"Клиент: {user.Name}";
             Text = $"HelpDesk. {userType}/{user.Login}";
         }
 
@@ -327,11 +327,11 @@ namespace HelpDeskWinFormsApp
 
         private void ShowUserTreeNode()
         {
-            bool shouldShowUsersNode = user.IsEmployee && user.Department != AppConstants.DepartmentTechnicalSupport;
+            var shouldShowUsersNode = user.IsEmployee && user.Department != AppConstants.DepartmentTechnicalSupport;
 
             if (shouldShowUsersNode && treeView.Nodes.Count == 1)
             {
-                TreeNode usersNode = CreateUsersTreeStructure();
+                var usersNode = CreateUsersTreeStructure();
                 treeView.Nodes.Add(usersNode); 
             }
             else if (!shouldShowUsersNode)
@@ -344,17 +344,17 @@ namespace HelpDeskWinFormsApp
 
         private TreeNode CreateUsersTreeStructure()
         {
-            TreeNode allUsersNode = new TreeNode("Все пользователи")
+            var allUsersNode = new TreeNode("Все пользователи")
             {
                 Name = AppConstants.TreeNodeAllUsers
             };
 
-            TreeNode clientsNode = new TreeNode("Клиенты")
+            var clientsNode = new TreeNode("Клиенты")
             {
                 Name = AppConstants.TreeNodeClients
             };
 
-            TreeNode employeesNode = new TreeNode("Сотрудники")
+            var employeesNode = new TreeNode("Сотрудники")
             {
                 Name = AppConstants.TreeNodeEmployees
             };
@@ -367,7 +367,7 @@ namespace HelpDeskWinFormsApp
 
         private string AuthorizationUser()
         {
-            AuthorizationForm authorizationForm = new AuthorizationForm(provider);
+            var authorizationForm = new AuthorizationForm(provider);
 
             if (authorizationForm.ShowDialog() == DialogResult.OK)
             {
@@ -390,7 +390,7 @@ namespace HelpDeskWinFormsApp
 
         private string ProcessRegistration()
         {
-            using (RegistrationForm registrationForm = new RegistrationForm(provider))
+            using (var registrationForm = new RegistrationForm(provider))
             {
                 DialogResult result = registrationForm.ShowDialog();
 
@@ -412,8 +412,8 @@ namespace HelpDeskWinFormsApp
 
         private void RefreshUsersDataGrid()
         {
-            string selectedNode = treeView.SelectedNode.Name;
-            List<User> users = GetFilteredUsers(selectedNode);
+            var selectedNode = treeView.SelectedNode.Name;
+            var users = GetFilteredUsers(selectedNode);
 
             ClearAndSetupDataGridViewForUsers();
             FillUsersDataGridView(users);
@@ -421,7 +421,7 @@ namespace HelpDeskWinFormsApp
 
         private List<User> GetFilteredUsers(string nodeName)
         {
-            List<User> allUsers = provider.GetAllUsers();
+           var allUsers = provider.GetAllUsers();
 
             return nodeName switch
             {
@@ -453,10 +453,10 @@ namespace HelpDeskWinFormsApp
         {
             troubleTicketsDataGridView.Rows.Clear();
 
-            foreach (User userData in users)
+            foreach (var userData in users)
             {
-                int rowIndex = troubleTicketsDataGridView.Rows.Add();
-                DataGridViewRow row = troubleTicketsDataGridView.Rows[rowIndex];
+                var rowIndex = troubleTicketsDataGridView.Rows.Add();
+                var row = troubleTicketsDataGridView.Rows[rowIndex];
 
                 PopulateUserRow(row, userData);
             }
@@ -486,14 +486,14 @@ namespace HelpDeskWinFormsApp
 
         private void RefreshTroubleTicketsDataGrid()
         {
-            string selectedNode = treeView.SelectedNode.Name;
+            var selectedNode = treeView.SelectedNode.Name;
 
             if (selectedNode == AppConstants.TreeNodeStatusTroubleTicket)
             {
                 return;
             }
 
-            List<TroubleTicket> tickets = GetFilteredTroubleTickets(selectedNode);
+           var tickets = GetFilteredTroubleTickets(selectedNode);
 
             ClearAndSetupDataGridViewForTickets();
             FillTroubleTicketsDataGridView(tickets);
@@ -501,7 +501,7 @@ namespace HelpDeskWinFormsApp
 
         private List<TroubleTicket> GetFilteredTroubleTickets(string nodeName)
         {
-            List<TroubleTicket> allTickets = GetAllRelevantTickets();
+            var allTickets = GetAllRelevantTickets();
 
             return nodeName switch
             {
@@ -533,12 +533,12 @@ namespace HelpDeskWinFormsApp
         private void FillTroubleTicketsDataGridView(List<TroubleTicket> tickets)
         {
             troubleTicketsDataGridView.Rows.Clear();
-            List<User> allUsers = provider.GetAllUsers();
+            var allUsers = provider.GetAllUsers();
 
-            foreach (TroubleTicket ticket in tickets)
+            foreach (var ticket in tickets)
             {
-                int rowIndex = troubleTicketsDataGridView.Rows.Add();
-                DataGridViewRow row = troubleTicketsDataGridView.Rows[rowIndex];
+                var rowIndex = troubleTicketsDataGridView.Rows.Add();
+                var row = troubleTicketsDataGridView.Rows[rowIndex];
 
                 PopulateTicketRow(row, ticket, allUsers);
             }
@@ -548,8 +548,8 @@ namespace HelpDeskWinFormsApp
 
         private void PopulateTicketRow(DataGridViewRow row, TroubleTicket ticket, List<User> allUsers)
         {
-            User createUser = allUsers.FirstOrDefault(u => u.Id == ticket.CreateUser);
-            User resolveUser = allUsers.FirstOrDefault(u => u.Id == ticket.ResolveUser);
+            var createUser = allUsers.FirstOrDefault(u => u.Id == ticket.CreateUser);
+            var resolveUser = allUsers.FirstOrDefault(u => u.Id == ticket.ResolveUser);
 
             row.Cells[0].Value = ticket.Id;
             row.Cells[1].Value = ticket.IsSolved ? "Да" : "Нет";
