@@ -1,7 +1,7 @@
-﻿using HelpDesk.Common;
-using HelpDesk.Common.Models;
-using System;
+﻿using System;
 using System.Windows.Forms;
+using HelpDesk.Common;
+using HelpDesk.Common.Models;
 
 namespace HelpDeskWinFormsApp
 {
@@ -16,7 +16,7 @@ namespace HelpDeskWinFormsApp
             this.provider = provider;
         }
 
-       
+
         private void AuthorizationForm_Shown(object sender, EventArgs e)
         {
             AddFirstEmployee();
@@ -59,10 +59,38 @@ namespace HelpDeskWinFormsApp
             }
         }
 
+        private bool ValidateAllFields()
+        {
+            var validations = new[]
+            {
+                InputValidator.ValidateLogin(loginTextBox.Text),
+                InputValidator.ValidatePassword(passwordTextBox.Text)
+            };
+
+            foreach (var validation in validations)
+            {
+                if (!validation.IsValid)
+                {
+                    MessageBox.Show(validation.Message, "Ошибка валидации",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+
         private void AuthorizationForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (DialogResult == DialogResult.Cancel)
             {
+                return;
+            }
+
+            if (!ValidateAllFields())
+            {
+                e.Cancel = true;
                 return;
             }
 
@@ -77,10 +105,14 @@ namespace HelpDeskWinFormsApp
         {
             Environment.Exit(0);
         }
-        
+
         private void LoginButton_Click(object sender, EventArgs e)
         {
-            
+            if (!ValidateAllFields())
+            {
+                return;
+            }
+            DialogResult = DialogResult.OK;
         }
     }
 }

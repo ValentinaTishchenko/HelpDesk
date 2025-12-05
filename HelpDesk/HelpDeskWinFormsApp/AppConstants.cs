@@ -39,6 +39,6 @@
         public const int TextPreviewLength = 50;
         public const int TextPreviewEllipsisLength = 47;
 
-        public const int InvalidUserId = -1;
+        public const int InvalidId = -1;
     }
 }

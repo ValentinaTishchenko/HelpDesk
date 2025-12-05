@@ -11,8 +11,7 @@ using HelpDesk.Common.System;
 namespace HelpDeskWinFormsApp
 {
     public partial class MainForm : Form
-    {       
-
+    {
         private User user = new();
         private IProvider provider;
 
@@ -30,23 +29,41 @@ namespace HelpDeskWinFormsApp
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            var login = AuthorizationUser();
+            string login = AuthorizationUser();
 
-            if (login != string.Empty)
+            if (!string.IsNullOrEmpty(login))
             {
-                user = provider.GetUser(login);
-
-                ShowUserTreeNode();
-                SetHeaderWindowText();
-                ShowExportSubMenu();
-
-                treeView.Width = splitContainer.Panel1.Width;
-                treeView.Height = splitContainer.Panel1.Height - AppConstants.TreeViewBottomMargin;
-
-                troubleTicketsDataGridView.Size = splitContainer.Panel2.Size;
-
-                UpdateUserInfoUI();
+                InitializeUserSession(login);
             }
+        }
+
+        private void InitializeUserSession(string login)
+        {
+            user = provider.GetUser(login);
+
+            SetupUserInterface();
+            SetupTreeViewLayout();
+            SetupDataGridViewLayout();
+
+            UpdateUserInfoUI();
+        }
+
+        private void SetupUserInterface()
+        {
+            ShowUserTreeNode();
+            SetWindowHeaderText();
+            ShowExportSubMenu();
+        }
+
+        private void SetupTreeViewLayout()
+        {
+            treeView.Width = splitContainer.Panel1.Width;
+            treeView.Height = splitContainer.Panel1.Height - AppConstants.TreeViewBottomMargin;
+        }
+
+        private void SetupDataGridViewLayout()
+        {
+            troubleTicketsDataGridView.Size = splitContainer.Panel2.Size;
         }
 
         private void UpdateUserInfoUI()
@@ -58,14 +75,7 @@ namespace HelpDeskWinFormsApp
 
         private void ShowExportSubMenu()
         {
-            if (!user.IsEmployee)
-            {
-                exportToolStripMenuItem.Visible = false;
-            }
-            else
-            {
-                exportToolStripMenuItem.Visible = true;
-            }
+            exportToolStripMenuItem.Visible = user.IsEmployee;
         }
 
         private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -75,36 +85,65 @@ namespace HelpDeskWinFormsApp
 
         private void LogoutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            troubleTicketsDataGridView.Rows.Clear();
-            troubleTicketsDataGridView.Columns.Clear();
-
+            ClearDataGridView();
             Hide();
 
-            var login = AuthorizationUser();
+            string login = AuthorizationUser();
 
-            if (login != string.Empty)
+            if (!string.IsNullOrEmpty(login))
             {
                 user = provider.GetUser(login);
-
-                SetHeaderWindowText();
-
+                SetWindowHeaderText();
                 UpdateUserInfoUI();
-                treeView.SelectedNode = treeView.Nodes[0];
-
+                ResetTreeViewSelection();
                 ShowUserTreeNode();
                 ShowExportSubMenu();
                 Show();
             }
         }
 
+        private void ClearDataGridView()
+        {
+            troubleTicketsDataGridView.Rows.Clear();
+            troubleTicketsDataGridView.Columns.Clear();
+        }
+
+        private void ResetTreeViewSelection()
+        {
+            treeView.SelectedNode = treeView.Nodes[0];
+        }
+
         private void SplitContainer_Panel1_Resize(object sender, EventArgs e)
+        {
+            UpdateTreeViewLayout();
+            UpdateButtonPositions();
+        }
+
+        private void UpdateTreeViewLayout()
         {
             treeView.Width = splitContainer.Panel1.Width;
             treeView.Height = splitContainer.Panel1.Height - AppConstants.TreeViewBottomMargin;
-            editUserButton.Location = new Point(openTroubleTicketButton.Location.X, splitContainer.Panel1.Height - AppConstants.EditButtonOffset);
-            openTroubleTicketButton.Location = new Point(openTroubleTicketButton.Location.X, splitContainer.Panel1.Height - AppConstants.OpenButtonOffset);
-            addTroubleTicketbutton.Location = new Point(openTroubleTicketButton.Location.X, splitContainer.Panel1.Height - AppConstants.AddButtonOffset);
-            exitButton.Location = new Point(exitButton.Location.X, splitContainer.Panel1.Height - AppConstants.ExitButtonOffset);
+        }
+
+        private void UpdateButtonPositions()
+        {
+            int panelHeight = splitContainer.Panel1.Height;
+
+            editUserButton.Location = new Point(
+                openTroubleTicketButton.Location.X,
+                panelHeight - AppConstants.EditButtonOffset);
+
+            openTroubleTicketButton.Location = new Point(
+                openTroubleTicketButton.Location.X,
+                panelHeight - AppConstants.OpenButtonOffset);
+
+            addTroubleTicketbutton.Location = new Point(
+                openTroubleTicketButton.Location.X,
+                panelHeight - AppConstants.AddButtonOffset);
+
+            exitButton.Location = new Point(
+                exitButton.Location.X,
+                panelHeight - AppConstants.ExitButtonOffset);
         }
 
         private void SplitContainer_Panel2_Resize(object sender, EventArgs e)
@@ -114,35 +153,66 @@ namespace HelpDeskWinFormsApp
 
         private void OpenTroubleTicketButton_Click(object sender, EventArgs e)
         {
-            if (troubleTicketsDataGridView.SelectedRows.Count != 0)
+            if (TryGetSelectedTicketId(out int ticketId))
             {
-                var ticketId = Convert.ToInt32(troubleTicketsDataGridView.SelectedCells[0].Value);
+                OpenTroubleTicketForm(ticketId);
+            }
+        }
 
-                var resolvedUser = Convert.ToInt32(provider.GetTroubleTicket(ticketId).ResolveUser != null ? user.Id : -1);
+        private bool TryGetSelectedTicketId(out int ticketId)
+        {
+            ticketId = AppConstants.InvalidId;
 
-                if (user.IsEmployee && resolvedUser == AppConstants.InvalidUserId)
-                {
-                    resolvedUser = user.Id;
-                }
+            if (troubleTicketsDataGridView.SelectedRows.Count > 0)
+            {
+                ticketId = Convert.ToInt32(troubleTicketsDataGridView.SelectedCells[0].Value);
+                return true;
+            }
 
-                var dialogResult = new TroubleTicketForm(ticketId, user.IsEmployee, resolvedUser, provider).ShowDialog();
+            return false;
+        }
 
-                if (dialogResult == DialogResult.OK)
+        private void OpenTroubleTicketForm(int ticketId)
+        {
+            int resolveUserId = GetResolveUserIdForTicket(ticketId);
+
+            using (TroubleTicketForm ticketForm = new TroubleTicketForm(ticketId, user.IsEmployee, resolveUserId, provider))
+            {
+                if (ticketForm.ShowDialog() == DialogResult.OK)
                 {
                     RefreshTroubleTicketsDataGrid();
                 }
             }
         }
 
+        private int GetResolveUserIdForTicket(int ticketId)
+        {
+            TroubleTicket ticket = provider.GetTroubleTicket(ticketId);
+
+            if (ticket.ResolveUser != null)
+            {
+                return (int)ticket.ResolveUser;
+            }
+
+            return user.IsEmployee ? user.Id : AppConstants.InvalidId;
+        }
+
         private void AddTroubleTicketButton_Click(object sender, EventArgs e)
         {
-            var dialogResult = new AddTroubleTicketForm(user, provider);
-
-            if (dialogResult.ShowDialog() == DialogResult.OK)
+            using (AddTroubleTicketForm addForm = new AddTroubleTicketForm(user, provider))
             {
-                treeView.SelectedNode = treeView.Nodes[AppConstants.TreeNodeTrubleTicketList].Nodes[AppConstants.TreeNodeOpenTroubleTickets];
-                RefreshTroubleTicketsDataGrid();
+                if (addForm.ShowDialog() == DialogResult.OK)
+                {
+                    SelectOpenTroubleTicketsNode();
+                    RefreshTroubleTicketsDataGrid();
+                }
             }
+        }
+
+        private void SelectOpenTroubleTicketsNode()
+        {
+            treeView.SelectedNode = treeView.Nodes[AppConstants.TreeNodeTrubleTicketList]
+                .Nodes[AppConstants.TreeNodeOpenTroubleTickets];
         }
 
         private void TreeView_AfterSelect(object sender, TreeViewEventArgs e)
@@ -150,107 +220,101 @@ namespace HelpDeskWinFormsApp
             refreshToolStripMenuItem.PerformClick();
         }
 
-        private void ListTTDataGridView_DoubleClick(object sender, EventArgs e)
-        {            
+        private void RefreshDataGridBasedOnSelectedNode()
+        {
+            if (treeView.SelectedNode?.Parent == null) return;
 
-            if (treeView.SelectedNode.Level != 0)
+            string parentName = treeView.SelectedNode.Parent.Name;
+
+            UpdateButtonStates(parentName);
+
+            if (parentName == AppConstants.TreeNodeTrubleTicketList ||
+                parentName == AppConstants.TreeNodeStatusTroubleTicket)
             {
-                var parentName = treeView.SelectedNode.Parent.Name;
+                RefreshTroubleTicketsDataGrid();
+            }
+            else if (parentName == AppConstants.TreeNodeUsers)
+            {
+                RefreshUsersDataGrid();
+            }
+        }
 
-                if (parentName == AppConstants.TreeNodeTrubleTicketList || parentName == AppConstants.TreeNodeStatusTroubleTicket)
-                {
-                    openTroubleTicketButton.PerformClick();
-                }
+        private void UpdateButtonStates(string parentName)
+        {
+            bool isUsersNode = parentName == AppConstants.TreeNodeUsers;
 
-                if (parentName == AppConstants.TreeNodeUsers)
-                {
-                    editUserButton.PerformClick();
-                }
+            editUserButton.Enabled = isUsersNode;
+            openTroubleTicketButton.Enabled = !isUsersNode;
+        }
+
+        private void RefreshToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            RefreshDataGridBasedOnSelectedNode();
+        }
+
+        private void ListTTDataGridView_DoubleClick(object sender, EventArgs e)
+        {
+            if (treeView.SelectedNode?.Parent == null) return;
+
+            string parentName = treeView.SelectedNode.Parent.Name;
+
+            if (parentName == AppConstants.TreeNodeTrubleTicketList ||
+                parentName == AppConstants.TreeNodeStatusTroubleTicket)
+            {
+                openTroubleTicketButton.PerformClick();
+            }
+            else if (parentName == AppConstants.TreeNodeUsers)
+            {
+                editUserButton.PerformClick();
             }
         }
 
         private void ExportToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var isSupport = false;
+            bool isSupport = user.IsEmployee && user.Department == AppConstants.DepartmentTechnicalSupport;
 
-            if (user.IsEmployee)
+            using (ExportForm exportForm = new ExportForm(isSupport, provider))
             {
-                isSupport = user.Department == AppConstants.DepartmentTechnicalSupport; 
+                exportForm.ShowDialog();
             }
-
-            new ExportForm(isSupport, provider).ShowDialog();
         }
 
         private void EditUserButton_Click(object sender, EventArgs e)
         {
-            if (troubleTicketsDataGridView.SelectedRows.Count != 0)
+            if (TryGetSelectedUserId(out int userId))
             {
-                var userId = Convert.ToInt32(troubleTicketsDataGridView.SelectedCells[0].Value);
+                OpenEditUserForm(userId);
+            }
+        }
 
-                var dialogResult = new EditUserForm(userId, provider).ShowDialog();
+        private bool TryGetSelectedUserId(out int userId)
+        {
+            userId = AppConstants.InvalidId;
 
-                if (dialogResult == DialogResult.OK)
+            if (troubleTicketsDataGridView.SelectedRows.Count > 0)
+            {
+                userId = Convert.ToInt32(troubleTicketsDataGridView.SelectedCells[0].Value);
+                return true;
+            }
+
+            return false;
+        }
+
+        private void OpenEditUserForm(int userId)
+        {
+            using (EditUserForm editForm = new EditUserForm(userId, provider))
+            {
+                if (editForm.ShowDialog() == DialogResult.OK)
                 {
                     RefreshUsersDataGrid();
                 }
             }
         }
 
-        private void RefreshToolStripMenuItem_Click(object sender, EventArgs e)
+        private void SetWindowHeaderText()
         {
-            if (treeView.SelectedNode.Level != 0)
-            {
-                var parentName = treeView.SelectedNode.Parent.Name;
-
-                if (parentName == AppConstants.TreeNodeTrubleTicketList || parentName == AppConstants.TreeNodeStatusTroubleTicket)
-                {
-                    RefreshTroubleTicketsDataGrid();
-                    editUserButton.Enabled = false;
-                    openTroubleTicketButton.Enabled = true;
-                }
-
-                if (parentName == AppConstants.TreeNodeUsers)
-                {
-                    RefreshUsersDataGrid();
-                    editUserButton.Enabled = true;
-                    openTroubleTicketButton.Enabled = false;
-                }
-            }
-            else
-            {
-                editUserButton.Enabled = false;
-                openTroubleTicketButton.Enabled = false;
-            }
-        }
-
-        private void ShowUserTreeNode()
-        {
-            if (!user.IsEmployee || user.Department == AppConstants.DepartmentTechnicalSupport)
-            {
-                RemoveUserTreeNode();
-                editUserButton.Visible = false;
-            }
-            else
-            {
-                if (treeView.Nodes.Count == 1)
-                {
-                    AddUserTreeNode();
-                }
-
-                editUserButton.Visible = true;
-            }
-        }
-
-        private void SetHeaderWindowText()
-        {
-            if (user.IsEmployee)
-            {
-                Text = $"HelpDesk. {user.Function}: {user.Name}/{user.Login}";
-            }
-            else
-            {
-                Text = $"HelpDesk. Клиент: {user.Name}/{user.Login}";
-            }
+            string userType = user.IsEmployee ? $"{user.Function}: {user.Name}" : $"Клиент: {user.Name}";
+            Text = $"HelpDesk. {userType}/{user.Login}";
         }
 
         private void RemoveUserTreeNode()
@@ -261,138 +325,120 @@ namespace HelpDeskWinFormsApp
             }
         }
 
-        private void AddUserTreeNode()
+        private void ShowUserTreeNode()
         {
-            var allUsersNode = new TreeNode("Все пользователи") { Name = AppConstants.TreeNodeAllUsers };
-            var clientsNode = new TreeNode("Клиенты") { Name = AppConstants.TreeNodeClients };
-            var employeesNode = new TreeNode("Сотрудники") { Name = AppConstants.TreeNodeEmployees };
-            var usersNode = new TreeNode("Пользователи", new TreeNode[] { allUsersNode, clientsNode, employeesNode })
+            bool shouldShowUsersNode = user.IsEmployee && user.Department != AppConstants.DepartmentTechnicalSupport;
+
+            if (shouldShowUsersNode && treeView.Nodes.Count == 1)
+            {
+                TreeNode usersNode = CreateUsersTreeStructure();
+                treeView.Nodes.Add(usersNode); 
+            }
+            else if (!shouldShowUsersNode)
+            {
+                RemoveUserTreeNode();
+            }
+
+            editUserButton.Visible = shouldShowUsersNode;
+        }
+
+        private TreeNode CreateUsersTreeStructure()
+        {
+            TreeNode allUsersNode = new TreeNode("Все пользователи")
+            {
+                Name = AppConstants.TreeNodeAllUsers
+            };
+
+            TreeNode clientsNode = new TreeNode("Клиенты")
+            {
+                Name = AppConstants.TreeNodeClients
+            };
+
+            TreeNode employeesNode = new TreeNode("Сотрудники")
+            {
+                Name = AppConstants.TreeNodeEmployees
+            };
+
+            return new TreeNode("Пользователи", new TreeNode[] { allUsersNode, clientsNode, employeesNode })
             {
                 Name = AppConstants.TreeNodeUsers
             };
-
-            treeView.Nodes.AddRange(new TreeNode[] { usersNode });
         }
 
         private string AuthorizationUser()
         {
-            var isNeedRegistration = false;
-            var login = string.Empty;
-            var authorizationForm = new AuthorizationForm(provider);
+            AuthorizationForm authorizationForm = new AuthorizationForm(provider);
 
             if (authorizationForm.ShowDialog() == DialogResult.OK)
             {
-                login = authorizationForm.loginTextBox.Text;
+                return authorizationForm.loginTextBox.Text;
             }
-            else
+
+            return HandleAuthorizationFailure(authorizationForm.RegistrationChoice);
+        }
+
+        private string HandleAuthorizationFailure(bool isNeedRegistration)
+        {
+            if (!isNeedRegistration)
             {
-                isNeedRegistration = authorizationForm.RegistrationChoice;
-
-                if (!isNeedRegistration)
-                {
-                    Environment.Exit(0);
-                    return string.Empty;
-                }
+                Environment.Exit(0);
+                return string.Empty;
             }
 
-            if (isNeedRegistration)
+            return ProcessRegistration();
+        }
+
+        private string ProcessRegistration()
+        {
+            using (RegistrationForm registrationForm = new RegistrationForm(provider))
             {
-                var registrationForm = new RegistrationForm(provider);
-                var registrationFormDialogResult = registrationForm.ShowDialog();
+                DialogResult result = registrationForm.ShowDialog();
 
-                if (registrationFormDialogResult == DialogResult.OK)
+                switch (result)
                 {
-                    login = registrationForm.loginTextBox.Text;
-                }
-                else if (registrationFormDialogResult == DialogResult.Cancel)
-                {
-                    Application.Restart();
-                }
-                else
-                {
-                    Environment.Exit(0);
+                    case DialogResult.OK:
+                        return registrationForm.loginTextBox.Text;
+                    case DialogResult.Cancel:
+                        Application.Restart();
+                        break;
+                    default:
+                        Environment.Exit(0);
+                        break;
                 }
             }
 
-            return login;
+            return string.Empty;
         }
 
         private void RefreshUsersDataGrid()
         {
-            var selectedNode = treeView.SelectedNode.Name;
+            string selectedNode = treeView.SelectedNode.Name;
+            List<User> users = GetFilteredUsers(selectedNode);
 
-            troubleTicketsDataGridView.Columns.Clear();
-
-            switch (selectedNode)
-            {
-                case AppConstants.TreeNodeAllUsers:
-                    FillUsersDataGridView(provider.GetAllUsers());
-                    break;
-                case AppConstants.TreeNodeClients:
-                    FillUsersDataGridView(provider.GetAllUsers().Where(u => !u.IsEmployee).ToList());
-                    break;
-                case AppConstants.TreeNodeEmployees:
-                    FillUsersDataGridView(provider.GetAllUsers().Where(u => u.IsEmployee).ToList());
-                    break;
-                default:
-                    break;
-            }
+            ClearAndSetupDataGridViewForUsers();
+            FillUsersDataGridView(users);
         }
 
-        private void RefreshTroubleTicketsDataGrid()
+        private List<User> GetFilteredUsers(string nodeName)
         {
-            var selectedNode = treeView.SelectedNode.Name;
+            List<User> allUsers = provider.GetAllUsers();
 
-            if (selectedNode == AppConstants.TreeNodeStatusTroubleTicket)
+            return nodeName switch
             {
-                return;
-            }
-
-            List<TroubleTicket> troubleTickets = new();
-
-            troubleTicketsDataGridView.Columns.Clear();
-
-            if (user.IsEmployee)
-            {
-                troubleTickets = provider.GetAllTroubleTickets();
-            }
-            else
-            {
-                troubleTickets = provider.GetAllTroubleTickets().Where(t => t.CreateUser == user.Id).ToList();
-            }
-
-            switch (selectedNode)
-            {
-                case AppConstants.TreeNodeAllTroubleTickets:
-                    FillTroubleTicketsDataGridView(troubleTickets);
-                    break;
-                case AppConstants.TreeNodeOpenTroubleTickets:
-                    FillTroubleTicketsDataGridView(troubleTickets.Where(s => s.IsSolved == false).ToList());
-                    break;
-                case AppConstants.TreeNodeClosedTroubleTickets:
-                    FillTroubleTicketsDataGridView(troubleTickets.Where(s => s.IsSolved == true).ToList());
-                    break;
-                case AppConstants.TreeNodeOverdueTroubleTickets:
-                    FillTroubleTicketsDataGridView(troubleTickets.Where(s => (DateTime.Now - s.Deadline).TotalSeconds > 0).ToList());
-                    break;
-                case AppConstants.TreeNodeRegisteredTroubleTickets:
-                    FillTroubleTicketsDataGridView(troubleTickets.Where(s => s.Status == AppConstants.StatusRegistered).ToList());
-                    break;
-                case AppConstants.TreeNodeWorkTroubleTickets:
-                    FillTroubleTicketsDataGridView(troubleTickets.Where(s => s.Status == AppConstants.StatusInProgress).ToList());
-                    break;
-                case AppConstants.TreeNodeCompletedTroubleTickets:
-                    FillTroubleTicketsDataGridView(troubleTickets.Where(s => s.Status == AppConstants.StatusCompleted).ToList());
-                    break;
-                case AppConstants.TreeNodeRejectedTroubleTickets:
-                    FillTroubleTicketsDataGridView(troubleTickets.Where(s => s.Status == AppConstants.StatusRejected).ToList());
-                    break;
-                default:
-                    break;
-            }
+                AppConstants.TreeNodeAllUsers => allUsers,
+                AppConstants.TreeNodeClients => allUsers.Where(u => !u.IsEmployee).ToList(),
+                AppConstants.TreeNodeEmployees => allUsers.Where(u => u.IsEmployee).ToList(),
+                _ => new List<User>()
+            };
         }
 
-        private void FillUsersDataGridView(List<User> users)
+        private void ClearAndSetupDataGridViewForUsers()
+        {
+            troubleTicketsDataGridView.Columns.Clear();
+            AddUserColumnsToDataGridView();
+        }
+
+        private void AddUserColumnsToDataGridView()
         {
             troubleTicketsDataGridView.Columns.Add("id", "ID");
             troubleTicketsDataGridView.Columns.Add("name", "Имя");
@@ -401,73 +447,125 @@ namespace HelpDeskWinFormsApp
             troubleTicketsDataGridView.Columns.Add("discriminator", "Тип");
             troubleTicketsDataGridView.Columns.Add("function", "Функция");
             troubleTicketsDataGridView.Columns.Add("department", "Отдел");
-
-            troubleTicketsDataGridView.Rows.Clear();
-
-            var countRows = users.Count;
-
-            for (int i = 0; i < countRows; i++)
-            {
-                troubleTicketsDataGridView.Rows.Add();
-                troubleTicketsDataGridView.Rows[i].Cells[0].Value = users[i].Id;
-                troubleTicketsDataGridView.Rows[i].Cells[1].Value = users[i].Name;
-                troubleTicketsDataGridView.Rows[i].Cells[2].Value = users[i].Login;
-                troubleTicketsDataGridView.Rows[i].Cells[3].Value = users[i].Email;
-
-                var userType = users[i].IsEmployee;
-
-                troubleTicketsDataGridView.Rows[i].Cells[4].Value = userType ? "Сотрудник" : "Клиент";
-
-                if (userType)
-                {
-                    troubleTicketsDataGridView.Rows[i].Cells[5].Value = user.Function;
-                    troubleTicketsDataGridView.Rows[i].Cells[6].Value = user.Department;
-                }
-                else
-                {
-                    troubleTicketsDataGridView.Rows[i].Cells[5].Style.BackColor = Color.Gray;
-                    troubleTicketsDataGridView.Rows[i].Cells[6].Style.BackColor = Color.Gray;
-                }
-            }
-
-            troubleTicketsDataGridView.ClearSelection();
         }
 
-        private void FillTroubleTicketsDataGridView(List<TroubleTicket> allTroubleTickets)
+        private void FillUsersDataGridView(List<User> users)
         {
-            AddColumnsTroubleTicketsDataGridView();
-
             troubleTicketsDataGridView.Rows.Clear();
 
-            var allUsers = provider.GetAllUsers();
-
-            foreach (var ticket in allTroubleTickets)
+            foreach (User userData in users)
             {
-                var user = allUsers.FirstOrDefault(u => u.Id == ticket.CreateUser);
-                var resolveUser = allUsers.FirstOrDefault(u => u.Id == ticket.ResolveUser);
+                int rowIndex = troubleTicketsDataGridView.Rows.Add();
+                DataGridViewRow row = troubleTicketsDataGridView.Rows[rowIndex];
 
-                var rowIndex = troubleTicketsDataGridView.Rows.Add();
-                var row = troubleTicketsDataGridView.Rows[rowIndex];
-
-                row.Cells[0].Value = ticket.Id;
-                row.Cells[1].Value = ticket.IsSolved ? "Да" : "Нет";
-
-                SetRowStyleBasedOnStatus(row, ticket);
-
-                row.Cells[2].Value = ticket.Status;
-                row.Cells[3].Value = GetPreviewText(ticket.Text);
-                row.Cells[4].Value = ticket.Resolve;
-                row.Cells[5].Value = resolveUser?.Name ?? string.Empty;
-                row.Cells[6].Value = ticket.Created;
-                row.Cells[7].Value = ticket.ResolveTime;
-                row.Cells[8].Value = ticket.Deadline;
-                row.Cells[9].Value = $"{user?.Name} \\ {user?.Email}";
+                PopulateUserRow(row, userData);
             }
 
             troubleTicketsDataGridView.ClearSelection();
         }
 
-        private void SetRowStyleBasedOnStatus(DataGridViewRow row, TroubleTicket ticket)
+        private void PopulateUserRow(DataGridViewRow row, User userData)
+        {
+            row.Cells[0].Value = userData.Id;
+            row.Cells[1].Value = userData.Name;
+            row.Cells[2].Value = userData.Login;
+            row.Cells[3].Value = userData.Email;
+            row.Cells[4].Value = userData.IsEmployee ? "Сотрудник" : "Клиент";
+
+            if (userData.IsEmployee)
+            {
+                row.Cells[5].Value = userData.Function;
+                row.Cells[6].Value = userData.Department;
+            }
+            else
+            {
+                row.Cells[5].Style.BackColor = Color.Gray;
+                row.Cells[6].Style.BackColor = Color.Gray;
+            }
+        }
+
+        private void RefreshTroubleTicketsDataGrid()
+        {
+            string selectedNode = treeView.SelectedNode.Name;
+
+            if (selectedNode == AppConstants.TreeNodeStatusTroubleTicket)
+            {
+                return;
+            }
+
+            List<TroubleTicket> tickets = GetFilteredTroubleTickets(selectedNode);
+
+            ClearAndSetupDataGridViewForTickets();
+            FillTroubleTicketsDataGridView(tickets);
+        }
+
+        private List<TroubleTicket> GetFilteredTroubleTickets(string nodeName)
+        {
+            List<TroubleTicket> allTickets = GetAllRelevantTickets();
+
+            return nodeName switch
+            {
+                AppConstants.TreeNodeAllTroubleTickets => allTickets,
+                AppConstants.TreeNodeOpenTroubleTickets => allTickets.Where(t => !t.IsSolved).ToList(),
+                AppConstants.TreeNodeClosedTroubleTickets => allTickets.Where(t => t.IsSolved).ToList(),
+                AppConstants.TreeNodeOverdueTroubleTickets => allTickets.Where(t => DateTime.Now > t.Deadline).ToList(),
+                AppConstants.TreeNodeRegisteredTroubleTickets => allTickets.Where(t => t.Status == AppConstants.StatusRegistered).ToList(),
+                AppConstants.TreeNodeWorkTroubleTickets => allTickets.Where(t => t.Status == AppConstants.StatusInProgress).ToList(),
+                AppConstants.TreeNodeCompletedTroubleTickets => allTickets.Where(t => t.Status == AppConstants.StatusCompleted).ToList(),
+                AppConstants.TreeNodeRejectedTroubleTickets => allTickets.Where(t => t.Status == AppConstants.StatusRejected).ToList(),
+                _ => new List<TroubleTicket>()
+            };
+        }
+
+        private List<TroubleTicket> GetAllRelevantTickets()
+        {
+            return user.IsEmployee
+                ? provider.GetAllTroubleTickets()
+                : provider.GetAllTroubleTickets().Where(t => t.CreateUser == user.Id).ToList();
+        }
+
+        private void ClearAndSetupDataGridViewForTickets()
+        {
+            troubleTicketsDataGridView.Columns.Clear();
+            AddTicketColumnsToDataGridView();
+        }
+
+        private void FillTroubleTicketsDataGridView(List<TroubleTicket> tickets)
+        {
+            troubleTicketsDataGridView.Rows.Clear();
+            List<User> allUsers = provider.GetAllUsers();
+
+            foreach (TroubleTicket ticket in tickets)
+            {
+                int rowIndex = troubleTicketsDataGridView.Rows.Add();
+                DataGridViewRow row = troubleTicketsDataGridView.Rows[rowIndex];
+
+                PopulateTicketRow(row, ticket, allUsers);
+            }
+
+            troubleTicketsDataGridView.ClearSelection();
+        }
+
+        private void PopulateTicketRow(DataGridViewRow row, TroubleTicket ticket, List<User> allUsers)
+        {
+            User createUser = allUsers.FirstOrDefault(u => u.Id == ticket.CreateUser);
+            User resolveUser = allUsers.FirstOrDefault(u => u.Id == ticket.ResolveUser);
+
+            row.Cells[0].Value = ticket.Id;
+            row.Cells[1].Value = ticket.IsSolved ? "Да" : "Нет";
+            row.Cells[2].Value = ticket.Status;
+            row.Cells[3].Value = GetPreviewText(ticket.Text);
+            row.Cells[4].Value = ticket.Resolve;
+            row.Cells[5].Value = resolveUser?.Name ?? string.Empty;
+            row.Cells[6].Value = ticket.Created;
+            row.Cells[7].Value = ticket.ResolveTime;
+            row.Cells[8].Value = ticket.Deadline;
+            row.Cells[9].Value = $"{createUser?.Name} \\ {createUser?.Email}";
+
+            ApplyRowStylingBasedOnTicket(row, ticket);
+        }
+
+        private void ApplyRowStylingBasedOnTicket(DataGridViewRow row, TroubleTicket ticket)
         {
             if (ticket.IsSolved)
             {
@@ -477,12 +575,11 @@ namespace HelpDeskWinFormsApp
             }
             else
             {
-                if ((DateTime.Now - ticket.Deadline).TotalSeconds > 0)
+                if (DateTime.Now > ticket.Deadline)
                 {
                     row.DefaultCellStyle.BackColor = Color.LightSalmon;
                 }
-
-                if (ticket.Status == AppConstants.StatusInProgress)
+                else if (ticket.Status == AppConstants.StatusInProgress)
                 {
                     row.DefaultCellStyle.BackColor = Color.LightYellow;
                 }
@@ -498,8 +595,7 @@ namespace HelpDeskWinFormsApp
             return text;
         }
 
-
-        private void AddColumnsTroubleTicketsDataGridView()
+        private void AddTicketColumnsToDataGridView()
         {
             troubleTicketsDataGridView.Columns.Add("id", "ID");
             troubleTicketsDataGridView.Columns.Add("isSolved", "Решён");

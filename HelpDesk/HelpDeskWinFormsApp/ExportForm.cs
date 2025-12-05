@@ -359,7 +359,14 @@ namespace HelpDeskWinFormsApp
                 endDateTimePicker.Enabled = true;
 
                 statusFilter.Clear();
-                statusFilter.AddRange(new List<string>() { "Зарегистрирована", "В работе", "Выполнена", "Отклонена" });
+                statusFilter.AddRange(new List<string>()
+                {
+                    AppConstants.StatusRegistered,
+                    AppConstants.StatusInProgress,
+                    AppConstants.StatusCompleted,
+                    AppConstants.StatusRejected
+                });
+                   
                 statusFilterComboBox.DataSource = null;
                 statusFilterComboBox.DataSource = statusFilter;
             }
@@ -369,7 +376,7 @@ namespace HelpDeskWinFormsApp
                 endDateTimePicker.Enabled = false;
 
                 statusFilter.Clear();
-                statusFilter.AddRange(new List<string>() { "Клиент", "Сотрудник" });
+                statusFilter.AddRange(new List<string>() { AppConstants.UserTypeClient, AppConstants.UserTypeEmployee });
                 statusFilterComboBox.DataSource = null;
                 statusFilterComboBox.DataSource = statusFilter;
             }

@@ -6,12 +6,12 @@ namespace HelpDeskWinFormsApp
 {
     public partial class TroubleTicketForm : Form
     {
-        int ticketId;
-        TroubleTicket troubleTicket;
-        User userCreate;
-        bool isEmployee;
-        int resolveUserId;
-        string lastStatus;
+        private int ticketId;
+        private TroubleTicket troubleTicket;
+        private User userCreate;
+        private bool isEmployee;
+        private int resolveUserId;
+        private string lastStatus;
         private readonly IProvider provider;
 
         public TroubleTicketForm(int ticketId, bool isEmployee, int resolveUserId, IProvider provider)
@@ -55,7 +55,7 @@ namespace HelpDeskWinFormsApp
         {
             if (DialogResult == DialogResult.OK)
             {
-                if (resolveRichTextBox.Text == string.Empty && (statusTroubleTicketComboBox.Text == "Выполнена" || statusTroubleTicketComboBox.Text == "Отклонена"))
+                if (resolveRichTextBox.Text == string.Empty && (statusTroubleTicketComboBox.Text == AppConstants.StatusCompleted || statusTroubleTicketComboBox.Text == AppConstants.StatusCompleted))
                 {
                     e.Cancel = true;
                     MessageBox.Show("Пожалуйста заполните решение.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -64,11 +64,11 @@ namespace HelpDeskWinFormsApp
 
                 if (statusTroubleTicketComboBox.Text != lastStatus)
                 {
-                    if (statusTroubleTicketComboBox.Text == "Выполнена" || statusTroubleTicketComboBox.Text == "Отклонена")
+                    if (statusTroubleTicketComboBox.Text == AppConstants.StatusCompleted || statusTroubleTicketComboBox.Text == AppConstants.StatusCompleted)
                     {
                         provider.ResolveTroubleTicket(troubleTicket.Id, statusTroubleTicketComboBox.Text, resolveRichTextBox.Text, resolveUserId);
                     }
-                    else if (statusTroubleTicketComboBox.Text == "Зарегистрирована" && lastStatus != "Зарегистрирована")
+                    else if (statusTroubleTicketComboBox.Text == AppConstants.StatusRegistered && lastStatus != AppConstants.StatusRegistered)
                     {
                         e.Cancel = true;
                         MessageBox.Show("Возврат в статус \"Зарегистрирована\" запрещён.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);

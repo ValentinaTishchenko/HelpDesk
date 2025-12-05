@@ -61,6 +61,14 @@ namespace HelpDeskWinFormsApp
 
         private void EditUserForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if (DialogResult != DialogResult.OK) return;
+
+            if (!ValidateAllFields())
+            {
+                e.Cancel = true;
+                return;
+            }
+
             user.Name = nameTextBox.Text;
             user.Login = loginTextBox.Text;
 
@@ -109,11 +117,60 @@ namespace HelpDeskWinFormsApp
             }
         }
 
+        private bool ValidateAllFields()
+        {
+            var validations = new[]
+            {
+                InputValidator.ValidateName(nameTextBox.Text),
+                InputValidator.ValidateLogin(loginTextBox.Text),
+                InputValidator.ValidateEmail(emailTextBox.Text)
+            };
+            
+            if (!string.IsNullOrEmpty(changePasswordTextBox.Text))
+            {
+                var passwordValidation = InputValidator.ValidatePassword(changePasswordTextBox.Text);
+                if (!passwordValidation.IsValid)
+                {
+                    MessageBox.Show(passwordValidation.Message, "Ошибка валидации",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
+                }
+
+                var matchValidation = InputValidator.ValidatePasswordMatch(
+                    changePasswordTextBox.Text,
+                    confurmChangePasswordTextBox.Text);
+                if (!matchValidation.IsValid)
+                {
+                    MessageBox.Show(matchValidation.Message, "Ошибка валидации",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
+                }
+            }
+
+            foreach (var validation in validations)
+            {
+                if (!validation.IsValid)
+                {
+                    MessageBox.Show(validation.Message, "Ошибка валидации",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
         private void SaveButton_Click(object sender, EventArgs e)
         {
-                       
+            if (!ValidateAllFields())
+            {
+                DialogResult = DialogResult.None;
+                return;
+            }
+
             DialogResult = DialogResult.OK;
             Close();
+
         }
     }
 }
