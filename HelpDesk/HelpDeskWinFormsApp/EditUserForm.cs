@@ -53,7 +53,7 @@ namespace HelpDeskWinFormsApp
                 deparmentComboBox.Enabled = true;
                 functionComboBox.Enabled = true;
             }
-            else if (userTypeComboBox.Text == UserInterfaceTexts.UserTypeClient)
+            if (userTypeComboBox.Text == UserInterfaceTexts.UserTypeClient)
             {
                 deparmentComboBox.Enabled = false;
                 functionComboBox.Enabled = false;
@@ -89,15 +89,16 @@ namespace HelpDeskWinFormsApp
             if (userTypeComboBox.Text == UserInterfaceTexts.UserTypeEmployee && !user.IsEmployee)
             {
                 provider.ChangeUserToEmployee(user, functionComboBox.Text, deparmentComboBox.Text);
+                return;
             }
-            else if (userTypeComboBox.Text == UserInterfaceTexts.UserTypeClient && user.IsEmployee)
+
+            if (userTypeComboBox.Text == UserInterfaceTexts.UserTypeClient && user.IsEmployee)
             {
                 provider.ChangeEmployeeToUser(user);
+                return;
             }
-            else
-            {
-                provider.UpdateUser(user);
-            }
+
+            provider.UpdateUser(user);
         }
 
         private void DeparmentComboBox_SelectedValueChanged(object sender, EventArgs e)
@@ -109,7 +110,7 @@ namespace HelpDeskWinFormsApp
                 functionComboBox.Items.Add(Functions.TechnicalSpecialist);
                 functionComboBox.Text = Functions.Operator;
             }
-            else if (deparmentComboBox.Text == Departments.Development)
+            if (deparmentComboBox.Text == Departments.Development)
             {
                 functionComboBox.Items.Clear();
                 functionComboBox.Items.Add(Functions.Tester);

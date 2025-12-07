@@ -231,14 +231,16 @@ namespace HelpDeskWinFormsApp
 
             UpdateButtonStates(parentName);
 
-            if (parentName ==   TreeViewNodes.TroubleTicketList ||
+            if (parentName == TreeViewNodes.TroubleTicketList ||
                 parentName == TreeViewNodes.StatusTroubleTicket)
             {
                 RefreshTroubleTicketsDataGrid();
+                return;
             }
-            else if (parentName == TreeViewNodes.Users)
+            if (parentName == TreeViewNodes.Users)
             {
                 RefreshUsersDataGrid();
+                return;
             }
         }
 
@@ -265,10 +267,12 @@ namespace HelpDeskWinFormsApp
                 parentName == TreeViewNodes.StatusTroubleTicket)
             {
                 openTroubleTicketButton.PerformClick();
+                return;
             }
-            else if (parentName == TreeViewNodes.Users)
+            if (parentName == TreeViewNodes.Users)
             {
                 editUserButton.PerformClick();
+                return;
             }
         }
 
@@ -332,17 +336,21 @@ namespace HelpDeskWinFormsApp
         {
             var shouldShowUsersNode = user.IsEmployee && user.Department != Departments.TechnicalSupport;
 
-            if (shouldShowUsersNode && treeView.Nodes.Count == 1)
+            editUserButton.Visible = shouldShowUsersNode;
+
+            if (!shouldShowUsersNode)
+            {
+                RemoveUserTreeNode();
+                return;
+            }
+
+            if (treeView.Nodes.Count == 1)
             {
                 var usersNode = CreateUsersTreeStructure();
                 treeView.Nodes.Add(usersNode); 
-            }
-            else if (!shouldShowUsersNode)
-            {
-                RemoveUserTreeNode();
-            }
+            }      
 
-            editUserButton.Visible = shouldShowUsersNode;
+           
         }
 
         private TreeNode CreateUsersTreeStructure()
@@ -479,12 +487,12 @@ namespace HelpDeskWinFormsApp
             {
                 row.Cells[5].Value = userData.Function;
                 row.Cells[6].Value = userData.Department;
+                return;
             }
-            else
-            {
-                row.Cells[5].Style.BackColor = Color.Gray;
-                row.Cells[6].Style.BackColor = Color.Gray;
-            }
+                        
+            row.Cells[5].Style.BackColor = Color.Gray;
+            row.Cells[6].Style.BackColor = Color.Gray;
+            
         }
 
         private void RefreshTroubleTicketsDataGrid()
@@ -575,18 +583,20 @@ namespace HelpDeskWinFormsApp
                 row.DefaultCellStyle.BackColor = ticket.Status == TicketStatuses.Completed
                     ? Color.LightGreen
                     : Color.LightGray;
+                     return;
             }
-            else
+            if (DateTime.Now > ticket.Deadline)
             {
-                if (DateTime.Now > ticket.Deadline)
-                {
-                    row.DefaultCellStyle.BackColor = Color.LightSalmon;
-                }
-                else if (ticket.Status == TicketStatuses.InProgress)
-                {
-                    row.DefaultCellStyle.BackColor = Color.LightYellow;
-                }
+                row.DefaultCellStyle.BackColor = Color.LightSalmon;
+                return;
             }
+                        
+            if (ticket.Status == TicketStatuses.InProgress)
+            {
+                row.DefaultCellStyle.BackColor = Color.LightYellow;
+                return;
+            }
+            row.DefaultCellStyle.BackColor = Color.Empty;
         }
 
         private string GetPreviewText(string text)
