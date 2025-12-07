@@ -18,23 +18,51 @@ namespace HelpDeskWinFormsApp
 
         private bool ValidateAllFields()
         {
-            var validations = new[]
+            var nameValidation = InputValidator.ValidateName(nameTextBox.Text);
+            if (!nameValidation.IsValid)
             {
-                InputValidator.ValidateName(nameTextBox.Text),
-                InputValidator.ValidateLogin(loginTextBox.Text),
-                InputValidator.ValidatePassword(passwordTextBox.Text),
-                InputValidator.ValidatePasswordMatch(passwordTextBox.Text, replyPasswordTextBox.Text),
-                InputValidator.ValidateEmail(emailTextBox.Text)
-            };
+                MessageBox.Show(nameValidation.Message, "Ошибка валидации",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                nameTextBox.Focus();
+                return false;
+            }
 
-            foreach (var validation in validations)
+            var loginValidation = InputValidator.ValidateLogin(loginTextBox.Text);
+            if (!loginValidation.IsValid)
             {
-                if (!validation.IsValid)
-                {
-                    MessageBox.Show(validation.Message, "Ошибка валидации",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return false;
-                }
+                MessageBox.Show(loginValidation.Message, "Ошибка валидации",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                loginTextBox.Focus();
+                return false;
+            }
+
+            var passwordValidation = InputValidator.ValidatePassword(passwordTextBox.Text);
+            if (!passwordValidation.IsValid)
+            {
+                MessageBox.Show(passwordValidation.Message, "Ошибка валидации",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                passwordTextBox.Focus();
+                return false;
+            }
+
+            var matchValidation = InputValidator.ValidatePasswordMatch(
+                passwordTextBox.Text, replyPasswordTextBox.Text);
+
+            if (!matchValidation.IsValid)
+            {
+                MessageBox.Show(matchValidation.Message, "Ошибка валидации",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                replyPasswordTextBox.Focus();
+                return false;
+            }
+
+            var emailValidation = InputValidator.ValidateEmail(emailTextBox.Text);
+            if (!emailValidation.IsValid)
+            {
+                MessageBox.Show(emailValidation.Message, "Ошибка валидации",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                emailTextBox.Focus();
+                return false;
             }
 
             return true;

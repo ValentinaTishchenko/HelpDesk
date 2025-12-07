@@ -10,7 +10,7 @@ namespace HelpDesk.Common
         private const int MaxNameLength = 100;
         private const int MinLoginLength = 3;
         private const int MaxLoginLength = 50;
-        private const int MinPasswordLength = 6;
+        private const int MinPasswordLength = 5;
         private const int MaxPasswordLength = 50;
 
         

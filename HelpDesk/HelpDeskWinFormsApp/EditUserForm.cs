@@ -1,7 +1,8 @@
-﻿using HelpDesk.Common;
-using HelpDesk.Common.Models;
-using System;
+﻿using System;
 using System.Windows.Forms;
+using HelpDesk.Common;
+using HelpDesk.Common.Models;
+using HelpDeskWinFormsApp.Costants;
 
 namespace HelpDeskWinFormsApp
 {
@@ -27,7 +28,7 @@ namespace HelpDeskWinFormsApp
                 deparmentComboBox.Enabled = true;
                 functionComboBox.Enabled = true;
 
-                userTypeComboBox.Text = AppConstants.UserTypeEmployee;
+                userTypeComboBox.Text = UserInterfaceTexts.UserTypeEmployee;
                 deparmentComboBox.Text = user.Department;
                 functionComboBox.Text = user.Function;
             }
@@ -36,7 +37,7 @@ namespace HelpDeskWinFormsApp
                 deparmentComboBox.Enabled = false;
                 functionComboBox.Enabled = false;
 
-                userTypeComboBox.Text = AppConstants.UserTypeClient;
+                userTypeComboBox.Text = UserInterfaceTexts.UserTypeClient;
             }
 
             nameTextBox.Text = user.Name;
@@ -47,12 +48,12 @@ namespace HelpDeskWinFormsApp
        
         private void UserTypeComboBox_SelectedValueChanged(object sender, System.EventArgs e)
         {
-            if (userTypeComboBox.Text == AppConstants.UserTypeEmployee)
+            if (userTypeComboBox.Text == UserInterfaceTexts.UserTypeEmployee)
             {
                 deparmentComboBox.Enabled = true;
                 functionComboBox.Enabled = true;
             }
-            else if (userTypeComboBox.Text == AppConstants.UserTypeClient)
+            else if (userTypeComboBox.Text == UserInterfaceTexts.UserTypeClient)
             {
                 deparmentComboBox.Enabled = false;
                 functionComboBox.Enabled = false;
@@ -85,11 +86,11 @@ namespace HelpDeskWinFormsApp
                 user.Department = deparmentComboBox.Text;
             }
 
-            if (userTypeComboBox.Text == AppConstants.UserTypeEmployee && !user.IsEmployee)
+            if (userTypeComboBox.Text == UserInterfaceTexts.UserTypeEmployee && !user.IsEmployee)
             {
                 provider.ChangeUserToEmployee(user, functionComboBox.Text, deparmentComboBox.Text);
             }
-            else if (userTypeComboBox.Text == AppConstants.UserTypeClient && user.IsEmployee)
+            else if (userTypeComboBox.Text == UserInterfaceTexts.UserTypeClient && user.IsEmployee)
             {
                 provider.ChangeEmployeeToUser(user);
             }
@@ -101,31 +102,49 @@ namespace HelpDeskWinFormsApp
 
         private void DeparmentComboBox_SelectedValueChanged(object sender, EventArgs e)
         {
-            if (deparmentComboBox.Text == AppConstants.DepartmentTechnicalSupport)
+            if (deparmentComboBox.Text == Departments.TechnicalSupport)
             {
                 functionComboBox.Items.Clear();
-                functionComboBox.Items.Add(AppConstants.FunctionOperator);
-                functionComboBox.Items.Add(AppConstants.FunctionTechnicalSpecialist);
-                functionComboBox.Text = AppConstants.FunctionOperator;
+                functionComboBox.Items.Add(Functions.Operator);
+                functionComboBox.Items.Add(Functions.TechnicalSpecialist);
+                functionComboBox.Text = Functions.Operator;
             }
-            else if (deparmentComboBox.Text == AppConstants.DepartmentDevelopment)
+            else if (deparmentComboBox.Text == Departments.Development)
             {
                 functionComboBox.Items.Clear();
-                functionComboBox.Items.Add(AppConstants.FunctionTester);
-                functionComboBox.Items.Add(AppConstants.FunctionDeveloper);
-                functionComboBox.Text = AppConstants.FunctionTester;
+                functionComboBox.Items.Add(Functions.Tester);
+                functionComboBox.Items.Add(Functions.Developer);
+                functionComboBox.Text = Functions.Tester;
             }
         }
 
         private bool ValidateAllFields()
         {
-            var validations = new[]
+            var nameValidation = InputValidator.ValidateName(nameTextBox.Text);
+            if (!nameValidation.IsValid)
             {
-                InputValidator.ValidateName(nameTextBox.Text),
-                InputValidator.ValidateLogin(loginTextBox.Text),
-                InputValidator.ValidateEmail(emailTextBox.Text)
-            };
-            
+                MessageBox.Show(nameValidation.Message, "Ошибка валидации",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
+            var loginValidation = InputValidator.ValidateLogin(loginTextBox.Text);
+            if (!loginValidation.IsValid)
+            {
+                MessageBox.Show(loginValidation.Message, "Ошибка валидации",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
+            var emailValidation = InputValidator.ValidateEmail(emailTextBox.Text);
+            if (!emailValidation.IsValid)
+            {
+                MessageBox.Show(emailValidation.Message, "Ошибка валидации",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                emailTextBox.Focus();
+                return false;
+            }
+
             if (!string.IsNullOrEmpty(changePasswordTextBox.Text))
             {
                 var passwordValidation = InputValidator.ValidatePassword(changePasswordTextBox.Text);
@@ -133,6 +152,7 @@ namespace HelpDeskWinFormsApp
                 {
                     MessageBox.Show(passwordValidation.Message, "Ошибка валидации",
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    changePasswordTextBox.Focus();
                     return false;
                 }
 
@@ -143,23 +163,13 @@ namespace HelpDeskWinFormsApp
                 {
                     MessageBox.Show(matchValidation.Message, "Ошибка валидации",
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    confurmChangePasswordTextBox.Focus();
                     return false;
                 }
-            }
-
-            foreach (var validation in validations)
-            {
-                if (!validation.IsValid)
-                {
-                    MessageBox.Show(validation.Message, "Ошибка валидации",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return false;
-                }
-            }
+            }            
 
             return true;
         }
-
         private void SaveButton_Click(object sender, EventArgs e)
         {
             if (!ValidateAllFields())

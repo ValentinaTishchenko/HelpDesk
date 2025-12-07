@@ -7,7 +7,7 @@ namespace HelpDesk.Common.Models
     {
         public int Id { get; set; }
         public string Status { get; set; }
-        public int CreateUser { get; set; }
+        public int CreateUserId { get; set; }
         public string Text { get; set; }
         public string? Resolve { get; set; }
         public bool IsSolved { get; set; }

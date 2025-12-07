@@ -1,12 +1,14 @@
-﻿using ClosedXML.Excel;
-using HelpDesk.Common;
-using HelpDesk.Common.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using ClosedXML.Excel;
+using HelpDesk.Common;
+using HelpDesk.Common.Constants;
+using HelpDesk.Common.Models;
+using HelpDeskWinFormsApp.Costants;
 
 namespace HelpDeskWinFormsApp
 {
@@ -59,13 +61,13 @@ namespace HelpDeskWinFormsApp
             }
 
             var allTroubleTickets = provider.GetAllTroubleTickets();
-            var trubleTickets = new List<TroubleTicket>();
+            var troubleTickets = new List<TroubleTicket>();
 
             foreach ( var tt in allTroubleTickets)
             {
                 if (tt.Created >= startDateTimePicker.Value && tt.Created <= endDateTimePicker.Value)
                 {
-                    trubleTickets.Add(tt);
+                    troubleTickets.Add(tt);
                 }
             }
 
@@ -78,7 +80,7 @@ namespace HelpDeskWinFormsApp
                 {
                     var tempTroubleTickets = new List<TroubleTicket>();
 
-                    foreach( var tt in trubleTickets)
+                    foreach( var tt in troubleTickets)
                     {
                         if (tt.Status == statusFilterComboBox.Text)
                         {
@@ -86,19 +88,19 @@ namespace HelpDeskWinFormsApp
                         }
                     }
 
-                    trubleTickets.Clear();
-                    trubleTickets.AddRange(tempTroubleTickets);
+                    troubleTickets.Clear();
+                    troubleTickets.AddRange(tempTroubleTickets);
                 }
 
-                if (trubleTickets.Count != 0)
+                if (troubleTickets.Count != 0)
                 {
                     if (fileTypeComboBox.Text == "Excel (.xlsx)")
                     {
-                        ExcelTroubleTicketExport(trubleTickets, users, exportFile);
+                        ExcelTroubleTicketExport(troubleTickets, users, exportFile);
                     }
                     else if (fileTypeComboBox.Text == "Comma-Separated Values (.csv)")
                     {
-                        CsvTroubleTicketExport(trubleTickets, users, exportFile);
+                        CsvTroubleTicketExport(troubleTickets, users, exportFile);
                     }
                 }
                 else
@@ -173,7 +175,7 @@ namespace HelpDeskWinFormsApp
                     progressBar.PerformStep();
 
                     var resolveUser = users.Where(u => u.Id == result[i].ResolveUser).FirstOrDefault();
-                    var createUser = users.Where(u => u.Id == result[i].CreateUser).FirstOrDefault();
+                    var createUser = users.Where(u => u.Id == result[i].CreateUserId).FirstOrDefault();
 
                     sw.Write("\"" + result[i].Id + "\";");
                     sw.Write(result[i].IsSolved == true ? "\"Да\";" : "\"Нет\";");
@@ -332,7 +334,7 @@ namespace HelpDeskWinFormsApp
                 progressBar.PerformStep();
 
                 var resolveUser = users.Where(u => u.Id == result[i].ResolveUser).FirstOrDefault();
-                var createUser = users.Where(u => u.Id == result[i].CreateUser).FirstOrDefault();
+                var createUser = users.Where(u => u.Id == result[i].CreateUserId).FirstOrDefault();
 
                 sheet.Cell(i + 2, 1).SetValue(result[i].Id);
                 sheet.Cell(i + 2, 2).SetValue(result[i].IsSolved == true ? "Да" : "Нет");
@@ -361,10 +363,10 @@ namespace HelpDeskWinFormsApp
                 statusFilter.Clear();
                 statusFilter.AddRange(new List<string>()
                 {
-                    AppConstants.StatusRegistered,
-                    AppConstants.StatusInProgress,
-                    AppConstants.StatusCompleted,
-                    AppConstants.StatusRejected
+                    TicketStatuses.Registered,
+                    TicketStatuses.InProgress,
+                    TicketStatuses.Completed,
+                    TicketStatuses.Rejected
                 });
                    
                 statusFilterComboBox.DataSource = null;
@@ -376,7 +378,7 @@ namespace HelpDeskWinFormsApp
                 endDateTimePicker.Enabled = false;
 
                 statusFilter.Clear();
-                statusFilter.AddRange(new List<string>() { AppConstants.UserTypeClient, AppConstants.UserTypeEmployee });
+                statusFilter.AddRange(new List<string>() { UserInterfaceTexts.UserTypeClient, UserInterfaceTexts.UserTypeEmployee });
                 statusFilterComboBox.DataSource = null;
                 statusFilterComboBox.DataSource = statusFilter;
             }

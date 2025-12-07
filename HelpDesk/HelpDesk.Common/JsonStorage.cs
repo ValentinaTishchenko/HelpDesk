@@ -13,107 +13,58 @@ namespace HelpDesk.Common
         public bool IsCorrectLoginPassword(string login, string password)
         {
             var users = JsonProvider.Deserialize<User>(usersFileName);
-            User user = null;
 
             if (users == null || users.Count == 0)
             {
                 return false;
             }
-            else
-            {
-                user = users.FirstOrDefault(x => x.Login == login);
-            }
+
+            var user = users.FirstOrDefault(x => x.Login == login);
 
             if (user == null)
             {
                 return false;
             }
 
-            return user.Password != Methods.GetHashMD5(password);
+            return user.Password == Methods.GetHashMD5(password);
         }
 
         public User GetUser(string login)
         {
             var users = JsonProvider.Deserialize<User>(usersFileName);
-            User user = null;
-
-            if (users == null || users.Count == 0)
-            {
-                return new User();
-            }
-            else
-            {
-                user = users.FirstOrDefault(x => x.Login == login);
-            }
-
-            if (user == null)
-            {
-                return new User();
-            }
-
-            return user;
+           
+            return users?.FirstOrDefault(x => x.Login == login);
+           
         }
 
         public User GetUser(int id)
         {
             var users = JsonProvider.Deserialize<User>(usersFileName);
-            User user = null;
 
-            if (users == null || users.Count == 0)
-            {
-                return new User();
-            }
-            else
-            {
-                user = users.FirstOrDefault(x => x.Id == id);
-            }
-
-            if (user == null)
-            {
-                return new User();
-            }
-
-            return user;
+            return users?.FirstOrDefault(x => x.Id == id);
         }
 
         public void AddUser(User user)
         {
-            var users = JsonProvider.Deserialize<User>(usersFileName);
+            var users = JsonProvider.Deserialize<User>(usersFileName) ?? new List<User>();
 
-            if (users != null)
-            {
-                user.Id = users.Max(x => x.Id) + 1;
-
-                users.Add(user);
-            }
-            else
-            {
-                users = new List<User> { user };
-            }
-
+            user.Id = users.Count == 0 ? 1 : users.Max(x => x.Id) + 1;
+            users.Add(user);
 
             JsonProvider.Serialize(users, usersFileName);
         }
 
         public List<User> GetAllUsers()
         {
-            return JsonProvider.Deserialize<User>(usersFileName);
+            return JsonProvider.Deserialize<User>(usersFileName) ?? new List<User>();
         }
 
         public void AddTroubleTicket(TroubleTicket troubleTicket)
         {
-            var troubleTickets = JsonProvider.Deserialize<TroubleTicket>(troubleTicketsFileName);
+            var troubleTickets = JsonProvider.Deserialize<TroubleTicket>(troubleTicketsFileName) ?? new List<TroubleTicket>(); 
 
-            if (troubleTickets == null)
-            {
-                troubleTickets = new List<TroubleTicket> { troubleTicket };
-            }
-            else
-            {
-                troubleTicket.Id = troubleTickets.Max(x => x.Id) + 1;
-
-                troubleTickets.Add(troubleTicket);
-            }
+            troubleTicket.Id = troubleTickets.Count == 0 ? 1 : troubleTickets.Max(x => x.Id) + 1;
+            troubleTickets.Add(troubleTicket);
 
             JsonProvider.Serialize(troubleTickets, troubleTicketsFileName);
         }
@@ -122,38 +73,38 @@ namespace HelpDesk.Common
         {
             var troubleTickets = JsonProvider.Deserialize<TroubleTicket>(troubleTicketsFileName);
 
-            if (troubleTickets == null)
-            {
-                return new List<TroubleTicket>();
-            }
-            else
-            {
-                return JsonProvider.Deserialize<TroubleTicket>(troubleTicketsFileName);
-            }
+            return troubleTickets ?? new List<TroubleTicket>();
         }
 
         public TroubleTicket GetTroubleTicket(int id)
         {
             var troubleTickets = JsonProvider.Deserialize<TroubleTicket>(troubleTicketsFileName);
 
-            if (troubleTickets == null)
-            {
-                return new TroubleTicket();
-            }
-            else
-            {
-                var troubleTicket = troubleTickets.FirstOrDefault(t => t.Id == id);
+            return troubleTickets?.FirstOrDefault(t => t.Id == id);
+        }
 
-                return troubleTicket;
-            }
+        private void SaveTroubleTickets(List<TroubleTicket> tickets)
+        {
+            JsonProvider.Serialize(tickets.OrderBy(x => x.Id).ToList(), troubleTicketsFileName);
+        }
+
+        private void SaveUsers(List<User> users)
+        {
+            JsonProvider.Serialize(users.OrderBy(x => x.Id).ToList(), usersFileName);
+        }
+
+        private List<TroubleTicket> GetAllTroubleTicketsInternal()
+        {
+            return JsonProvider.Deserialize<TroubleTicket>(troubleTicketsFileName)
+                   ?? new List<TroubleTicket>();
         }
 
         public void ResolveTroubleTicket(int id, string status, string resolve, int resolveUserId)
         {
-            var troubleTickets = GetAllTroubleTickets();
-            var troubleTicket = GetTroubleTicket(id);
+            var troubleTickets = GetAllTroubleTicketsInternal();
+            var troubleTicket = troubleTickets.FirstOrDefault(t => t.Id == id);
 
-            troubleTickets.RemoveAll(x => x.Id == id);
+            if (troubleTicket == null) return;
 
             troubleTicket.IsSolved = true;
             troubleTicket.Status = status;
@@ -161,34 +112,26 @@ namespace HelpDesk.Common
             troubleTicket.ResolveTime = DateTime.Now;
             troubleTicket.ResolveUser = resolveUserId;
 
-            troubleTickets.Add(troubleTicket);
-
-            var sortedTroubleTickets = troubleTickets.OrderBy(x => x.Id).ToList();
-
-            JsonProvider.Serialize(sortedTroubleTickets, troubleTicketsFileName);
+            SaveTroubleTickets(troubleTickets);
         }
 
         public void ChangeStatusTroubleTicket(int id, string status, int resolveUserId)
         {
-            var troubleTickets = GetAllTroubleTickets();
-            var troubleTicket = GetTroubleTicket(id);
+            var troubleTickets = GetAllTroubleTicketsInternal();
+            var troubleTicket = troubleTickets.FirstOrDefault(t => t.Id == id);
 
-            troubleTickets.RemoveAll(x => x.Id == id);
+            if (troubleTicket == null) return;
 
             troubleTicket.Status = status;
             troubleTicket.ResolveUser = resolveUserId;
 
-            troubleTickets.Add(troubleTicket);
-
-            var sortedTroubleTickets = troubleTickets.OrderBy(x => x.Id).ToList();
-
-            JsonProvider.Serialize(sortedTroubleTickets, troubleTicketsFileName);
+            SaveTroubleTickets(troubleTickets);
 
         }
 
         public void ChangeUserToEmployee(User user, string function, string department)
         {
-            var users = GetAllUsers();
+            var users = GetAllUsers() ?? new List<User>();
             users.RemoveAll(x => x.Id == user.Id);
 
             var convertedUser = new User
@@ -205,14 +148,12 @@ namespace HelpDesk.Common
 
             users.Add(convertedUser);
 
-            var sortedUsers = users.OrderBy(x => x.Id).ToList();
-
-            JsonProvider.Serialize(sortedUsers, usersFileName);
+            SaveUsers(users);
         }
 
         public void ChangeEmployeeToUser(User user)
         {
-            var users = GetAllUsers();
+            var users = GetAllUsers() ?? new List<User>();
             users.RemoveAll(x => x.Id == user.Id);
 
             user.IsEmployee = false;
@@ -221,20 +162,17 @@ namespace HelpDesk.Common
 
             users.Add(user);
 
-            var sortedUsers = users.OrderBy(x => x.Id).ToList();
-
-            JsonProvider.Serialize(sortedUsers, usersFileName);
+            SaveUsers(users);
         }
 
         public void UpdateUser(User user)
         {
-            var users = GetAllUsers();
+            var users = GetAllUsers() ?? new List<User>();
             users.RemoveAll(x => x.Id == user.Id);
             users.Add(user);
 
-            var sortedUsers = users.OrderBy(x => x.Id).ToList();
-
-            JsonProvider.Serialize(sortedUsers, usersFileName);
+            SaveUsers(users);
         }
+       
     }
 }

@@ -7,6 +7,8 @@ using HelpDesk.Common;
 using HelpDesk.Common.Application;
 using HelpDesk.Common.Models;
 using HelpDesk.Common.System;
+using HelpDesk.Common.Constants;
+using HelpDeskWinFormsApp.Costants;
 
 namespace HelpDeskWinFormsApp
 {
@@ -14,6 +16,7 @@ namespace HelpDeskWinFormsApp
     {
         private User user = new();
         private IProvider provider;
+        public const int InvalidId = -1;
 
         public MainForm(ApplicationDIController controller)
         {
@@ -58,7 +61,7 @@ namespace HelpDeskWinFormsApp
         private void SetupTreeViewLayout()
         {
             treeView.Width = splitContainer.Panel1.Width;
-            treeView.Height = splitContainer.Panel1.Height - AppConstants.TreeViewBottomMargin;
+            treeView.Height = splitContainer.Panel1.Height - UIConstants.TreeViewBottomMargin;
         }
 
         private void SetupDataGridViewLayout()
@@ -122,7 +125,7 @@ namespace HelpDeskWinFormsApp
         private void UpdateTreeViewLayout()
         {
             treeView.Width = splitContainer.Panel1.Width;
-            treeView.Height = splitContainer.Panel1.Height - AppConstants.TreeViewBottomMargin;
+            treeView.Height = splitContainer.Panel1.Height - UIConstants.TreeViewBottomMargin;
         }
 
         private void UpdateButtonPositions()
@@ -131,19 +134,19 @@ namespace HelpDeskWinFormsApp
 
             editUserButton.Location = new Point(
                 openTroubleTicketButton.Location.X,
-                panelHeight - AppConstants.EditButtonOffset);
+                panelHeight - UIConstants.EditButtonOffset);
 
             openTroubleTicketButton.Location = new Point(
                 openTroubleTicketButton.Location.X,
-                panelHeight - AppConstants.OpenButtonOffset);
+                panelHeight - UIConstants.OpenButtonOffset);
 
             addTroubleTicketbutton.Location = new Point(
                 openTroubleTicketButton.Location.X,
-                panelHeight - AppConstants.AddButtonOffset);
+                panelHeight - UIConstants.AddButtonOffset);
 
             exitButton.Location = new Point(
                 exitButton.Location.X,
-                panelHeight - AppConstants.ExitButtonOffset);
+                panelHeight - UIConstants.ExitButtonOffset);
         }
 
         private void SplitContainer_Panel2_Resize(object sender, EventArgs e)
@@ -161,7 +164,7 @@ namespace HelpDeskWinFormsApp
 
         private bool TryGetSelectedTicketId(out int ticketId)
         {
-            ticketId = AppConstants.InvalidId;
+            ticketId = InvalidId;
 
             if (troubleTicketsDataGridView.SelectedRows.Count > 0)
             {
@@ -194,7 +197,7 @@ namespace HelpDeskWinFormsApp
                 return (int)ticket.ResolveUser;
             }
 
-            return user.IsEmployee ? user.Id : AppConstants.InvalidId;
+            return user.IsEmployee ? user.Id : InvalidId;
         }
 
         private void AddTroubleTicketButton_Click(object sender, EventArgs e)
@@ -211,8 +214,8 @@ namespace HelpDeskWinFormsApp
 
         private void SelectOpenTroubleTicketsNode()
         {
-            treeView.SelectedNode = treeView.Nodes[AppConstants.TreeNodeTrubleTicketList]
-                .Nodes[AppConstants.TreeNodeOpenTroubleTickets];
+            treeView.SelectedNode = treeView.Nodes[TreeViewNodes.TroubleTicketList]
+                .Nodes[TreeViewNodes.OpenTroubleTickets];
         }
 
         private void TreeView_AfterSelect(object sender, TreeViewEventArgs e)
@@ -228,12 +231,12 @@ namespace HelpDeskWinFormsApp
 
             UpdateButtonStates(parentName);
 
-            if (parentName == AppConstants.TreeNodeTrubleTicketList ||
-                parentName == AppConstants.TreeNodeStatusTroubleTicket)
+            if (parentName ==   TreeViewNodes.TroubleTicketList ||
+                parentName == TreeViewNodes.StatusTroubleTicket)
             {
                 RefreshTroubleTicketsDataGrid();
             }
-            else if (parentName == AppConstants.TreeNodeUsers)
+            else if (parentName == TreeViewNodes.Users)
             {
                 RefreshUsersDataGrid();
             }
@@ -241,7 +244,7 @@ namespace HelpDeskWinFormsApp
 
         private void UpdateButtonStates(string parentName)
         {
-            var isUsersNode = parentName == AppConstants.TreeNodeUsers;
+            var isUsersNode = parentName == TreeViewNodes.Users;
 
             editUserButton.Enabled = isUsersNode;
             openTroubleTicketButton.Enabled = !isUsersNode;
@@ -258,12 +261,12 @@ namespace HelpDeskWinFormsApp
 
             var parentName = treeView.SelectedNode.Parent.Name;
 
-            if (parentName == AppConstants.TreeNodeTrubleTicketList ||
-                parentName == AppConstants.TreeNodeStatusTroubleTicket)
+            if (parentName == TreeViewNodes.TroubleTicketList ||
+                parentName == TreeViewNodes.StatusTroubleTicket)
             {
                 openTroubleTicketButton.PerformClick();
             }
-            else if (parentName == AppConstants.TreeNodeUsers)
+            else if (parentName == TreeViewNodes.Users)
             {
                 editUserButton.PerformClick();
             }
@@ -271,7 +274,7 @@ namespace HelpDeskWinFormsApp
 
         private void ExportToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var isSupport = user.IsEmployee && user.Department == AppConstants.DepartmentTechnicalSupport;
+            var isSupport = user.IsEmployee && user.Department == Departments.TechnicalSupport;
 
             using (var exportForm = new ExportForm(isSupport, provider))
             {
@@ -289,7 +292,7 @@ namespace HelpDeskWinFormsApp
 
         private bool TryGetSelectedUserId(out int userId)
         {
-            userId = AppConstants.InvalidId;
+            userId = InvalidId;
 
             if (troubleTicketsDataGridView.SelectedRows.Count > 0)
             {
@@ -327,7 +330,7 @@ namespace HelpDeskWinFormsApp
 
         private void ShowUserTreeNode()
         {
-            var shouldShowUsersNode = user.IsEmployee && user.Department != AppConstants.DepartmentTechnicalSupport;
+            var shouldShowUsersNode = user.IsEmployee && user.Department != Departments.TechnicalSupport;
 
             if (shouldShowUsersNode && treeView.Nodes.Count == 1)
             {
@@ -346,22 +349,22 @@ namespace HelpDeskWinFormsApp
         {
             var allUsersNode = new TreeNode("Все пользователи")
             {
-                Name = AppConstants.TreeNodeAllUsers
+                Name = TreeViewNodes.AllUsers
             };
 
             var clientsNode = new TreeNode("Клиенты")
             {
-                Name = AppConstants.TreeNodeClients
+                Name = TreeViewNodes.Clients
             };
 
             var employeesNode = new TreeNode("Сотрудники")
             {
-                Name = AppConstants.TreeNodeEmployees
+                Name = TreeViewNodes.Employees
             };
 
             return new TreeNode("Пользователи", new TreeNode[] { allUsersNode, clientsNode, employeesNode })
             {
-                Name = AppConstants.TreeNodeUsers
+                Name = TreeViewNodes.Users
             };
         }
 
@@ -425,9 +428,9 @@ namespace HelpDeskWinFormsApp
 
             return nodeName switch
             {
-                AppConstants.TreeNodeAllUsers => allUsers,
-                AppConstants.TreeNodeClients => allUsers.Where(u => !u.IsEmployee).ToList(),
-                AppConstants.TreeNodeEmployees => allUsers.Where(u => u.IsEmployee).ToList(),
+                TreeViewNodes.AllUsers => allUsers,
+                TreeViewNodes.Clients => allUsers.Where(u => !u.IsEmployee).ToList(),
+                TreeViewNodes.Employees => allUsers.Where(u => u.IsEmployee).ToList(),
                 _ => new List<User>()
             };
         }
@@ -488,7 +491,7 @@ namespace HelpDeskWinFormsApp
         {
             var selectedNode = treeView.SelectedNode.Name;
 
-            if (selectedNode == AppConstants.TreeNodeStatusTroubleTicket)
+            if (selectedNode == TreeViewNodes.StatusTroubleTicket)
             {
                 return;
             }
@@ -505,14 +508,14 @@ namespace HelpDeskWinFormsApp
 
             return nodeName switch
             {
-                AppConstants.TreeNodeAllTroubleTickets => allTickets,
-                AppConstants.TreeNodeOpenTroubleTickets => allTickets.Where(t => !t.IsSolved).ToList(),
-                AppConstants.TreeNodeClosedTroubleTickets => allTickets.Where(t => t.IsSolved).ToList(),
-                AppConstants.TreeNodeOverdueTroubleTickets => allTickets.Where(t => DateTime.Now > t.Deadline).ToList(),
-                AppConstants.TreeNodeRegisteredTroubleTickets => allTickets.Where(t => t.Status == AppConstants.StatusRegistered).ToList(),
-                AppConstants.TreeNodeWorkTroubleTickets => allTickets.Where(t => t.Status == AppConstants.StatusInProgress).ToList(),
-                AppConstants.TreeNodeCompletedTroubleTickets => allTickets.Where(t => t.Status == AppConstants.StatusCompleted).ToList(),
-                AppConstants.TreeNodeRejectedTroubleTickets => allTickets.Where(t => t.Status == AppConstants.StatusRejected).ToList(),
+                TreeViewNodes.AllTroubleTickets => allTickets,
+                TreeViewNodes.OpenTroubleTickets => allTickets.Where(t => !t.IsSolved).ToList(),
+                TreeViewNodes.ClosedTroubleTickets => allTickets.Where(t => t.IsSolved).ToList(),
+                TreeViewNodes.OverdueTroubleTickets => allTickets.Where(t => DateTime.Now > t.Deadline).ToList(),
+                TreeViewNodes.RegisteredTroubleTickets => allTickets.Where(t => t.Status == TicketStatuses.Registered).ToList(),
+                TreeViewNodes.WorkTroubleTickets => allTickets.Where(t => t.Status == TicketStatuses.InProgress).ToList(),
+                TreeViewNodes.CompletedTroubleTickets => allTickets.Where(t => t.Status == TicketStatuses.Completed).ToList(),
+                TreeViewNodes.RejectedTroubleTickets => allTickets.Where(t => t.Status == TicketStatuses.Rejected).ToList(),
                 _ => new List<TroubleTicket>()
             };
         }
@@ -521,7 +524,7 @@ namespace HelpDeskWinFormsApp
         {
             return user.IsEmployee
                 ? provider.GetAllTroubleTickets()
-                : provider.GetAllTroubleTickets().Where(t => t.CreateUser == user.Id).ToList();
+                : provider.GetAllTroubleTickets().Where(t => t.CreateUserId == user.Id).ToList();
         }
 
         private void ClearAndSetupDataGridViewForTickets()
@@ -548,7 +551,7 @@ namespace HelpDeskWinFormsApp
 
         private void PopulateTicketRow(DataGridViewRow row, TroubleTicket ticket, List<User> allUsers)
         {
-            var createUser = allUsers.FirstOrDefault(u => u.Id == ticket.CreateUser);
+            var createUser = allUsers.FirstOrDefault(u => u.Id == ticket.CreateUserId);
             var resolveUser = allUsers.FirstOrDefault(u => u.Id == ticket.ResolveUser);
 
             row.Cells[0].Value = ticket.Id;
@@ -569,7 +572,7 @@ namespace HelpDeskWinFormsApp
         {
             if (ticket.IsSolved)
             {
-                row.DefaultCellStyle.BackColor = ticket.Status == AppConstants.StatusCompleted
+                row.DefaultCellStyle.BackColor = ticket.Status == TicketStatuses.Completed
                     ? Color.LightGreen
                     : Color.LightGray;
             }
@@ -579,7 +582,7 @@ namespace HelpDeskWinFormsApp
                 {
                     row.DefaultCellStyle.BackColor = Color.LightSalmon;
                 }
-                else if (ticket.Status == AppConstants.StatusInProgress)
+                else if (ticket.Status == TicketStatuses.InProgress)
                 {
                     row.DefaultCellStyle.BackColor = Color.LightYellow;
                 }
@@ -588,9 +591,9 @@ namespace HelpDeskWinFormsApp
 
         private string GetPreviewText(string text)
         {
-            if (text.Length > AppConstants.TextPreviewLength)
+            if (text.Length > UIConstants.TextPreviewLength)
             {
-                return $"{text.Substring(0, AppConstants.TextPreviewEllipsisLength)}...";
+                return $"{text.Substring(0, UIConstants.TextPreviewEllipsisLength)}...";
             }
             return text;
         }

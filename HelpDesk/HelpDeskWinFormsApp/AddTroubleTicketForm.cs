@@ -2,6 +2,7 @@
 using HelpDesk.Common.Models;
 using System;
 using System.Windows.Forms;
+using HelpDesk.Common.Constants;
 
 namespace HelpDeskWinFormsApp
 {
@@ -29,9 +30,9 @@ namespace HelpDeskWinFormsApp
             {
                 var troubelTicket = new TroubleTicket
                 {
-                    CreateUser = user.Id,
+                    CreateUserId = user.Id,
                     Text = troubleRichTextBox.Text,
-                    Status = AppConstants.StatusRegistered,
+                    Status = TicketStatuses.Registered,
                     Created = DateTime.Now,
                     Deadline = DateTime.Now.AddDays(4)
                 };

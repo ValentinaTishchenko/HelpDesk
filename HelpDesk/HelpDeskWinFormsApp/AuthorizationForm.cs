@@ -61,20 +61,22 @@ namespace HelpDeskWinFormsApp
 
         private bool ValidateAllFields()
         {
-            var validations = new[]
+            var loginValidation = InputValidator.ValidateLogin(loginTextBox.Text);
+            if (!loginValidation.IsValid)
             {
-                InputValidator.ValidateLogin(loginTextBox.Text),
-                InputValidator.ValidatePassword(passwordTextBox.Text)
-            };
+                MessageBox.Show(loginValidation.Message, "Ошибка валидации",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                loginTextBox.Focus();
+                return false;
+            }
 
-            foreach (var validation in validations)
+            var passwordValidation = InputValidator.ValidatePassword(passwordTextBox.Text);
+            if (!passwordValidation.IsValid)
             {
-                if (!validation.IsValid)
-                {
-                    MessageBox.Show(validation.Message, "Ошибка валидации",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return false;
-                }
+                MessageBox.Show(passwordValidation.Message, "Ошибка валидации",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                passwordTextBox.Focus();
+                return false;
             }
 
             return true;
