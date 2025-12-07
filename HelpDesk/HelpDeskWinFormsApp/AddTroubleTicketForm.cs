@@ -8,8 +8,9 @@ namespace HelpDeskWinFormsApp
 {
     public partial class AddTroubleTicketForm : Form
     {
-        User user;
+        private User user;
         private readonly IProvider provider;
+        private const int MinTroubleTextLength = 5;
 
         public AddTroubleTicketForm(User user, IProvider provider)
         {
@@ -43,14 +44,7 @@ namespace HelpDeskWinFormsApp
 
         private void TroubleRichTextBox_TextChanged(object sender, EventArgs e)
         {
-            if (troubleRichTextBox.Text.Length < 5)
-            {
-                createTroubleTicketButton.Enabled = false;
-            }
-            else
-            {
-                createTroubleTicketButton.Enabled = true;
-            }
+            createTroubleTicketButton.Enabled = troubleRichTextBox.Text.Length >= MinTroubleTextLength;
         }
     }
 }

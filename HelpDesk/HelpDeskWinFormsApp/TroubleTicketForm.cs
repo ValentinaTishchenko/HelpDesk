@@ -54,33 +54,38 @@ namespace HelpDeskWinFormsApp
 
         private void TroubleTicketForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (DialogResult == DialogResult.OK)
-            {
-                if (resolveRichTextBox.Text == string.Empty && (statusTroubleTicketComboBox.Text == TicketStatuses.Completed || statusTroubleTicketComboBox.Text == TicketStatuses.Completed))
-                {
-                    e.Cancel = true;
-                    MessageBox.Show("Пожалуйста заполните решение.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
+            if (DialogResult != DialogResult.OK) return;
+            var newStatus = statusTroubleTicketComboBox.Text;
 
-                if (statusTroubleTicketComboBox.Text != lastStatus)
-                {
-                    if (statusTroubleTicketComboBox.Text == TicketStatuses.Completed || statusTroubleTicketComboBox.Text == TicketStatuses.Completed)
-                    {
-                        provider.ResolveTroubleTicket(troubleTicket.Id, statusTroubleTicketComboBox.Text, resolveRichTextBox.Text, resolveUserId);
-                    }
-                    else if (statusTroubleTicketComboBox.Text == TicketStatuses.Registered && lastStatus != TicketStatuses.Registered)
-                    {
-                        e.Cancel = true;
-                        MessageBox.Show("Возврат в статус \"Зарегистрирована\" запрещён.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
-                    }
-                    else
-                    {
-                        provider.ChangeStatusTroubleTicket(troubleTicket.Id, statusTroubleTicketComboBox.Text, resolveUserId);
-                    }
-                }
+            var isResolutionRequired = newStatus == TicketStatuses.Completed ||
+                        newStatus == TicketStatuses.Rejected;
+            if (isResolutionRequired && resolveRichTextBox.Text == string.Empty)
+            {
+                e.Cancel = true;
+                MessageBox.Show("Пожалуйста заполните решение.", "Ошибка",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
+
+            if (newStatus == lastStatus) return;
+
+            if (newStatus == TicketStatuses.Registered && lastStatus != TicketStatuses.Registered)
+            {
+                e.Cancel = true;
+                MessageBox.Show("Возврат в статус \"Зарегистрирована\" запрещён.", "Ошибка",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (isResolutionRequired)
+            {
+                provider.ResolveTroubleTicket(troubleTicket.Id, newStatus,
+                    resolveRichTextBox.Text, resolveUserId);
+                return;
+            }
+
+            provider.ChangeStatusTroubleTicket(troubleTicket.Id, newStatus, resolveUserId);
+
         }
     }
 }
