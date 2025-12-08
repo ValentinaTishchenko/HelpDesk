@@ -45,7 +45,7 @@ namespace HelpDeskWinFormsApp
             emailTextBox.Text = user.Email;
         }
 
-       
+
         private void UserTypeComboBox_SelectedValueChanged(object sender, System.EventArgs e)
         {
             if (userTypeComboBox.Text == UserInterfaceTexts.UserTypeEmployee)
@@ -167,10 +167,22 @@ namespace HelpDeskWinFormsApp
                     confurmChangePasswordTextBox.Focus();
                     return false;
                 }
-            }            
-
+            }
+            if (userTypeComboBox.Text == UserInterfaceTexts.UserTypeEmployee)
+            {
+                var departmentValidation = InputValidator.ValidateDepartment(deparmentComboBox.Text);
+                if (!departmentValidation.IsValid)
+                {
+                    MessageBox.Show(departmentValidation.Message, "Ошибка валидации",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    deparmentComboBox.Focus();
+                    return false;
+                }
+            }
             return true;
         }
+
+
         private void SaveButton_Click(object sender, EventArgs e)
         {
             if (!ValidateAllFields())

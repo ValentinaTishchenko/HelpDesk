@@ -12,6 +12,8 @@ namespace HelpDesk.Common
 
         public static void Put(string fileName, string text)
         {
+            text = SimpleEncryption.Encrypt(text);
+
             using (var writer = new StreamWriter(fileName, false, Encoding.UTF8))
             {
                 writer.WriteLine(text);
@@ -32,7 +34,7 @@ namespace HelpDesk.Common
                 text = reader.ReadToEnd();
             }
 
-            return text;
+            return SimpleEncryption.Decrypt(text);
         }
     }
 }

@@ -13,10 +13,10 @@ namespace HelpDesk.Common
         private const int MinPasswordLength = 5;
         private const int MaxPasswordLength = 50;
 
-        
+
         public static (bool IsValid, string Message) ValidateName(string inputName)
         {
-            var name = inputName?.Trim() ?? "";
+            var name = inputName?.Trim() ?? string.Empty;
 
             if (string.IsNullOrWhiteSpace(name))
             {
@@ -33,7 +33,7 @@ namespace HelpDesk.Common
 
         public static (bool IsValid, string Message) ValidateLogin(string inputLogin)
         {
-            var login = inputLogin?.Trim() ?? "";
+            var login = inputLogin?.Trim() ?? string.Empty;
 
             if (string.IsNullOrWhiteSpace(login))
             {
@@ -49,7 +49,7 @@ namespace HelpDesk.Common
 
         public static (bool IsValid, string Message) ValidatePassword(string inputPassword)
         {
-            var password = inputPassword ?? "";
+            var password = inputPassword ?? string.Empty;
 
             if (string.IsNullOrWhiteSpace(password))
             {
@@ -67,7 +67,7 @@ namespace HelpDesk.Common
         public static (bool IsValid, string Message) ValidatePasswordMatch(
            string password, string confirmPassword)
         {
-           
+
             if (password != confirmPassword)
             {
                 return (false, "Пароли не совпадают");
@@ -78,7 +78,7 @@ namespace HelpDesk.Common
 
         public static (bool IsValid, string Message) ValidateEmail(string inputEmail)
         {
-            var email = inputEmail?.Trim() ?? "";
+            var email = inputEmail?.Trim() ?? string.Empty;
 
             if (string.IsNullOrWhiteSpace(email))
             {
@@ -92,7 +92,18 @@ namespace HelpDesk.Common
             catch (FormatException)
             {
                 return (false, "Неверный формат email");
-            }            
-        } 
+            }
+        }
+       
+        public static (bool IsValid, string Message) ValidateDepartment(string inputDepartment)
+        {
+            var department = inputDepartment?.Trim() ?? string.Empty;
+
+            if (string.IsNullOrWhiteSpace(department))
+            {
+                return (false, "Отдел обязателен для заполнения");
+            }
+            return (true, string.Empty);
+        }
     }
 }
