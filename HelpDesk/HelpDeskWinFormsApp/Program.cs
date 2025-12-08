@@ -1,6 +1,8 @@
-﻿using HelpDesk.Common.Application;
-using System;
+﻿using System;
 using System.Windows.Forms;
+using HelpDesk.Common;
+using HelpDesk.Common.Application;
+using HelpDesk.Common.System;
 
 namespace HelpDeskWinFormsApp
 {
@@ -15,7 +17,14 @@ namespace HelpDeskWinFormsApp
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new MainForm(new ApplicationDIController()));           
-    }
+
+            var controller = new ApplicationDIController();
+            controller.Start();
+
+            var userProvider = SystemManager.Get<IUserProvider>();
+            var ticketProvider = SystemManager.Get<ITroubleTicketProvider>();
+
+            Application.Run(new MainForm(controller, userProvider, ticketProvider));
+        }
     }
 }

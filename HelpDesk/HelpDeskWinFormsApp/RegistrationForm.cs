@@ -7,13 +7,13 @@ namespace HelpDeskWinFormsApp
 {
     public partial class RegistrationForm : Form
     {
-        private readonly IProvider provider;
+        private readonly IUserProvider userProvider;
 
-        public RegistrationForm(IProvider provider)
+        public RegistrationForm(IUserProvider userProvider)
         {
             InitializeComponent();
 
-            this.provider = provider;
+            this.userProvider = userProvider;
         }
 
         private bool ValidateAllFields()
@@ -88,7 +88,7 @@ namespace HelpDeskWinFormsApp
                 Email = emailTextBox.Text
             };
 
-            provider.AddUser(user);
+            userProvider.AddUser(user);
         }
 
         private void RegistrationButton_Click(object sender, System.EventArgs e)

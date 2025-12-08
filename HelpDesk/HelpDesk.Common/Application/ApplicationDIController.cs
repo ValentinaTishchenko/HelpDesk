@@ -11,8 +11,11 @@ namespace HelpDesk.Common.Application
 
         private void RegisterSystems()
         {          
-            SystemManager.Register(this);            
-            SystemManager.Register<IProvider>(() => new JsonStorage());
+            SystemManager.Register(this);
+            var jsonStorage = new JsonStorage();
+
+            SystemManager.Register<IUserProvider>(jsonStorage);
+            SystemManager.Register<ITroubleTicketProvider>(jsonStorage);
         }
     }
 }

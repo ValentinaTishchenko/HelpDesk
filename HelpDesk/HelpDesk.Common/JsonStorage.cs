@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace HelpDesk.Common
 {
-    public class JsonStorage : IProvider
+    public class JsonStorage : IUserProvider, ITroubleTicketProvider
     {
         private string usersFileName = "users.json";
         private string troubleTicketsFileName = "troubleTicket.json";

@@ -8,12 +8,12 @@ namespace HelpDeskWinFormsApp
     public partial class AuthorizationForm : Form
     {
         public bool RegistrationChoice = false;
-        private readonly IProvider provider;
+        private readonly IUserProvider userProvider;
 
-        public AuthorizationForm(IProvider provider)
+        public AuthorizationForm(IUserProvider userProvider)
         {
             InitializeComponent();
-            this.provider = provider;
+            this.userProvider = userProvider;
         }
 
 
@@ -40,7 +40,7 @@ namespace HelpDeskWinFormsApp
 
         private void AddFirstEmployee()
         {
-            var isEmptyUsers = provider.GetAllUsers();
+            var isEmptyUsers = userProvider.GetAllUsers();
 
             if (isEmptyUsers == null || isEmptyUsers.Count == 0)
             {
@@ -55,7 +55,7 @@ namespace HelpDeskWinFormsApp
                     Function = "Разработчик"
                 };
 
-                provider.AddUser(employee);
+                userProvider.AddUser(employee);
             }
         }
 
@@ -96,7 +96,7 @@ namespace HelpDeskWinFormsApp
                 return;
             }
 
-            if (!provider.IsCorrectLoginPassword(loginTextBox.Text, passwordTextBox.Text))
+            if (!userProvider.IsCorrectLoginPassword(loginTextBox.Text, passwordTextBox.Text))
             {
                 e.Cancel = true;
                 MessageBox.Show("Неверный логин или пароль", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);

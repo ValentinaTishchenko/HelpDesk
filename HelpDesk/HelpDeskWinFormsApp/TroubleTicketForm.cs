@@ -13,21 +13,23 @@ namespace HelpDeskWinFormsApp
         private bool isEmployee;
         private int resolveUserId;
         private string lastStatus;
-        private readonly IProvider provider;
+        private readonly ITroubleTicketProvider troubleTicketProvider;
+        private readonly IUserProvider userProvider;
 
-        public TroubleTicketForm(int ticketId, bool isEmployee, int resolveUserId, IProvider provider)
+        public TroubleTicketForm(int ticketId, bool isEmployee, int resolveUserId, ITroubleTicketProvider troubleTicketProvider, IUserProvider userProvider)
         {
             InitializeComponent();
             this.ticketId = ticketId;
             this.isEmployee = isEmployee;
             this.resolveUserId = resolveUserId;
-            this.provider = provider;
+            this.troubleTicketProvider = troubleTicketProvider;
+            this.userProvider = userProvider;
         }
 
         private void TroubleTicketForm_Shown(object sender, System.EventArgs e)
         {
-            troubleTicket = provider.GetTroubleTicket(ticketId);
-            userCreate = provider.GetUser(troubleTicket.CreateUserId);
+            troubleTicket = troubleTicketProvider.GetTroubleTicket(ticketId);
+            userCreate = userProvider.GetUser(troubleTicket.CreateUserId);
             lastStatus = troubleTicket.Status;
 
             Text = $"HelpDesk. Заяка №{troubleTicket.Id}";
@@ -79,12 +81,12 @@ namespace HelpDeskWinFormsApp
 
             if (isResolutionRequired)
             {
-                provider.ResolveTroubleTicket(troubleTicket.Id, newStatus,
+                troubleTicketProvider.ResolveTroubleTicket(troubleTicket.Id, newStatus,
                     resolveRichTextBox.Text, resolveUserId);
                 return;
             }
 
-            provider.ChangeStatusTroubleTicket(troubleTicket.Id, newStatus, resolveUserId);
+            troubleTicketProvider.ChangeStatusTroubleTicket(troubleTicket.Id, newStatus, resolveUserId);
 
         }
     }

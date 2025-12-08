@@ -15,21 +15,20 @@ namespace HelpDeskWinFormsApp
     public partial class MainForm : Form
     {
         private User user = new();
-        private IProvider provider;
+        private readonly IUserProvider userProvider;
+        private readonly ITroubleTicketProvider troubleTicketProvider;
         public const int InvalidId = -1;
 
-        public MainForm(ApplicationDIController controller)
+        public MainForm(ApplicationDIController controller,
+                IUserProvider userProvider,
+                ITroubleTicketProvider troubleTicketProvider)
         {
-            controller.Start();
+            this.userProvider = userProvider;
+            this.troubleTicketProvider = troubleTicketProvider;
+
             InitializeComponent();
-            GetProvider();
         }
-
-        public void GetProvider()
-        {
-            SystemManager.Get(out provider);
-        }
-
+        
         private void MainForm_Load(object sender, EventArgs e)
         {
             var login = AuthorizationUser();
@@ -42,7 +41,7 @@ namespace HelpDeskWinFormsApp
 
         private void InitializeUserSession(string login)
         {
-            user = provider.GetUser(login);
+            user = userProvider.GetUser(login);
 
             SetupUserInterface();
             SetupTreeViewLayout();
@@ -95,7 +94,7 @@ namespace HelpDeskWinFormsApp
 
             if (!string.IsNullOrEmpty(login))
             {
-                user = provider.GetUser(login);
+                user = userProvider.GetUser(login);
                 SetWindowHeaderText();
                 UpdateUserInfoUI();
                 ResetTreeViewSelection();
@@ -179,7 +178,7 @@ namespace HelpDeskWinFormsApp
         {
             var resolveUserId = GetResolveUserIdForTicket(ticketId);
 
-            using (var ticketForm = new TroubleTicketForm(ticketId, user.IsEmployee, resolveUserId, provider))
+            using (var ticketForm = new TroubleTicketForm(ticketId, user.IsEmployee, resolveUserId, troubleTicketProvider, userProvider))
             {
                 if (ticketForm.ShowDialog() == DialogResult.OK)
                 {
@@ -190,7 +189,7 @@ namespace HelpDeskWinFormsApp
 
         private int GetResolveUserIdForTicket(int ticketId)
         {
-            var ticket = provider.GetTroubleTicket(ticketId);
+            var ticket = troubleTicketProvider.GetTroubleTicket(ticketId);
 
             if (ticket.ResolveUser != null)
             {
@@ -202,7 +201,7 @@ namespace HelpDeskWinFormsApp
 
         private void AddTroubleTicketButton_Click(object sender, EventArgs e)
         {
-            using (var addForm = new AddTroubleTicketForm(user, provider))
+            using (var addForm = new AddTroubleTicketForm(user, troubleTicketProvider))
             {
                 if (addForm.ShowDialog() == DialogResult.OK)
                 {
@@ -280,7 +279,7 @@ namespace HelpDeskWinFormsApp
         {
             var isSupport = user.IsEmployee && user.Department == Departments.TechnicalSupport;
 
-            using (var exportForm = new ExportForm(isSupport, provider))
+            using (var exportForm = new ExportForm(isSupport, userProvider, troubleTicketProvider))
             {
                 exportForm.ShowDialog();
             }
@@ -309,7 +308,7 @@ namespace HelpDeskWinFormsApp
 
         private void OpenEditUserForm(int userId)
         {
-            using (var editForm = new EditUserForm(userId, provider))
+            using (var editForm = new EditUserForm(userId, userProvider))
             {
                 if (editForm.ShowDialog() == DialogResult.OK)
                 {
@@ -378,7 +377,7 @@ namespace HelpDeskWinFormsApp
 
         private string AuthorizationUser()
         {
-            var authorizationForm = new AuthorizationForm(provider);
+            var authorizationForm = new AuthorizationForm(userProvider);
 
             if (authorizationForm.ShowDialog() == DialogResult.OK)
             {
@@ -401,7 +400,7 @@ namespace HelpDeskWinFormsApp
 
         private string ProcessRegistration()
         {
-            using (var registrationForm = new RegistrationForm(provider))
+            using (var registrationForm = new RegistrationForm(userProvider))
             {
                 DialogResult result = registrationForm.ShowDialog();
 
@@ -432,7 +431,7 @@ namespace HelpDeskWinFormsApp
 
         private List<User> GetFilteredUsers(string nodeName)
         {
-           var allUsers = provider.GetAllUsers();
+           var allUsers = userProvider.GetAllUsers();
 
             return nodeName switch
             {
@@ -531,8 +530,8 @@ namespace HelpDeskWinFormsApp
         private List<TroubleTicket> GetAllRelevantTickets()
         {
             return user.IsEmployee
-                ? provider.GetAllTroubleTickets()
-                : provider.GetAllTroubleTickets().Where(t => t.CreateUserId == user.Id).ToList();
+                ? troubleTicketProvider.GetAllTroubleTickets()
+                : troubleTicketProvider.GetAllTroubleTickets().Where(t => t.CreateUserId == user.Id).ToList();
         }
 
         private void ClearAndSetupDataGridViewForTickets()
@@ -544,7 +543,7 @@ namespace HelpDeskWinFormsApp
         private void FillTroubleTicketsDataGridView(List<TroubleTicket> tickets)
         {
             troubleTicketsDataGridView.Rows.Clear();
-            var allUsers = provider.GetAllUsers();
+            var allUsers = userProvider.GetAllUsers();
 
             foreach (var ticket in tickets)
             {

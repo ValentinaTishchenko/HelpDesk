@@ -18,15 +18,16 @@ namespace HelpDeskWinFormsApp
         private bool successfullyExport = false;
         private DialogResult exportFileDialogResult = DialogResult.Cancel;
         private bool isSupport = false;
-        private readonly IProvider provider;
+        private readonly IUserProvider userProvider;
+        private readonly ITroubleTicketProvider ticketProvider;
 
-        public ExportForm(bool isSupport, IProvider provider)
+        public ExportForm(bool isSupport, IUserProvider userProvider, ITroubleTicketProvider ticketProvider)
         {
             InitializeComponent();
 
-            this.provider = provider;
+            this.userProvider = userProvider;
             this.isSupport = isSupport;
-            this.provider = provider;
+            this.ticketProvider = ticketProvider;
         }
 
         private void ExportForm_Shown(object sender, EventArgs e)
@@ -60,7 +61,7 @@ namespace HelpDeskWinFormsApp
                 return;
             }
 
-            var allTroubleTickets = provider.GetAllTroubleTickets();
+            var allTroubleTickets = ticketProvider.GetAllTroubleTickets();
             var troubleTickets = new List<TroubleTicket>();
 
             foreach ( var tt in allTroubleTickets)
@@ -71,7 +72,7 @@ namespace HelpDeskWinFormsApp
                 }
             }
 
-            var users = provider.GetAllUsers();
+            var users = userProvider.GetAllUsers();
             var exportFile = exportFileDialog.FileName;
 
             if (typeComboBox.Text == "Trouble Ticket")

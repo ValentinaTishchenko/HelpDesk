@@ -10,18 +10,18 @@ namespace HelpDeskWinFormsApp
     {
         private int userId;
         private User user;
-        private readonly IProvider provider;
+        private readonly IUserProvider userProvider;
 
-        public EditUserForm(int userId, IProvider provider)
+        public EditUserForm(int userId, IUserProvider userProvider)
         {
             InitializeComponent();
             this.userId = userId;
-            this.provider = provider;
+            this.userProvider = userProvider;
         }
 
         private void EditUserForm_Shown(object sender, EventArgs e)
         {
-            user = provider.GetUser(userId);
+            user = userProvider.GetUser(userId);
 
             if (user.IsEmployee)
             {
@@ -88,17 +88,17 @@ namespace HelpDeskWinFormsApp
 
             if (userTypeComboBox.Text == UserInterfaceTexts.UserTypeEmployee && !user.IsEmployee)
             {
-                provider.ChangeUserToEmployee(user, functionComboBox.Text, deparmentComboBox.Text);
+                userProvider.ChangeUserToEmployee(user, functionComboBox.Text, deparmentComboBox.Text);
                 return;
             }
 
             if (userTypeComboBox.Text == UserInterfaceTexts.UserTypeClient && user.IsEmployee)
             {
-                provider.ChangeEmployeeToUser(user);
+                userProvider.ChangeEmployeeToUser(user);
                 return;
             }
 
-            provider.UpdateUser(user);
+            userProvider.UpdateUser(user);
         }
 
         private void DeparmentComboBox_SelectedValueChanged(object sender, EventArgs e)
