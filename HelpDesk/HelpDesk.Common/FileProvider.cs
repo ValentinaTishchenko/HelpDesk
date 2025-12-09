@@ -18,12 +18,7 @@ namespace HelpDesk.Common
             {
                 writer.WriteLine(text);
             }
-        }
-
-        public static void Delete(string fileName)
-        {
-            File.Delete(fileName);
-        }
+        }      
 
         public static string Get(string fileName)
         {

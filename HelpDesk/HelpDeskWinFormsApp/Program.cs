@@ -19,10 +19,10 @@ namespace HelpDeskWinFormsApp
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
 
-            CheckAndEncryptOldFiles();
+           CheckAndEncryptOldFiles();
 
             var controller = new ApplicationDIController();
-            controller.Start();
+            controller.Start();          
 
             var userProvider = SystemManager.Get<IUserProvider>();
             var ticketProvider = SystemManager.Get<ITroubleTicketProvider>();
