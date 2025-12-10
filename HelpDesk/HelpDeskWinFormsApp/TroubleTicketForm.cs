@@ -28,8 +28,8 @@ namespace HelpDeskWinFormsApp
 
         private void TroubleTicketForm_Shown(object sender, System.EventArgs e)
         {
-            troubleTicket = troubleTicketProvider.GetTroubleTicket(ticketId);
-            userCreate = userProvider.GetUser(troubleTicket.CreateUserId);
+            troubleTicket = troubleTicketProvider.Get(ticketId);
+            userCreate = userProvider.Get(troubleTicket.CreateUserId);
             lastStatus = troubleTicket.Status;
 
             Text = $"HelpDesk. Заяка №{troubleTicket.Id}";
@@ -81,12 +81,12 @@ namespace HelpDeskWinFormsApp
 
             if (isResolutionRequired)
             {
-                troubleTicketProvider.ResolveTroubleTicket(troubleTicket.Id, newStatus,
+                troubleTicketProvider.Resolve(troubleTicket.Id, newStatus,
                     resolveRichTextBox.Text, resolveUserId);
                 return;
             }
 
-            troubleTicketProvider.ChangeStatusTroubleTicket(troubleTicket.Id, newStatus, resolveUserId);
+            troubleTicketProvider.ChangeStatus(troubleTicket.Id, newStatus, resolveUserId);
 
         }
     }

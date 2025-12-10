@@ -27,7 +27,7 @@ namespace HelpDesk.Common
             return user.Password == Methods.GetHashMD5(password);
         }
 
-        public User GetUser(string login)
+        public User Get(string login)
         {
             var users = JsonProvider.Deserialize<User>(usersFileName);
 
@@ -35,14 +35,14 @@ namespace HelpDesk.Common
 
         }
 
-        public User GetUser(int id)
+        public User Get(int id)
         {
             var users = JsonProvider.Deserialize<User>(usersFileName);
 
             return users?.FirstOrDefault(x => x.Id == id);
         }
 
-        public void AddUser(User user)
+        public void Add(User user)
         {
             var users = JsonProvider.Deserialize<User>(usersFileName) ?? new List<User>();
 
@@ -52,19 +52,19 @@ namespace HelpDesk.Common
             JsonProvider.Serialize(users, usersFileName);
         }
 
-        public List<User> GetAllUsers()
+        public List<User> GetAll()
         {
             return JsonProvider.Deserialize<User>(usersFileName) ?? new List<User>();
         }
 
-        private void SaveUsers(List<User> users)
+        private void Save(List<User> users)
         {
             JsonProvider.Serialize(users.OrderBy(x => x.Id).ToList(), usersFileName);
         }
 
         public void ChangeUserToEmployee(User user, string function, string department)
         {
-            var users = GetAllUsers() ?? new List<User>();
+            var users = GetAll() ?? new List<User>();
             users.RemoveAll(x => x.Id == user.Id);
 
             var convertedUser = new User
@@ -81,12 +81,12 @@ namespace HelpDesk.Common
 
             users.Add(convertedUser);
 
-            SaveUsers(users);
+            Save(users);
         }
 
         public void ChangeEmployeeToUser(User user)
         {
-            var users = GetAllUsers() ?? new List<User>();
+            var users = GetAll() ?? new List<User>();
             users.RemoveAll(x => x.Id == user.Id);
 
             user.IsEmployee = false;
@@ -95,16 +95,16 @@ namespace HelpDesk.Common
 
             users.Add(user);
 
-            SaveUsers(users);
+            Save(users);
         }
 
-        public void UpdateUser(User user)
+        public void Update(User user)
         {
-            var users = GetAllUsers() ?? new List<User>();
+            var users = GetAll() ?? new List<User>();
             users.RemoveAll(x => x.Id == user.Id);
             users.Add(user);
 
-            SaveUsers(users);
+            Save(users);
         }
 
     }

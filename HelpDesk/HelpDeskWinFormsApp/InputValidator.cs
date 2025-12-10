@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Net.Mail;
-using System.Text.RegularExpressions;
+
 
 namespace HelpDesk.Common
 {
     public static class InputValidator
     {
-        private const int MinNameLength = 2;
-        private const int MaxNameLength = 100;
-        private const int MinLoginLength = 3;
-        private const int MaxLoginLength = 50;
-        private const int MinPasswordLength = 5;
-        private const int MaxPasswordLength = 50;
+        private const int minNameLength = 2;
+        private const int maxNameLength = 100;
+        private const int minLoginLength = 3;
+        private const int maxLoginLength = 50;
+        private const int minPasswordLength = 5;
+        private const int maxPasswordLength = 50;
 
 
         public static (bool IsValid, string Message) ValidateName(string inputName)
@@ -23,9 +23,9 @@ namespace HelpDesk.Common
                 return (false, "Имя обязательно для заполнения");
             }
 
-            if (name.Length < MinNameLength || name.Length > MaxNameLength)
+            if (name.Length < minNameLength || name.Length > maxNameLength)
             {
-                return (false, $"Имя должно быть от {MinNameLength} до {MaxNameLength} символов");
+                return (false, $"Имя должно быть от {minNameLength} до {maxNameLength} символов");
             }
 
             return (true, string.Empty);
@@ -40,9 +40,9 @@ namespace HelpDesk.Common
                 return (false, "Логин обязателен для заполнения");
             }
 
-            if (login.Length < MinLoginLength || login.Length > MaxLoginLength)
+            if (login.Length < minLoginLength || login.Length > maxLoginLength)
             {
-                return (false, $"Логин должен быть от {MinLoginLength} до {MaxLoginLength} символов");
+                return (false, $"Логин должен быть от {minLoginLength} до {maxLoginLength} символов");
             }
             return (true, string.Empty);
         }
@@ -56,9 +56,9 @@ namespace HelpDesk.Common
                 return (false, "Пароль обязателен для заполнения");
             }
 
-            if (password.Length < MinPasswordLength || password.Length > MaxPasswordLength)
+            if (password.Length < minPasswordLength || password.Length > maxPasswordLength)
             {
-                return (false, $"Пароль должен быть от {MinPasswordLength} до {MaxPasswordLength} символов");
+                return (false, $"Пароль должен быть от {minPasswordLength} до {maxPasswordLength} символов");
             }
 
             return (true, string.Empty);

@@ -40,7 +40,7 @@ namespace HelpDeskWinFormsApp
 
         private void InitializeUserSession(string login)
         {
-            user = userProvider.GetUser(login);
+            user = userProvider.Get(login);
 
             SetupUserInterface();
             SetupTreeViewLayout();
@@ -93,7 +93,7 @@ namespace HelpDeskWinFormsApp
 
             if (!string.IsNullOrEmpty(login))
             {
-                user = userProvider.GetUser(login);
+                user = userProvider.Get(login);
                 SetWindowHeaderText();
                 UpdateUserInfoUI();
                 ResetTreeViewSelection();
@@ -188,7 +188,7 @@ namespace HelpDeskWinFormsApp
 
         private int GetResolveUserIdForTicket(int ticketId)
         {
-            var ticket = troubleTicketProvider.GetTroubleTicket(ticketId);
+            var ticket = troubleTicketProvider.Get(ticketId);
 
             if (ticket.ResolveUser != null)
             {
@@ -430,7 +430,7 @@ namespace HelpDeskWinFormsApp
 
         private List<User> GetFilteredUsers(string nodeName)
         {
-           var allUsers = userProvider.GetAllUsers();
+           var allUsers = userProvider.GetAll();
 
             return nodeName switch
             {
@@ -529,8 +529,8 @@ namespace HelpDeskWinFormsApp
         private List<TroubleTicket> GetAllRelevantTickets()
         {
             return user.IsEmployee
-                ? troubleTicketProvider.GetAllTroubleTickets()
-                : troubleTicketProvider.GetAllTroubleTickets().Where(t => t.CreateUserId == user.Id).ToList();
+                ? troubleTicketProvider.GetAll()
+                : troubleTicketProvider.GetAll().Where(t => t.CreateUserId == user.Id).ToList();
         }
 
         private void ClearAndSetupDataGridViewForTickets()
@@ -542,7 +542,7 @@ namespace HelpDeskWinFormsApp
         private void FillTroubleTicketsDataGridView(List<TroubleTicket> tickets)
         {
             troubleTicketsDataGridView.Rows.Clear();
-            var allUsers = userProvider.GetAllUsers();
+            var allUsers = userProvider.GetAll();
 
             foreach (var ticket in tickets)
             {

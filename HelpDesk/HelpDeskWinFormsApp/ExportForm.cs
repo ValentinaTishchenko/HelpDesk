@@ -61,7 +61,7 @@ namespace HelpDeskWinFormsApp
                 return;
             }
 
-            var allTroubleTickets = ticketProvider.GetAllTroubleTickets();
+            var allTroubleTickets = ticketProvider.GetAll();
             var troubleTickets = new List<TroubleTicket>();
 
             foreach ( var tt in allTroubleTickets)
@@ -72,7 +72,7 @@ namespace HelpDeskWinFormsApp
                 }
             }
 
-            var users = userProvider.GetAllUsers();
+            var users = userProvider.GetAll();
             var exportFile = exportFileDialog.FileName;
 
             if (typeComboBox.Text == "Trouble Ticket")

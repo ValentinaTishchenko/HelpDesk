@@ -88,7 +88,7 @@ namespace HelpDeskWinFormsApp
                 Email = emailTextBox.Text
             };
 
-            userProvider.AddUser(user);
+            userProvider.Add(user);
         }
 
         private void RegistrationButton_Click(object sender, System.EventArgs e)

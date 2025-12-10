@@ -6,12 +6,12 @@ namespace HelpDesk.Common
     public interface IUserProvider
     {
         bool IsCorrectLoginPassword(string login, string password);
-        User GetUser(string login);
-        User GetUser(int id);
-        void AddUser(User user);
-        List<User> GetAllUsers();
+        User Get(string login);
+        User Get(int id);
+        void Add(User user);
+        List<User> GetAll();
         void ChangeUserToEmployee(User user, string function, string department);
         void ChangeEmployeeToUser(User user);
-        void UpdateUser(User user);
+        void Update(User user);
     }
 }

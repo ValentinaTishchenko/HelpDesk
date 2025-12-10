@@ -21,7 +21,7 @@ namespace HelpDeskWinFormsApp
 
         private void EditUserForm_Shown(object sender, EventArgs e)
         {
-            user = userProvider.GetUser(userId);
+            user = userProvider.Get(userId);
 
             if (user.IsEmployee)
             {
@@ -98,7 +98,7 @@ namespace HelpDeskWinFormsApp
                 return;
             }
 
-            userProvider.UpdateUser(user);
+            userProvider.Update(user);
         }
 
         private void DeparmentComboBox_SelectedValueChanged(object sender, EventArgs e)

@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using HelpDesk.Common.Models;
 
 namespace HelpDesk.Common
@@ -11,7 +10,7 @@ namespace HelpDesk.Common
     {
         private readonly string troubleTicketsFileName = "troubleTicket.json";
 
-        public void AddTroubleTicket(TroubleTicket troubleTicket)
+        public void Add(TroubleTicket troubleTicket)
         {
             var troubleTickets = JsonProvider.Deserialize<TroubleTicket>(troubleTicketsFileName) ?? new List<TroubleTicket>();
 
@@ -21,34 +20,34 @@ namespace HelpDesk.Common
             JsonProvider.Serialize(troubleTickets, troubleTicketsFileName);
         }
 
-        public List<TroubleTicket> GetAllTroubleTickets()
+        public List<TroubleTicket> GetAll()
         {
             var troubleTickets = JsonProvider.Deserialize<TroubleTicket>(troubleTicketsFileName);
 
             return troubleTickets ?? new List<TroubleTicket>();
         }
 
-        public TroubleTicket GetTroubleTicket(int id)
+        public TroubleTicket Get(int id)
         {
             var troubleTickets = JsonProvider.Deserialize<TroubleTicket>(troubleTicketsFileName);
 
             return troubleTickets?.FirstOrDefault(t => t.Id == id);
         }
 
-        private void SaveTroubleTickets(List<TroubleTicket> tickets)
+        private void Save(List<TroubleTicket> tickets)
         {
             JsonProvider.Serialize(tickets.OrderBy(x => x.Id).ToList(), troubleTicketsFileName);
         }
 
-        private List<TroubleTicket> GetAllTroubleTicketsInternal()
+        private List<TroubleTicket> GetAllInternal()
         {
             return JsonProvider.Deserialize<TroubleTicket>(troubleTicketsFileName)
                    ?? new List<TroubleTicket>();
         }
 
-        public void ResolveTroubleTicket(int id, string status, string resolve, int resolveUserId)
+        public void Resolve(int id, string status, string resolve, int resolveUserId)
         {
-            var troubleTickets = GetAllTroubleTicketsInternal();
+            var troubleTickets = GetAllInternal();
             var troubleTicket = troubleTickets.FirstOrDefault(t => t.Id == id);
 
             if (troubleTicket == null) return;
@@ -59,12 +58,12 @@ namespace HelpDesk.Common
             troubleTicket.ResolveTime = DateTime.Now;
             troubleTicket.ResolveUser = resolveUserId;
 
-            SaveTroubleTickets(troubleTickets);
+            Save(troubleTickets);
         }
 
-        public void ChangeStatusTroubleTicket(int id, string status, int resolveUserId)
+        public void ChangeStatus(int id, string status, int resolveUserId)
         {
-            var troubleTickets = GetAllTroubleTicketsInternal();
+            var troubleTickets = GetAllInternal();
             var troubleTicket = troubleTickets.FirstOrDefault(t => t.Id == id);
 
             if (troubleTicket == null) return;
@@ -72,7 +71,7 @@ namespace HelpDesk.Common
             troubleTicket.Status = status;
             troubleTicket.ResolveUser = resolveUserId;
 
-            SaveTroubleTickets(troubleTickets);
+            Save(troubleTickets);
 
         }
     }

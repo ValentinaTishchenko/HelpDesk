@@ -38,7 +38,7 @@ namespace HelpDeskWinFormsApp
                     Deadline = DateTime.Now.AddDays(4)
                 };
 
-                ticketProvider.AddTroubleTicket(troubelTicket);
+                ticketProvider.Add(troubelTicket);
             }
         }
 

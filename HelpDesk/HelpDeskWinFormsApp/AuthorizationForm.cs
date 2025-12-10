@@ -40,7 +40,7 @@ namespace HelpDeskWinFormsApp
 
         private void AddFirstEmployee()
         {
-            var isEmptyUsers = userProvider.GetAllUsers();
+            var isEmptyUsers = userProvider.GetAll();
 
             if (isEmptyUsers == null || isEmptyUsers.Count == 0)
             {
@@ -55,7 +55,7 @@ namespace HelpDeskWinFormsApp
                     Function = "Разработчик"
                 };
 
-                userProvider.AddUser(employee);
+                userProvider.Add(employee);
             }
         }
 
