@@ -14,18 +14,6 @@ namespace HelpDesk.Common.Models
         public string? Department { get; set; }
 
         public User() { }
-
-        [JsonConstructor]
-        private User(int id, string name, string login, string password, string email, bool isEmployee, string? function, string? department)
-        {
-            Id = id;
-            Name = name;
-            Login = login;
-            Password = password;
-            Email = email;
-            IsEmployee = isEmployee;
-            Function = function;
-            Department = department;
-        }
+       
     }
 }
